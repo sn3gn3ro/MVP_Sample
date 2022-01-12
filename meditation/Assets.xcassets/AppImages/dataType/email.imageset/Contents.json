@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "envelope-alt.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
