@@ -82,7 +82,7 @@ extension SignUpEmailViewController : SignUpMainEmailTableCellDelegate {
     }
     
     func didPressedCreateAccount() {
-        
+        ModuleRouter.showSignUpPhoneModule(currentViewController: self)
     }
     
     func didPressedEnter() {

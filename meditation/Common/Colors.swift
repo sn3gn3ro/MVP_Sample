@@ -28,7 +28,12 @@ extension UIColor {
         static let lightGray = UIColor(netHex: 0xECECEE)
         ///F94D4D
         static let errorRed = UIColor(netHex: 0xF94D4D)
-        
+        ///A5A6C5
+        static let tabbarUnactive = UIColor(netHex: 0xA5A6C5)
+        ///3E4067
+        static let tabbarBackground = UIColor(netHex: 0x3E4067)
+        ///ECECEE
+        static let textGray = UIColor(netHex: 0xECECEE)
     }
 
     convenience init(red: Int, green: Int, blue: Int) {

@@ -11,11 +11,14 @@ class SquareRoundButtonView: UIView {
     
     enum DataType {
         case backArrow
+        case search
         
         func image() -> UIImage {
             switch self {
                 case .backArrow:
                     return UIImage(named: "leftWhiteNormalArrow") ?? UIImage()
+                case .search:
+                    return UIImage(named: "searchWhiteRoundButton") ?? UIImage()
             }
         }
     }
@@ -54,7 +57,7 @@ class SquareRoundButtonView: UIView {
     
     // MARK: - Actions
 
-    func setbackColor(color: UIColor) {
+    func setBackColor(color: UIColor) {
         self.backgroundColor = color
     }
     
@@ -66,7 +69,7 @@ class SquareRoundButtonView: UIView {
     
     private func setSelf() {
         snp.makeConstraints { (make) in
-            make.height.width.equalTo(40)
+            make.height.width.equalTo(48)
         }
         layer.cornerRadius = 12
         self.backgroundColor = UIColor.Main.darkViolet

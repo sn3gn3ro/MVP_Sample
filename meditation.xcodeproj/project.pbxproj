@@ -42,6 +42,23 @@
 		573BAAD027778765001258D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BAACF27778765001258D3 /* SignUpViewController.swift */; };
 		573BAAD42777878F001258D3 /* SignUpPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BAAD32777878F001258D3 /* SignUpPresenter.swift */; };
 		573BAAD82777879C001258D3 /* SignUpDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BAAD72777879C001258D3 /* SignUpDataModel.swift */; };
+		575F47F4278F3D120025865B /* OnboardingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F47F3278F3D120025865B /* OnboardingPresenter.swift */; };
+		575F47F7278F3D1C0025865B /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F47F6278F3D1C0025865B /* OnboardingDataModel.swift */; };
+		575F47FA278F3D250025865B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F47F9278F3D250025865B /* OnboardingViewController.swift */; };
+		575F47FE278F3DF50025865B /* OnboardingMainTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F47FD278F3DF50025865B /* OnboardingMainTableCell.swift */; };
+		575F4802278F45920025865B /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F4801278F45920025865B /* CustomScrollView.swift */; };
+		575F4806278F46500025865B /* PanicAttackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F4805278F46500025865B /* PanicAttackView.swift */; };
+		575F480A278F468E0025865B /* RelationshipProblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F4809278F468E0025865B /* RelationshipProblemView.swift */; };
+		575F480D278F46A40025865B /* HealthFearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F480C278F46A40025865B /* HealthFearView.swift */; };
+		575F4810278F46C10025865B /* EmotionsWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F480F278F46C10025865B /* EmotionsWorkView.swift */; };
+		5785E99127905C1D00D2A77F /* EmotionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E99027905C1D00D2A77F /* EmotionCollectionCell.swift */; };
+		5785E9982796E1C500D2A77F /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E9972796E1C400D2A77F /* CustomTabbarController.swift */; };
+		5785E99C2796E1DB00D2A77F /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E99B2796E1DB00D2A77F /* TabbarView.swift */; };
+		5785E99F2796E1EF00D2A77F /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E99E2796E1EF00D2A77F /* TabView.swift */; };
+		5785E9A627972D3C00D2A77F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E9A527972D3C00D2A77F /* MainViewController.swift */; };
+		5785E9AA27972D4800D2A77F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E9A927972D4800D2A77F /* MainPresenter.swift */; };
+		5785E9AE27972D6600D2A77F /* MainDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E9AD27972D6600D2A77F /* MainDataModel.swift */; };
+		5785E9B12797303C00D2A77F /* MainPictureTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5785E9B02797303C00D2A77F /* MainPictureTableCell.swift */; };
 		579D1A47278C99F300F492A5 /* LogInEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A46278C99F300F492A5 /* LogInEmailViewController.swift */; };
 		579D1A4A278C99FD00F492A5 /* LogInEmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A49278C99FD00F492A5 /* LogInEmailPresenter.swift */; };
 		579D1A4D278C9A0A00F492A5 /* LogInEmailDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A4C278C9A0A00F492A5 /* LogInEmailDataModel.swift */; };
@@ -54,6 +71,10 @@
 		579D1A6C278CB2B800F492A5 /* RestoreEmailPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A6B278CB2B800F492A5 /* RestoreEmailPasswordViewController.swift */; };
 		579D1A6F278CB2C400F492A5 /* RestoreEmailPasswordDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A6E278CB2C400F492A5 /* RestoreEmailPasswordDataModel.swift */; };
 		579D1A73278CB36F00F492A5 /* RestoreEmailPasswordMainTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A72278CB36F00F492A5 /* RestoreEmailPasswordMainTableCell.swift */; };
+		579D1A79278F219B00F492A5 /* MailingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A78278F219B00F492A5 /* MailingPresenter.swift */; };
+		579D1A7C278F21A600F492A5 /* MailingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A7B278F21A600F492A5 /* MailingDataModel.swift */; };
+		579D1A7F278F21B100F492A5 /* MailingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A7E278F21B100F492A5 /* MailingViewController.swift */; };
+		579D1A82278F228900F492A5 /* MailingMainTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1A81278F228900F492A5 /* MailingMainTableCell.swift */; };
 		57A8398527778AE3003F566B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57A8398427778AE3003F566B /* SnapKit */; };
 		57A8398827778AFB003F566B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A8398727778AFB003F566B /* Colors.swift */; };
 		57A8398B27778B52003F566B /* UIFonts + Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A8398A27778B52003F566B /* UIFonts + Custom.swift */; };
@@ -67,6 +88,13 @@
 		57A8399F27778BE4003F566B /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57A8399527778BE1003F566B /* Lato-BoldItalic.ttf */; };
 		57A839A027778BE4003F566B /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57A8399627778BE1003F566B /* Lato-Hairline.ttf */; };
 		57A839A127778BE4003F566B /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57A8399727778BE1003F566B /* Lato-ThinItalic.ttf */; };
+		57CF923827973E07006C3B47 /* MainSearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF923727973E07006C3B47 /* MainSearchTableCell.swift */; };
+		57CF923B2797526A006C3B47 /* MainPlayedTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF923A2797526A006C3B47 /* MainPlayedTableCell.swift */; };
+		57CF923E279763D0006C3B47 /* MainRecomendedHeaderTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF923D279763D0006C3B47 /* MainRecomendedHeaderTableCell.swift */; };
+		57CF924127976518006C3B47 /* MainPodcastsHeaderTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF924027976518006C3B47 /* MainPodcastsHeaderTableCell.swift */; };
+		57CF924427976728006C3B47 /* MainPodcastTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF924327976728006C3B47 /* MainPodcastTableCell.swift */; };
+		57CF924727976985006C3B47 /* MainRecomendedTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF924627976985006C3B47 /* MainRecomendedTableCell.swift */; };
+		57CF924B27976A40006C3B47 /* MainRecomendedCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF924A27976A40006C3B47 /* MainRecomendedCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +135,23 @@
 		573BAACF27778765001258D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		573BAAD32777878F001258D3 /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
 		573BAAD72777879C001258D3 /* SignUpDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpDataModel.swift; sourceTree = "<group>"; };
+		575F47F3278F3D120025865B /* OnboardingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPresenter.swift; sourceTree = "<group>"; };
+		575F47F6278F3D1C0025865B /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
+		575F47F9278F3D250025865B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		575F47FD278F3DF50025865B /* OnboardingMainTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingMainTableCell.swift; sourceTree = "<group>"; };
+		575F4801278F45920025865B /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
+		575F4805278F46500025865B /* PanicAttackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanicAttackView.swift; sourceTree = "<group>"; };
+		575F4809278F468E0025865B /* RelationshipProblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipProblemView.swift; sourceTree = "<group>"; };
+		575F480C278F46A40025865B /* HealthFearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthFearView.swift; sourceTree = "<group>"; };
+		575F480F278F46C10025865B /* EmotionsWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionsWorkView.swift; sourceTree = "<group>"; };
+		5785E99027905C1D00D2A77F /* EmotionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionCollectionCell.swift; sourceTree = "<group>"; };
+		5785E9972796E1C400D2A77F /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
+		5785E99B2796E1DB00D2A77F /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
+		5785E99E2796E1EF00D2A77F /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		5785E9A527972D3C00D2A77F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		5785E9A927972D4800D2A77F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		5785E9AD27972D6600D2A77F /* MainDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDataModel.swift; sourceTree = "<group>"; };
+		5785E9B02797303C00D2A77F /* MainPictureTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPictureTableCell.swift; sourceTree = "<group>"; };
 		579D1A46278C99F300F492A5 /* LogInEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInEmailViewController.swift; sourceTree = "<group>"; };
 		579D1A49278C99FD00F492A5 /* LogInEmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInEmailPresenter.swift; sourceTree = "<group>"; };
 		579D1A4C278C9A0A00F492A5 /* LogInEmailDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInEmailDataModel.swift; sourceTree = "<group>"; };
@@ -119,6 +164,10 @@
 		579D1A6B278CB2B800F492A5 /* RestoreEmailPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreEmailPasswordViewController.swift; sourceTree = "<group>"; };
 		579D1A6E278CB2C400F492A5 /* RestoreEmailPasswordDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreEmailPasswordDataModel.swift; sourceTree = "<group>"; };
 		579D1A72278CB36F00F492A5 /* RestoreEmailPasswordMainTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreEmailPasswordMainTableCell.swift; sourceTree = "<group>"; };
+		579D1A78278F219B00F492A5 /* MailingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingPresenter.swift; sourceTree = "<group>"; };
+		579D1A7B278F21A600F492A5 /* MailingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingDataModel.swift; sourceTree = "<group>"; };
+		579D1A7E278F21B100F492A5 /* MailingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingViewController.swift; sourceTree = "<group>"; };
+		579D1A81278F228900F492A5 /* MailingMainTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingMainTableCell.swift; sourceTree = "<group>"; };
 		57A8398727778AFB003F566B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		57A8398A27778B52003F566B /* UIFonts + Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFonts + Custom.swift"; sourceTree = "<group>"; };
 		57A8398E27778BE0003F566B /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -131,6 +180,13 @@
 		57A8399527778BE1003F566B /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		57A8399627778BE1003F566B /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
 		57A8399727778BE1003F566B /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		57CF923727973E07006C3B47 /* MainSearchTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchTableCell.swift; sourceTree = "<group>"; };
+		57CF923A2797526A006C3B47 /* MainPlayedTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlayedTableCell.swift; sourceTree = "<group>"; };
+		57CF923D279763D0006C3B47 /* MainRecomendedHeaderTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRecomendedHeaderTableCell.swift; sourceTree = "<group>"; };
+		57CF924027976518006C3B47 /* MainPodcastsHeaderTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPodcastsHeaderTableCell.swift; sourceTree = "<group>"; };
+		57CF924327976728006C3B47 /* MainPodcastTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPodcastTableCell.swift; sourceTree = "<group>"; };
+		57CF924627976985006C3B47 /* MainRecomendedTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRecomendedTableCell.swift; sourceTree = "<group>"; };
+		57CF924A27976A40006C3B47 /* MainRecomendedCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRecomendedCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				57048C882777995F0061F5CF /* DataEnterView.swift */,
+				575F4801278F45920025865B /* CustomScrollView.swift */,
 				57048C972777A3CB0061F5CF /* SimpleTextButtonView.swift */,
 				571EB27B2777ACF600F1102E /* RegistrationButtonView.swift */,
 				571EB2BB277A051E00F1102E /* SquareRoundButtonView.swift */,
@@ -231,7 +288,7 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		571EB2BE277A191C00F1102E /* EnterCodeMudule */ = {
+		571EB2BE277A191C00F1102E /* EnterCodeModule */ = {
 			isa = PBXGroup;
 			children = (
 				571EB2BF277A193800F1102E /* EnterCodeViewController.swift */,
@@ -239,7 +296,7 @@
 				571EB2C6277A194D00F1102E /* EnterCodeDataModel.swift */,
 				571EB2C9277A19E500F1102E /* Cells */,
 			);
-			path = EnterCodeMudule;
+			path = EnterCodeModule;
 			sourceTree = "<group>";
 		};
 		571EB2C9277A19E500F1102E /* Cells */ = {
@@ -279,15 +336,19 @@
 			children = (
 				573BAAAC277785E1001258D3 /* AppDelegate.swift */,
 				573BAAAE277785E1001258D3 /* SceneDelegate.swift */,
+				5785E9A327972D1700D2A77F /* MainModule */,
 				57048C8D27779F4A0061F5CF /* Extensions */,
 				573BAAD227778768001258D3 /* SignUpModule */,
 				571EB27E27788C8D00F1102E /* SignUpEmailModule */,
 				571EB2932778951600F1102E /* SignUpPhoneModule */,
 				571EB2AD277A023800F1102E /* PrivacyPoliticsModule */,
-				571EB2BE277A191C00F1102E /* EnterCodeMudule */,
+				571EB2BE277A191C00F1102E /* EnterCodeModule */,
 				579D1A45278C994100F492A5 /* LoginEmailModule */,
 				579D1A58278CACE100F492A5 /* LogInPhoneModule */,
 				579D1A67278CB28700F492A5 /* RestoreEmailPasswordModule */,
+				579D1A77278F215E00F492A5 /* MailingModule */,
+				575F47F2278F2A600025865B /* OnboardingModule */,
+				5785E9962796E1A500D2A77F /* CustomTabbar */,
 				57048C87277799430061F5CF /* CustomViews */,
 				573BAAC12777864D001258D3 /* Common */,
 				573BAAB5277785E7001258D3 /* Assets.xcassets */,
@@ -320,6 +381,82 @@
 				57048C922777A0D50061F5CF /* Cells */,
 			);
 			path = SignUpModule;
+			sourceTree = "<group>";
+		};
+		575F47F2278F2A600025865B /* OnboardingModule */ = {
+			isa = PBXGroup;
+			children = (
+				575F47F3278F3D120025865B /* OnboardingPresenter.swift */,
+				575F47F6278F3D1C0025865B /* OnboardingDataModel.swift */,
+				575F47F9278F3D250025865B /* OnboardingViewController.swift */,
+				575F4804278F46320025865B /* Views */,
+				575F47FC278F3DDD0025865B /* Cells */,
+			);
+			path = OnboardingModule;
+			sourceTree = "<group>";
+		};
+		575F47FC278F3DDD0025865B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				575F47FD278F3DF50025865B /* OnboardingMainTableCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		575F4804278F46320025865B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				575F4805278F46500025865B /* PanicAttackView.swift */,
+				575F4809278F468E0025865B /* RelationshipProblemView.swift */,
+				575F480C278F46A40025865B /* HealthFearView.swift */,
+				575F480F278F46C10025865B /* EmotionsWorkView.swift */,
+				5785E98F27905BF200D2A77F /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5785E98F27905BF200D2A77F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5785E99027905C1D00D2A77F /* EmotionCollectionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		5785E9962796E1A500D2A77F /* CustomTabbar */ = {
+			isa = PBXGroup;
+			children = (
+				5785E9972796E1C400D2A77F /* CustomTabbarController.swift */,
+				5785E99B2796E1DB00D2A77F /* TabbarView.swift */,
+				5785E99E2796E1EF00D2A77F /* TabView.swift */,
+			);
+			path = CustomTabbar;
+			sourceTree = "<group>";
+		};
+		5785E9A327972D1700D2A77F /* MainModule */ = {
+			isa = PBXGroup;
+			children = (
+				5785E9A927972D4800D2A77F /* MainPresenter.swift */,
+				5785E9AD27972D6600D2A77F /* MainDataModel.swift */,
+				5785E9A527972D3C00D2A77F /* MainViewController.swift */,
+				5785E9A427972D2C00D2A77F /* Cells */,
+			);
+			path = MainModule;
+			sourceTree = "<group>";
+		};
+		5785E9A427972D2C00D2A77F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5785E9B02797303C00D2A77F /* MainPictureTableCell.swift */,
+				57CF923727973E07006C3B47 /* MainSearchTableCell.swift */,
+				57CF923A2797526A006C3B47 /* MainPlayedTableCell.swift */,
+				57CF923D279763D0006C3B47 /* MainRecomendedHeaderTableCell.swift */,
+				57CF924627976985006C3B47 /* MainRecomendedTableCell.swift */,
+				57CF924027976518006C3B47 /* MainPodcastsHeaderTableCell.swift */,
+				57CF924327976728006C3B47 /* MainPodcastTableCell.swift */,
+				57CF924927976A2B006C3B47 /* Cells */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		579D1A45278C994100F492A5 /* LoginEmailModule */ = {
@@ -379,6 +516,25 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		579D1A77278F215E00F492A5 /* MailingModule */ = {
+			isa = PBXGroup;
+			children = (
+				579D1A78278F219B00F492A5 /* MailingPresenter.swift */,
+				579D1A7E278F21B100F492A5 /* MailingViewController.swift */,
+				579D1A7B278F21A600F492A5 /* MailingDataModel.swift */,
+				579D1A85278F228C00F492A5 /* Cells */,
+			);
+			path = MailingModule;
+			sourceTree = "<group>";
+		};
+		579D1A85278F228C00F492A5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				579D1A81278F228900F492A5 /* MailingMainTableCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		57A8398D27778BA9003F566B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,6 +550,14 @@
 				57A8399727778BE1003F566B /* Lato-ThinItalic.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		57CF924927976A2B006C3B47 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				57CF924A27976A40006C3B47 /* MainRecomendedCollectionCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,46 +647,74 @@
 			files = (
 				579D1A6F278CB2C400F492A5 /* RestoreEmailPasswordDataModel.swift in Sources */,
 				571EB2C0277A193800F1102E /* EnterCodeViewController.swift in Sources */,
+				579D1A82278F228900F492A5 /* MailingMainTableCell.swift in Sources */,
+				57CF924727976985006C3B47 /* MainRecomendedTableCell.swift in Sources */,
 				579D1A64278CADBE00F492A5 /* LogInPhoneMainTableCell.swift in Sources */,
 				579D1A4A278C99FD00F492A5 /* LogInEmailPresenter.swift in Sources */,
 				579D1A4D278C9A0A00F492A5 /* LogInEmailDataModel.swift in Sources */,
+				575F480A278F468E0025865B /* RelationshipProblemView.swift in Sources */,
 				573BAACC2777869D001258D3 /* CommonString.swift in Sources */,
+				575F47F4278F3D120025865B /* OnboardingPresenter.swift in Sources */,
 				57048C892777995F0061F5CF /* DataEnterView.swift in Sources */,
+				5785E9B12797303C00D2A77F /* MainPictureTableCell.swift in Sources */,
 				57A8398827778AFB003F566B /* Colors.swift in Sources */,
 				571EB28A27788E9400F1102E /* SignUpMainEmailTableCell.swift in Sources */,
 				579D1A51278CA3F800F492A5 /* LogInEmailMainTableCell.swift in Sources */,
 				57048C942777A0E60061F5CF /* SignUpMainTableCell.swift in Sources */,
+				5785E9A627972D3C00D2A77F /* MainViewController.swift in Sources */,
+				57CF923827973E07006C3B47 /* MainSearchTableCell.swift in Sources */,
 				57A8398B27778B52003F566B /* UIFonts + Custom.swift in Sources */,
 				571EB2B2277A026C00F1102E /* PrivacyPoliticsPresenter.swift in Sources */,
 				571EB29F277896FB00F1102E /* SignUpPhoneMainTableCell.swift in Sources */,
 				571EB28027788CBF00F1102E /* SignUpEmailViewController.swift in Sources */,
+				5785E9AA27972D4800D2A77F /* MainPresenter.swift in Sources */,
 				571EB2AF277A026200F1102E /* PrivacyPoliticsViewController.swift in Sources */,
 				571EB2982778954500F1102E /* SignUpPhonePresenter.swift in Sources */,
 				571EB2B5277A027700F1102E /* PrivacyPoliticsDataModel.swift in Sources */,
+				575F4810278F46C10025865B /* EmotionsWorkView.swift in Sources */,
+				575F47FE278F3DF50025865B /* OnboardingMainTableCell.swift in Sources */,
 				573BAAD027778765001258D3 /* SignUpViewController.swift in Sources */,
 				579D1A6C278CB2B800F492A5 /* RestoreEmailPasswordViewController.swift in Sources */,
 				571EB28627788CDF00F1102E /* SignUpEmailDataModel.swift in Sources */,
+				5785E99F2796E1EF00D2A77F /* TabView.swift in Sources */,
 				573BAAC92777868C001258D3 /* NetworkManager.swift in Sources */,
+				57CF923B2797526A006C3B47 /* MainPlayedTableCell.swift in Sources */,
+				57CF924127976518006C3B47 /* MainPodcastsHeaderTableCell.swift in Sources */,
 				573BAAD82777879C001258D3 /* SignUpDataModel.swift in Sources */,
 				571EB2CF277A1B8F00F1102E /* OTPInputView.swift in Sources */,
 				571EB30D277B8FD100F1102E /* String + EmailValidation.swift in Sources */,
 				571EB2BC277A051E00F1102E /* SquareRoundButtonView.swift in Sources */,
+				57CF923E279763D0006C3B47 /* MainRecomendedHeaderTableCell.swift in Sources */,
 				571EB29B2778954E00F1102E /* SignUpPhoneDataModel.swift in Sources */,
+				575F4802278F45920025865B /* CustomScrollView.swift in Sources */,
 				579D1A69278CB2AF00F492A5 /* RestoreEmailPasswordPresenter.swift in Sources */,
 				579D1A73278CB36F00F492A5 /* RestoreEmailPasswordMainTableCell.swift in Sources */,
 				573BAAC62777867C001258D3 /* ModuleRouter.swift in Sources */,
+				5785E99C2796E1DB00D2A77F /* TabbarView.swift in Sources */,
+				575F4806278F46500025865B /* PanicAttackView.swift in Sources */,
+				5785E99127905C1D00D2A77F /* EmotionCollectionCell.swift in Sources */,
+				575F47F7278F3D1C0025865B /* OnboardingDataModel.swift in Sources */,
 				579D1A5D278CAD1400F492A5 /* LogInPhoneDataModel.swift in Sources */,
+				57CF924427976728006C3B47 /* MainPodcastTableCell.swift in Sources */,
 				571EB27C2777ACF600F1102E /* RegistrationButtonView.swift in Sources */,
+				579D1A7C278F21A600F492A5 /* MailingDataModel.swift in Sources */,
 				571EB2B9277A033900F1102E /* PrivacyPoliticsMainTableCell.swift in Sources */,
+				575F480D278F46A40025865B /* HealthFearView.swift in Sources */,
+				5785E9982796E1C500D2A77F /* CustomTabbarController.swift in Sources */,
+				579D1A7F278F21B100F492A5 /* MailingViewController.swift in Sources */,
 				571EB2C4277A194300F1102E /* EnterCodePresenter.swift in Sources */,
 				571EB2C7277A194D00F1102E /* EnterCodeDataModel.swift in Sources */,
 				571EB28327788CD300F1102E /* SignUpEmailPresenter.swift in Sources */,
 				573BAAAD277785E1001258D3 /* AppDelegate.swift in Sources */,
 				573BAAAF277785E1001258D3 /* SceneDelegate.swift in Sources */,
+				57CF924B27976A40006C3B47 /* MainRecomendedCollectionCell.swift in Sources */,
+				575F47FA278F3D250025865B /* OnboardingViewController.swift in Sources */,
+				5785E9AE27972D6600D2A77F /* MainDataModel.swift in Sources */,
 				579D1A47278C99F300F492A5 /* LogInEmailViewController.swift in Sources */,
 				571EB2D4277A1D8C00F1102E /* OTPTextField.swift in Sources */,
 				571EB2952778953B00F1102E /* SignUpPhoneViewController.swift in Sources */,
 				573BAAD42777878F001258D3 /* SignUpPresenter.swift in Sources */,
+				579D1A79278F219B00F492A5 /* MailingPresenter.swift in Sources */,
 				579D1A60278CAD1E00F492A5 /* LogInPhoneViewController.swift in Sources */,
 				57048C8F27779F660061F5CF /* UIViewController + Extension.swift in Sources */,
 				573BAAC32777866E001258D3 /* ModuleBuilder.swift in Sources */,
@@ -673,7 +865,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = medvedev.meditation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -693,7 +885,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = medvedev.meditation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

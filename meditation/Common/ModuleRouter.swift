@@ -17,12 +17,15 @@ protocol Router {
     static func showLogInEmailModule(currentViewController: UIViewController, email: String?)
     static func showLogInPhoneModule(currentViewController: UIViewController, phone: String?)
     static func showRestoreEmailPasswordModule(currentViewController: UIViewController, email: String?)
+    
+    static func showMailingModule(currentViewController: UIViewController, email: String?)
+    static func showOnboardingModule(currentViewController: UIViewController)
 }
 
 class ModuleRouter: Router {
     static func setRootSignUpModule(window: UIWindow?) {
         guard let window = window else { return }
-        let viewController = ModuleBuilder.createSignUpModule()
+        let viewController = ModuleBuilder.createTabbarModule()//ModuleBuilder.createOnboardingModule()///ModuleBuilder.createSignUpModule()
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.isNavigationBarHidden = true
         window.rootViewController = navigationController
@@ -61,6 +64,16 @@ class ModuleRouter: Router {
     
     static func showRestoreEmailPasswordModule(currentViewController: UIViewController, email: String?) {
         let viewController = ModuleBuilder.createRestoreEmailPasswordModule(email: email)
+        currentViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    static func showMailingModule(currentViewController: UIViewController, email: String?) {
+        let viewController = ModuleBuilder.createMailingModule(email: email)
+        currentViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    static func showOnboardingModule(currentViewController: UIViewController) {
+        let viewController = ModuleBuilder.createOnboardingModule()
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
 }

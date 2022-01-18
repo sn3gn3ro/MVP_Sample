@@ -88,7 +88,7 @@ extension LogInEmailViewController : LogInEmailMainTableCellDelegate {
     }
     
     func didPressedEnter() {
-        
+        ModuleRouter.showMailingModule(currentViewController: self, email: nil)
     }
     
     

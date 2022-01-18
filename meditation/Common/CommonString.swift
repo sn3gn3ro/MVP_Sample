@@ -46,4 +46,41 @@ enum CommonString {
     static let restore = "Восстановить"
     
     static let restorePassword = "Восстановить пароль"
+    
+    static let firstMainStep = "Первый важный шаг"
+    static let firstMainStepSubtitle = "Укажите адрес электронной почты, чтобы подписаться на рассылку полезной информации."
+    static let further = "Далее"
+    static let back = "Назад"
+    static let questionOutOf = "вопрос из"
+    
+    static let panicTitle = "Бывают ли у Вас\nпанические атаки?"
+    static let panicSubtitle = "Выберите подходящий ответ ниже. Какая из\nкартинок больше отображает ваше состояние?"
+    
+    static let relationshipTitle = "Есть ли у Вас проблемы\nв отношениях?"
+    static let relationshipSubtitle = "Выберите подходящий ответ ниже. Какая из\nкартинок больше отображает ваше состояние?"
+    
+    static let healthTitle = "Есть ли у Вас тревога и\nстрахи за здоровье?"
+    static let healthSubtitle = "Выберите подходящий ответ ниже. Какая из\nкартинок больше отображает ваше состояние?"
+    
+    static let emotionsWorkTitle = "С какими эмоциями вы\nбы хотели поработать?"
+    static let emotionsWorkSubtitle = "Выберите подходящий ответ ниже. Какая из\nкартинок больше отображает ваше состояние?"
+    
+    static let anxiety = "Тревога"
+    static let anger = "Гнев"
+    static let jealousy = "Ревность"
+    static let gilt = "Вина"
+    static let fear = "Страх"
+    static let loneliness = "Одиночество"
+    static let shame = "Стыд"
+    
+    static let main = "Главная"
+    static let profile = "Профиль"
+    
+    static let happyToSeeYou = "Рады видеть тебя,"
+    static let recomendForYou = "Рекомендуемое Вам"
+    
+    static let podcastTheme = "Тематика подкастов"
+    static let more = "Подробнее"
+    
+    static let audiolessons = "Аудиоуроков"
 }
