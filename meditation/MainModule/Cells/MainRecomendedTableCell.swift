@@ -13,7 +13,23 @@ protocol MainRecomendedTableCellDelegate: AnyObject {
 
 class MainRecomendedTableCell: UITableViewCell {
     
+    enum Const {
+        static let itemHeight = 181
+        static let itemWidth = 160
+    }
+    
+    struct TestData {
+        let image: UIImage?
+        let title: String
+        let subTitle: String
+        let lessonsCount: Int
+    }
+    
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    let testDataArray: [TestData] = [TestData(image: UIImage(named: "recomendedTest"), title: "Как найти подход?", subTitle: "Социальные проблемы", lessonsCount: 5),
+                                     TestData(image: UIImage(named: "recomendedTest2"), title: "Что такое тревога?", subTitle: "Тревога", lessonsCount: 12),
+                                     TestData(image: UIImage(named: "recomendedTest3"), title: "Цели", subTitle: "Мотивация", lessonsCount: 5)]
     
     weak var delegate: MainRecomendedTableCellDelegate?
     
@@ -60,7 +76,7 @@ class MainRecomendedTableCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-40)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(171)
+            make.height.equalTo(Const.itemHeight)
         }
         
         collectionView.backgroundColor = .clear
@@ -90,12 +106,13 @@ extension MainRecomendedTableCell: UICollectionViewDelegate {
 
 extension MainRecomendedTableCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return testDataArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainRecomendedCollectionCell", for: indexPath) as! MainRecomendedCollectionCell
-        cell.setData(image: UIImage(named: "recomendedTest") ?? UIImage(), lessonCount: 5, title: "Как найти подход?", subtitle: "Социальные проблемы")
+        let data = testDataArray[indexPath.row]
+        cell.setData(image: data.image ?? UIImage(), lessonCount: data.lessonsCount, title: data.title, subtitle: data.subTitle)
         
         return cell
     }
@@ -108,7 +125,7 @@ extension MainRecomendedTableCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        return CGSize(width: 160, height: 171)
+        return CGSize(width: Const.itemWidth, height: Const.itemHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

@@ -24,6 +24,19 @@ protocol Builder {
     static func createTabbarModule() -> UIViewController
     
     static func createMainModule() -> UIViewController
+    static func createCategoryModule() -> UIViewController
+    static func createProfileModule() -> UIViewController
+    static func createProfileEditModule() -> UIViewController
+    static func createFavoritesModule() -> UIViewController
+    
+    static func createNotificationSettingsModule() -> UIViewController
+    
+    static func createPlayerModule() -> UIViewController
+    static func createCongratulationModule() -> UIViewController
+    static func createSubscriptionModule() -> UIViewController
+    
+    static func createSearchModule() -> UIViewController
+    
     
 }
 
@@ -128,6 +141,88 @@ class ModuleBuilder: Builder {
         let view = MainViewController()
         let dataModel = MainDataModel()
         let presenter = MainPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createCategoryModule() -> UIViewController {
+        let view = CategoryViewController()
+        let dataModel = CategoryDataModel()
+        let presenter = CategoryPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createProfileModule() -> UIViewController {
+        let view = ProfileViewController()
+        let dataModel = ProfileDataModel()
+        let presenter = ProfilePresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+        
+    }
+    
+    static func createProfileEditModule() -> UIViewController {
+        let view = ProfileEditViewController()
+        let dataModel = ProfileEditDataModel()
+        let presenter = ProfileEditPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createFavoritesModule() -> UIViewController {
+        let view = FavoritesViewController()
+        let dataModel = FavoritesDataModel()
+        let presenter = FavoritesPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createNotificationSettingsModule() -> UIViewController {
+        let view = NotificationSettingsViewController()
+        let dataModel = NotificationSettingsDataModel()
+        let presenter = NotificationSettingsPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createPlayerModule() -> UIViewController {
+        let view = PlayerViewController()
+        let dataModel = PlayerDataModel()
+        let presenter = PlayerPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createCongratulationModule() -> UIViewController {
+        let view = CongratulationViewController()
+        let dataModel = CongratulationDataModel()
+        let presenter = CongratulationPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createSubscriptionModule() -> UIViewController {
+        let view = SubscriptionViewController()
+        let dataModel = SubscriptionDataModel()
+        let presenter = SubscriptionPresenter(view: view, dataModel: dataModel)
+        view.presenter = presenter
+
+        return view
+    }
+    
+    static func createSearchModule() -> UIViewController {
+        let view = SearchViewController()
+        let dataModel = SearchDataModel()
+        let presenter = SearchPresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 
         return view

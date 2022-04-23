@@ -83,4 +83,42 @@ enum CommonString {
     static let more = "Подробнее"
     
     static let audiolessons = "Аудиоуроков"
+    
+    static let favoritesLessons = "Избранные уроки"
+    static let subscriptionSetting = "Управление подписками"
+    static let notificationsSetting = "Настройка уведомлений"
+    static let leaveReview = "Оставить отзыв"
+    static let exit = "Выйти"
+    
+    static let editData = "Редактировать данные"
+    static let saveChanges = "Созранить изменения"
+    static let deleteAccount = "Удалить аккаунт"
+    
+    static let favorites = "Избранное"
+    static let favoritesSubtitile = "Здесь собраны все ваши любимые уроки и подкасты"
+    static let favoritesSubtitileEmpty = "Здесь будут собраны все ваши любимые уроки и подкасты"
+    
+    static let common = "Общие"
+    static let aboutNewLessons = "О новых уроках"
+    static let aboutNewOffers = "О новых предложениях"
+    
+    static let deletingAccount = "Удаление аккаунта"
+    static let deletingAccountSubtitile = "Вы уверены, что ходите удалить свой аккаунт? Ваши данные будут стерты."
+    static let delete = "Удалить"
+    
+    static let allLessonComplete = "Все занятия пройдены"
+    static let congraulation = "Поздравляем!"
+    static let readyForNewChallenge = "Вы готовы к новому вызову?"
+    
+    static let `continue` = "Продолжить"
+    static let peopleListedThisPodcast = "человек послушали этот\nподкаст!"
+    
+    static let subscription = "Подписка"
+    
+    static let renewCurrentSubscription = "Продлить текущую подписку"
+    
+    static let searchEmptyText = "Мы не нашли то, что вы ищите. Попробуйте другой запрос или посмотрите наши популярные уроки."
+    static let searchPlaceholder = "Введите ключевые слова для поиска"
+    
+    static let popular = "Популярное"
 }

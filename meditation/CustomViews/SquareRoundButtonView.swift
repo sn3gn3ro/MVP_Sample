@@ -12,6 +12,10 @@ class SquareRoundButtonView: UIView {
     enum DataType {
         case backArrow
         case search
+        case headphones
+        case edit
+        case heart
+        case share
         
         func image() -> UIImage {
             switch self {
@@ -19,6 +23,14 @@ class SquareRoundButtonView: UIView {
                     return UIImage(named: "leftWhiteNormalArrow") ?? UIImage()
                 case .search:
                     return UIImage(named: "searchWhiteRoundButton") ?? UIImage()
+                case .headphones:
+                    return UIImage(named: "headphonesWhiteRoundButton") ?? UIImage()
+                case .edit:
+                    return UIImage(named: "editWhiteRoundButton") ?? UIImage()
+                case .heart:
+                    return UIImage(named: "heartWhiteRoundButton") ?? UIImage()
+                case .share:
+                    return UIImage(named: "shareWhiteRoundButton") ?? UIImage()
             }
         }
     }

@@ -104,7 +104,11 @@ class DataEnterView: UIView {
     // MARK: - States
     
     func setData(text: String) {
-        dataTextField.text = text
+        if currentType == .phone {
+            dataTextField.text! = formattedNumber(number: text)
+        } else {
+            dataTextField.text = text
+        }
     }
     
     func setDisabledState() {

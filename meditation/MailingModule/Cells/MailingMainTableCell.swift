@@ -22,7 +22,7 @@ class MailingMainTableCell: UITableViewCell {
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let emailView = DataEnterView(type: .email)
-    let furtherButtonView = SimpleTextButtonView(type: .unactive, text: CommonString.further)
+    let furtherButtonView = SimpleTextButtonView(type: .normal, text: CommonString.further)
 
   
     weak var delegate: MailingMainTableCellDelegate?

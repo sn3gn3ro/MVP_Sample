@@ -48,7 +48,7 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(130)
+            make.bottom.equalToSuperview().offset(-40)
         }
         backImageView.clipsToBounds = true
         backImageView.layer.cornerRadius = 17

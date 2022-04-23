@@ -36,9 +36,10 @@ enum TabItemType {
 
             return ModuleBuilder.createMainModule()
         case .profile:
-            let vc = UIViewController()
-            vc.view.backgroundColor = .green
-            return vc
+            let navigationController = UINavigationController(rootViewController: ModuleBuilder.createProfileModule())
+            navigationController.navigationBar.isHidden = true
+
+            return ModuleBuilder.createProfileModule()
         }
     }
     

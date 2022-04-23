@@ -36,11 +36,18 @@ class CustomTabbarController: UITabBarController {
         super.viewDidLoad()
         
         self.loadTabBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideTabbar), name: Notification.Name("hideTabbar"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showTabbar), name: Notification.Name("showTabbar"), object: nil)
     }
     
     
-    func visibility(isHidden: Bool) {
-        customTabBar?.isHidden = isHidden
+    @objc func hideTabbar() {
+        customTabBar?.isHidden = true
+    }
+    
+    @objc func showTabbar() {
+        customTabBar?.isHidden = false
     }
     
     private func loadTabBar() {

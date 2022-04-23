@@ -78,6 +78,7 @@ extension OnboardingViewController : OnboardingMainTableCellDelegate {
     func didSelectEmotions(emotions: [EmotionsWorkView.EmotionModel]) {
         presenter.dataModel.emotions = emotions
         //next Screen
+        ModuleRouter.showTabbarModule()
     }
 }
 

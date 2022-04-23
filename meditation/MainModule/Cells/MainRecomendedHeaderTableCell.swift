@@ -39,6 +39,11 @@ class MainRecomendedHeaderTableCell: UITableViewCell {
     }
 
     //MARK: - Actions
+    
+    
+    func setData(text: String) {
+        titleLabel.text = text
+    }
 
     
     //MARK: - Private

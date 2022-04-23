@@ -34,6 +34,12 @@ extension UIColor {
         static let tabbarBackground = UIColor(netHex: 0x3E4067)
         ///ECECEE
         static let textGray = UIColor(netHex: 0xECECEE)
+        ///1D1E2F
+        static let alertBackground = UIColor(netHex: 0x1D1E2F)
+        ///4568DC
+        static let trackStart = UIColor(netHex: 0x4568DC)
+        ///B06AB3
+        static let trackFinish = UIColor(netHex: 0xB06AB3)
     }
 
     convenience init(red: Int, green: Int, blue: Int) {

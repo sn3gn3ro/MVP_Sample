@@ -21,22 +21,37 @@ class MainViewController: UIViewController {
         case recomended
         case podcastsHeader
         case podcasts
-        
     }
     
-    let sections: [Section] = [.picture,
+    var sections: [Section] = [.picture,
                                .search,
                                .played,
                                .recomendedHeader,
                                .recomended,
                                .podcastsHeader,
                                .podcasts]
+    
+    struct TestData {
+        let image: UIImage?
+        let title: String
+        let themeCount: Int
+        let lessonsCount: Int
+    }
+    
+    let testPodcastArray: [TestData] = [TestData(image: UIImage(named: "podcastTest"), title: "Отношения", themeCount: 10, lessonsCount: 24),
+                                        TestData(image: UIImage(named: "podcastTest2"), title: "Социальные проблемы", themeCount: 8, lessonsCount: 5),
+                                        TestData(image: UIImage(named: "podcastTest3"), title: "Эмоции", themeCount: 5, lessonsCount: 12)]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Main.primaryViolet
         self.hideKeyboardWhenTappedAround()
         setTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.post(name: Notification.Name("showTabbar"), object: nil, userInfo: nil)
     }
     
     // MARK: - Private
@@ -51,6 +66,7 @@ class MainViewController: UIViewController {
         
         tableView.backgroundColor = .clear
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: -(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0), left: 0, bottom: 0, right: 0)
     
@@ -61,7 +77,7 @@ class MainViewController: UIViewController {
         tableView.register(MainRecomendedTableCell.self, forCellReuseIdentifier: "MainRecomendedTableCell")
         tableView.register(MainPodcastsHeaderTableCell.self, forCellReuseIdentifier: "MainPodcastsHeaderTableCell")
         tableView.register(MainPodcastTableCell.self, forCellReuseIdentifier: "MainPodcastTableCell")
-        
+//        tableView.register(MainSearchHashtagsTableCell.self, forCellReuseIdentifier: "MainSearchHashtagsTableCell")
     }
 }
 
@@ -89,7 +105,7 @@ extension MainViewController: UITableViewDataSource {
             case .podcastsHeader:
                 return 1
             case .podcasts:
-                return 7
+                return testPodcastArray.count
         }
     }
     
@@ -109,7 +125,8 @@ extension MainViewController: UITableViewDataSource {
             case .podcastsHeader:
                 return PodcastsHeaderTableCell(indexPath: indexPath)
             case .podcasts:
-                return PodcastTableCell(indexPath: indexPath, backImage: UIImage(named: "podcastTest") ?? UIImage(), title: "Отношения", subTitle: "10 тем, 24 аудиоурока")
+                let podcast = testPodcastArray[indexPath.row]
+                return podcastTableCell(indexPath: indexPath, backImage: podcast.image ?? UIImage(), title: podcast.title, subTitle: "\(podcast.themeCount) тем, \(podcast.lessonsCount) аудиоурока")
         }
     }
     
@@ -124,6 +141,7 @@ extension MainViewController: UITableViewDataSource {
     private func SearchTableCell(indexPath: IndexPath, backgroundColor: UIColor, name: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainSearchTableCell", for: indexPath) as! MainSearchTableCell
         cell.setData(backgroundColor: backgroundColor, name: name)
+        cell.delegate = self
         
         return cell
     }
@@ -131,6 +149,7 @@ extension MainViewController: UITableViewDataSource {
     private func PlayedTableCell(indexPath: IndexPath, backImage: UIImage, title: String, subTitle: String, time: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPlayedTableCell", for: indexPath) as! MainPlayedTableCell
         cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
+        cell.delegate = self
         
         return cell
     }
@@ -144,59 +163,85 @@ extension MainViewController: UITableViewDataSource {
     private func RecomendedTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainRecomendedTableCell", for: indexPath) as! MainRecomendedTableCell
         cell.setData()
+        cell.delegate = self
         
         return cell
     }
     
     private func PodcastsHeaderTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPodcastsHeaderTableCell", for: indexPath) as! MainPodcastsHeaderTableCell
+        cell.delegate = self
         
         return cell
     }
     
-    private func PodcastTableCell(indexPath: IndexPath,backImage: UIImage, title: String, subTitle: String) -> UITableViewCell {
+    private func podcastTableCell(indexPath: IndexPath,backImage: UIImage, title: String, subTitle: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPodcastTableCell", for: indexPath) as! MainPodcastTableCell
         cell.setData(backImage: backImage, title: title, subTitle: subTitle)
         
         return cell
     }
     
+
     
 }
 
-// MARK: - SignUpMainTableCellDelegate
+// MARK: - MainSearchTableCellDelegate
 
-//extension MainViewController : SignUpMainTableCellDelegate {
-    
-//    func didPressedCreateAccount() {
-//        ModuleRouter.showSignUpEmailModule(currentViewController: self, email: presenter.dataModel.email ?? "", password:  presenter.dataModel.password ?? "")
-//    }
-//
-//    func didPressedGoogle() {
-//
-//    }
-//
-//    func didPressedApple() {
-//
-//    }
-//
-//    func didPressedPhone() {
-////        ModuleRouter.showSignUpPhoneModule(currentViewController: self)
-//        ModuleRouter.showLogInPhoneModule(currentViewController: self, phone: nil)
-//    }
-//
-//    func didPressedEnter() {
-//        ModuleRouter.showLogInEmailModule(currentViewController: self, email: presenter.dataModel.email)
-//    }
-//
-//    func didEnterEmail(email: String) {
-//        presenter.dataModel.email = email
-//    }
-//
-//    func didEnterPassword(password: String) {
-//        presenter.dataModel.password = password
-//    }
-//}
+extension MainViewController : MainSearchTableCellDelegate {
+    func searchButtonPressed() {
+        ModuleRouter.showSearchModule(currentViewController: self)
+//        sections = [.picture,
+//                    .search,
+//                    .searchHashtags,
+//                    .played,
+//                    .recomendedHeader,
+//                    .recomended,
+//                    .podcastsHeader,
+//                    .podcasts]
+//        tableView.reloadData()
+    }
+}
+
+// MARK: - MainPlayedTableCellDelegate
+
+extension MainViewController : MainPlayedTableCellDelegate {
+    func playButtonPressed() {
+        
+    }
+}
+
+// MARK: - MainRecomendedTableCellDelegate
+
+extension MainViewController : MainRecomendedTableCellDelegate {
+    func didSelectPodcast(index: Int) {
+//        ModuleRouter.showCategoryModule(currentViewController: self)
+        NotificationCenter.default.post(name: Notification.Name("hideTabbar"), object: nil, userInfo: nil)
+        ModuleRouter.showPlayerModule(currentViewController: self)
+    }
+}
+
+// MARK: - MainPodcastsHeaderTableCellDelegate
+
+extension MainViewController : MainPodcastsHeaderTableCellDelegate {
+    func moreButtonPressed() {
+        
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension MainViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch sections[indexPath.section] {
+            case .podcasts:
+                ModuleRouter.showCategoryModule(currentViewController: self)
+            default:
+                break
+        }
+    }
+}
+
 
 // MARK: - MainProtocol
 
