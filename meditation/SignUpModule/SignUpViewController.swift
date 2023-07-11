@@ -55,7 +55,7 @@ extension SignUpViewController: UITableViewDataSource {
         cell.delegate = self
         
         cell.linkAction = {
-            ModuleRouter.showPrivacyPoliticsModule(currentViewController: self)
+//            ModuleRouter.showPrivacyPoliticsModule(currentViewController: self)
         }
         return cell
     }
@@ -66,11 +66,21 @@ extension SignUpViewController: UITableViewDataSource {
 extension SignUpViewController : SignUpMainTableCellDelegate {
     
     func didPressedCreateAccount() {
-        ModuleRouter.showSignUpEmailModule(currentViewController: self, email: presenter.dataModel.email ?? "", password:  presenter.dataModel.password ?? "")
+//        if presenter.dataModel.isEmailValid() && presenter.dataModel.isEmailValid() {
+            ModuleRouter.showSignUpEmailModule(currentViewController: self, signUpDataModel: presenter.dataModel)
+//        }
     }
     
     func didPressedGoogle() {
-        
+//        let customAlertView = AccessCustomAlertView()
+//        let customAlertView = ConnectionErrorView()
+//        view.addSubview(customAlertView)
+//        NetworkManager.passwordRestoreByCode(email: "test@test.ru", newPassword: "Ls@ZbRMACee4QY6", code: "123456") {
+//
+//        }
+//        NetworkManager.register(signUpPhoneDataModel: SignUpPhoneDataModel(email: "test@test1.ru", password: "Ls@ZbRMACee4QY6", name: "test1", phone: "1234567890")) {
+//            
+//        }
     }
     
     func didPressedApple() {
@@ -83,11 +93,27 @@ extension SignUpViewController : SignUpMainTableCellDelegate {
     }
     
     func didPressedEnter() {
+//        guard let email = presenter.dataModel.email else { return }
+//        guard let password = presenter.dataModel.password else { return }
+//        let email = "test@test.ru"
+//        let password = "Ls@ZbRMACee4QY6"
+//        NetworkManager.Auth(email: email, password: password) {
+//
+//        }
+        
+//        NetworkManager.getFilterOptions {
+//
+//        }
         ModuleRouter.showLogInEmailModule(currentViewController: self, email: presenter.dataModel.email)
     }
     
     func didEnterEmail(email: String) {
-        presenter.dataModel.email = email
+        if email.isValidEmail() {
+            presenter.dataModel.email = email
+        } else {
+            
+        }
+        
     }
     
     func didEnterPassword(password: String) {

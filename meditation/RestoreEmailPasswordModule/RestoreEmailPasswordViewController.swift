@@ -62,11 +62,14 @@ extension RestoreEmailPasswordViewController: RestoreEmailPasswordMainTableCellD
     }
     
     func didPressedRestorePassword() {
-        
+        let customAlert = CustomAlertView(title: CommonString.email, subtitle: CommonString.linkSendedToYourEmail, button: CustomAlertView.Button(title: CommonString.ok, action: {
+            
+        }))
+        view.addSubview(customAlert)
     }
     
     func didEndEnterEmil(email: String) {
-        
+        presenter.dataModel.email = email
     }
 }
 

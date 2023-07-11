@@ -67,6 +67,10 @@ class MailingMainTableCell: UITableViewCell {
         delegate?.didPressedBackButton()
     }
     
+    func setData(email: String?) {
+        emailView.setData(text: email)
+    }
+    
     //MARK: - Private
     
     private func setStarsBackImageView() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol FavoritesMainTableCellDelegate: AnyObject {
     func didPressedBackButton()
@@ -25,6 +26,8 @@ class FavoritesMainTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        isSkeletonable = true
+        contentView.isSkeletonable = true
         
         setИackButtonView()
         setTitleLabel()
@@ -50,7 +53,12 @@ class FavoritesMainTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        setSkeletonableStyle()
+    }
+    
     func setData(isEmpty: Bool) {
+        hideSkeleton()
         subtitleLabel.text = isEmpty ? CommonString.favoritesSubtitileEmpty : CommonString.favoritesSubtitile
     }
 
@@ -62,7 +70,7 @@ class FavoritesMainTableCell: UITableViewCell {
         backButtonView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(60)
             make.left.equalToSuperview().offset(16)
-            make.height.width.equalTo(40)
+//            make.height.width.equalTo(40)
         }
         backButtonView.buttonPressed = {
             self.delegate?.didPressedBackButton()
@@ -81,6 +89,9 @@ class FavoritesMainTableCell: UITableViewCell {
         titleLabel.font = UIFont.Basic.latoNormal(size: 28)
         titleLabel.textColor = UIColor.white
         titleLabel.text = CommonString.favorites
+        titleLabel.isSkeletonable = true
+        titleLabel.linesCornerRadius = 4
+        titleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     private func setSubtitleLabel() {
@@ -97,6 +108,9 @@ class FavoritesMainTableCell: UITableViewCell {
         subtitleLabel.font = UIFont.Basic.latoNormal(size: 16)
         subtitleLabel.textColor = UIColor.white
         subtitleLabel.text = CommonString.favoritesSubtitile
+        subtitleLabel.isSkeletonable = true
+        subtitleLabel.linesCornerRadius = 4
+        subtitleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
 }
 

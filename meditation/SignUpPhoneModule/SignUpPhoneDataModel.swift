@@ -8,5 +8,5 @@
 import Foundation
 
 struct SignUpPhoneDataModel {
-   
+    var signUpDataModel: SignUpDataModel
 }

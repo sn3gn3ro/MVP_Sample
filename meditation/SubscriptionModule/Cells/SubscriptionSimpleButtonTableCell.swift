@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol SubscriptionSimpleButtonTableCellDelegate: AnyObject {
     func didPressedButton()
@@ -22,6 +23,7 @@ class SubscriptionSimpleButtonTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        isSkeletonable = true
         
         setSimpleTextButtonView()
     }
@@ -44,6 +46,14 @@ class SubscriptionSimpleButtonTableCell: UITableViewCell {
     }
 
     //MARK: - Actions
+    
+    func setSkeleton() {
+        simpleTextButtonView.setSkeletonableStyle()
+    }
+    
+    func setData() {
+        hideSkeleton()
+    }
 
     
     //MARK: - Private
@@ -55,11 +65,13 @@ class SubscriptionSimpleButtonTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
-            make.height.width.equalTo(50)
+            make.height.equalTo(50)
         }
         simpleTextButtonView.buttonAction = {
             self.delegate?.didPressedButton()
         }
+        simpleTextButtonView.isSkeletonable = true
+        simpleTextButtonView.skeletonCornerRadius = 25
     }
 }
 

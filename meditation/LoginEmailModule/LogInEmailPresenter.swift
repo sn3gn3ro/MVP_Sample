@@ -8,12 +8,13 @@
 import Foundation
 
 protocol LogInEmailProtocol: AnyObject {
- 
+    func didLogin()
 }
 
 protocol LogInEmailPresenterProtocol: AnyObject {
     init(view: LogInEmailProtocol, dataModel: LogInEmailDataModel)
     
+    func login()
 }
 
 class LogInEmailPresenter: LogInEmailPresenterProtocol {
@@ -25,4 +26,9 @@ class LogInEmailPresenter: LogInEmailPresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func login() {
+        NetworkManager.auth(email: dataModel.email, password: dataModel.password) { [weak self] in
+            self?.view.didLogin()
+        }
+    }
 }

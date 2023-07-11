@@ -8,27 +8,16 @@
 import UIKit
 
 protocol OnboardingMainTableCellDelegate: AnyObject {
-    func didSelectPanic(isPositive: Bool)
-    func didSelectRelashionshipProblem(isPositive: Bool)
-    func didSelectHealthFear(isPositive: Bool)
-    func didSelectEmotions(emotions: [EmotionsWorkView.EmotionModel])
+    func didEndSelection(ids: [Int])
 }
 
 class OnboardingMainTableCell: UITableViewCell {
     
-    let titleLabel = UILabel()
-    let progressView = UIProgressView(progressViewStyle: .bar)
-    let customScrollView = CustomScrollView()
-    let panicView = PanicAttackView()
-    let relationshipProblemView = RelationshipProblemView()
-    let healthFearView = HealthFearView()
-    let emotionsWorkView = EmotionsWorkView()
-//    let backButtonView =  SimpleTextButtonView(type: .bordered, text: CommonString.back)
-//    let furtherButtonView =  SimpleTextButtonView(type: .normal, text: CommonString.further)
-    
-    var scrollViews:[UIView]  {
-        return [panicView,relationshipProblemView,healthFearView,emotionsWorkView]
-    }
+    private let titleLabel = UILabel()
+    private let progressView = UIProgressView(progressViewStyle: .bar)
+    private let customScrollView = CustomScrollView()
+    private var scrollViews = [UIView]()
+    private var selecedIds = [Int:[Int]]()
     
     enum Const {
         //78 + 22 + 12 + 18 + 30
@@ -71,7 +60,64 @@ class OnboardingMainTableCell: UITableViewCell {
     }
     
     //MARK: - Actions
+    
+    func setData(questionsListModel: QuestionsListModel) {
+        scrollViews.removeAll()
+        guard let data = questionsListModel.data else { return }
+        for (index,element) in data.enumerated() {
+            if element.multiple == 0 {
+                setSelectBenweenTwoView(index: index, element: element, isLast: index == data.count - 1)
+            } else {
+                setMultipleView(index: index, element: element, isLast: index == data.count - 1)
+            }
+        }
+        progressView.setProgress(Float(1) / Float(self.scrollViews.count), animated: true)
+        titleLabel.text = "\(1) \(CommonString.questionOutOf) \(scrollViews.count)-х"
+        customScrollView.setViews(views: scrollViews)
+    }
 
+    
+    private func setSelectBenweenTwoView(index: Int, element: QuestionsListDataModel, isLast:Bool) {
+        let view = OnboardViewSelectionBetweenTwo()
+        view.setData(data: element, index: index, isLast: isLast)
+        view.didPressedFurther = { [weak self] selectedImage, index, isLast in
+            guard let `self` = self else { return }
+            guard let selectedId = selectedImage?.id else { return }
+            self.selecedIds[index] = [selectedId]
+            if isLast {
+                self.delegate?.didEndSelection(ids: self.selecedIds.values.flatMap({$0}))
+            } else {
+                self.customScrollView.scrollToNextScreen()
+            }
+        }
+        
+        view.didPressedBack = {
+            self.customScrollView.scrollToPreviousScreen()
+        }
+        
+        scrollViews.append(view)
+    }
+    
+    private func setMultipleView(index: Int, element: QuestionsListDataModel, isLast:Bool) {
+        let view = EmotionsWorkView()
+        view.setData(data: element, isLast: isLast, index:  index)
+        view.didPressedFurther = { [weak self] ids, index, isLast in
+            guard let `self` = self else { return }
+            guard let ids = ids else { return }
+            self.selecedIds[index] = ids.map({$0.id ?? 0})
+            if isLast {
+                self.delegate?.didEndSelection(ids: self.selecedIds.values.flatMap({$0}))
+            } else {
+                self.customScrollView.scrollToNextScreen()
+            }
+        }
+        
+        view.didPressedBack = {
+            self.customScrollView.scrollToPreviousScreen()
+        }
+        
+        scrollViews.append(view)
+    }
     
     //MARK: - Private
     
@@ -86,7 +132,7 @@ class OnboardingMainTableCell: UITableViewCell {
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.Basic.latoNormal(size: 16)
         titleLabel.textColor = UIColor.white
-        titleLabel.text = "\(1) \(CommonString.questionOutOf) \(scrollViews.count)-х"
+       
     }
     
     private func setProgressView() {
@@ -99,7 +145,7 @@ class OnboardingMainTableCell: UITableViewCell {
         }
         progressView.progressTintColor = UIColor.Main.darkViolet
         progressView.trackTintColor =  UIColor.Main.borderViolet
-        progressView.setProgress(Float(1) / Float(self.scrollViews.count), animated: true)
+       
         progressView.layer.cornerRadius = 6
         progressView.clipsToBounds = true
     }
@@ -114,42 +160,6 @@ class OnboardingMainTableCell: UITableViewCell {
             make.right.equalToSuperview()
         }
         customScrollView.delegate = self
-        customScrollView.setViews(views: scrollViews)
-        
-        panicView.didPressedFurther = { isPositive in
-            self.delegate?.didSelectPanic(isPositive: isPositive)
-            self.customScrollView.scrollToNextScreen()
-        }
-        
-        panicView.didPressedBack = {
-            self.customScrollView.scrollToPreviousScreen()
-        }
-        
-        relationshipProblemView.didPressedFurther = { isPositive in
-            self.delegate?.didSelectRelashionshipProblem(isPositive: isPositive)
-            self.customScrollView.scrollToNextScreen()
-        }
-        
-        relationshipProblemView.didPressedBack = {
-            self.customScrollView.scrollToPreviousScreen()
-        }
-        
-        healthFearView.didPressedFurther = { isPositive in
-            self.delegate?.didSelectHealthFear(isPositive: isPositive)
-            self.customScrollView.scrollToNextScreen()
-        }
-        
-        healthFearView.didPressedBack = {
-            self.customScrollView.scrollToPreviousScreen()
-        }
-        
-        emotionsWorkView.didPressedFurther = { emotions in
-            self.delegate?.didSelectEmotions(emotions: emotions)
-        }
-        
-        emotionsWorkView.didPressedBack = {
-            self.customScrollView.scrollToPreviousScreen()
-        }
     }
 }
 
@@ -158,11 +168,16 @@ class OnboardingMainTableCell: UITableViewCell {
 extension OnboardingMainTableCell: CustomScrollViewDelegate {
     
     func didScrollToNextPage(page: CGFloat) {
+        self.isUserInteractionEnabled = false
         self.progressView.setProgress(Float(Float(page) / Float(self.scrollViews.count)), animated: true)
     }
     
     func didScrollToPreviousPage(page: CGFloat) {
         self.progressView.setProgress(Float(Float(page) / Float(self.scrollViews.count)), animated: true)
+    }
+    
+    func didEndScrolling() {
+        self.isUserInteractionEnabled = true
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MainRecomendedTableCellDelegate: AnyObject {
     func didSelectPodcast(index: Int)
@@ -30,6 +31,7 @@ class MainRecomendedTableCell: UITableViewCell {
     let testDataArray: [TestData] = [TestData(image: UIImage(named: "recomendedTest"), title: "Как найти подход?", subTitle: "Социальные проблемы", lessonsCount: 5),
                                      TestData(image: UIImage(named: "recomendedTest2"), title: "Что такое тревога?", subTitle: "Тревога", lessonsCount: 12),
                                      TestData(image: UIImage(named: "recomendedTest3"), title: "Цели", subTitle: "Мотивация", lessonsCount: 5)]
+    var isSkeleton = false
     
     weak var delegate: MainRecomendedTableCellDelegate?
     
@@ -63,7 +65,15 @@ class MainRecomendedTableCell: UITableViewCell {
     //MARK: - Actions
     
     func setData() {
-
+//        hideSkeleton()
+        isSkeleton = false
+        collectionView.reloadData()
+    }
+    
+    func setSkeleton() {
+//        setSkeletonableStyle()
+        isSkeleton = true
+        collectionView.reloadData()
     }
     
     //MARK: - Private
@@ -90,6 +100,7 @@ class MainRecomendedTableCell: UITableViewCell {
         collectionView.register(MainRecomendedCollectionCell.self, forCellWithReuseIdentifier: "MainRecomendedCollectionCell")
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.isSkeletonable = true
     }
 }
 
@@ -112,12 +123,24 @@ extension MainRecomendedTableCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainRecomendedCollectionCell", for: indexPath) as! MainRecomendedCollectionCell
         let data = testDataArray[indexPath.row]
-        cell.setData(image: data.image ?? UIImage(), lessonCount: data.lessonsCount, title: data.title, subtitle: data.subTitle)
+        isSkeleton ?  cell.setSkeleton() : cell.setData(image: data.image ?? UIImage(), lessonCount: data.lessonsCount, title: data.title, subtitle: data.subTitle)
+        
         
         return cell
     }
 
 }
+
+//MARK: - SkeletonCollectionViewDataSource
+
+extension MainRecomendedTableCell: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> SkeletonView.ReusableCellIdentifier {
+        return "MainRecomendedCollectionCell"
+    }
+    
+    
+}
+
 
 //MARK: - UICollectionViewDelegateFlowLayout
 

@@ -8,12 +8,13 @@
 import Foundation
 
 protocol SignUpPhoneProtocol: AnyObject {
- 
+    func registerComplete()
 }
 
 protocol SignUpPhonePresenterProtocol: AnyObject {
     init(view: SignUpPhoneProtocol, dataModel: SignUpPhoneDataModel)
     
+    func registerUser()
 }
 
 class SignUpPhonePresenter: SignUpPhonePresenterProtocol {
@@ -25,5 +26,11 @@ class SignUpPhonePresenter: SignUpPhonePresenterProtocol {
         self.dataModel = dataModel
     }
     
+    
+    func registerUser() {
+        NetworkManager.register(signUpDataModel: dataModel.signUpDataModel) { [weak self] in
+            self?.view.registerComplete()
+        }
+    }
 }
 

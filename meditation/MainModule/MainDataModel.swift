@@ -8,5 +8,6 @@
 import Foundation
 
 struct MainDataModel {
-    
+    var isDataLoad = false
+    var userInfoModel: UserInfoModel?
 }

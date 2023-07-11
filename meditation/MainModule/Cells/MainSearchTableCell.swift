@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MainSearchTableCellDelegate: AnyObject {
     func searchButtonPressed()
@@ -23,11 +24,13 @@ class MainSearchTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
 
-        self.backgroundColor = .clear
-        
+        backgroundColor = .clear
+       
+        isSkeletonable = true
         setHappyToSeeLabel()
         setNameLabel()
         setSearchButton()
+      
     }
 
     required init?(coder: NSCoder) {
@@ -49,8 +52,14 @@ class MainSearchTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        setSkeletonableStyle()
+    }
+    
     func setData(backgroundColor: UIColor, name: String) {
         self.backgroundColor = backgroundColor
+        
+        hideSkeleton()
         nameLabel.text = name + "!"
     }
     
@@ -68,6 +77,10 @@ class MainSearchTableCell: UITableViewCell {
         happyToSeeLabel.font = UIFont.Basic.latoHairline(size: 16)
         happyToSeeLabel.textColor = UIColor.white.withAlphaComponent(0.6)
         happyToSeeLabel.text = CommonString.happyToSeeYou
+        happyToSeeLabel.isSkeletonable = true
+        happyToSeeLabel.linesCornerRadius = 4
+        happyToSeeLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
+        happyToSeeLabel.lastLineFillPercent = 20
     }
     
     private func setNameLabel() {
@@ -76,12 +89,14 @@ class MainSearchTableCell: UITableViewCell {
             make.top.equalTo(happyToSeeLabel.snp.bottom)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
-            
             make.height.equalTo(43)
         }
         nameLabel.textAlignment = .left
         nameLabel.font = UIFont.Basic.latoBold(size: 38)
         nameLabel.textColor = UIColor.white.withAlphaComponent(0.9)
+        nameLabel.isSkeletonable = true
+        nameLabel.linesCornerRadius = 6
+        nameLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     private func setSearchButton() {
@@ -95,6 +110,8 @@ class MainSearchTableCell: UITableViewCell {
         searchButton.buttonPressed = {
             self.delegate?.searchButtonPressed()
         }
+        searchButton.isSkeletonable = true
+        searchButton.skeletonCornerRadius = 6
     }
     
 }

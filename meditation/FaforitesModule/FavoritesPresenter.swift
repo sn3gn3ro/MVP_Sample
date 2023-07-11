@@ -8,12 +8,12 @@
 import Foundation
 
 protocol FavoritesProtocol: AnyObject {
- 
+    func dataLoad()
 }
 
 protocol FavoritesPresenterProtocol: AnyObject {
     init(view: FavoritesProtocol, dataModel: FavoritesDataModel)
-    
+    func getData()
 }
 
 class FavoritesPresenter: FavoritesPresenterProtocol {
@@ -25,5 +25,12 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func getData() {
+        self.view.dataLoad()
+        let _ = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
+            self.dataModel.isDataLoad = true
+            self.view.dataLoad()
+        }
+    }
 }
 

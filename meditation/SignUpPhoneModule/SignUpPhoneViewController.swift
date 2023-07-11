@@ -58,7 +58,7 @@ extension SignUpPhoneViewController: UITableViewDataSource {
 
 extension SignUpPhoneViewController: SignUpPhoneMainTableCellDelegate {
     func didEndEnterPhone(phone: String) {
-        
+        presenter.dataModel.signUpDataModel.phone = phone
     }
     
     func didPressedBackButton() {
@@ -66,16 +66,18 @@ extension SignUpPhoneViewController: SignUpPhoneMainTableCellDelegate {
     }
     
     func didPressedSendCode() {
-        ModuleRouter.showCreateEnterCodeModule(currentViewController: self)
+        presenter.registerUser()
     }
     
     func didPressedEnter() {
-        
+        ModuleRouter.showLogInEmailModule(currentViewController: self, email:  presenter.dataModel.signUpDataModel.email)
     }
 }
 
 // MARK: - SignUpPhoneProtocol
 
 extension SignUpPhoneViewController: SignUpPhoneProtocol {
-    
+    func registerComplete() {
+        ModuleRouter.showEnterCodeModule(currentViewController: self, signUpDataModel: presenter.dataModel.signUpDataModel)
+    }
 }

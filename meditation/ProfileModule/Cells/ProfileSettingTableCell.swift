@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class ProfileSettingTableCell: UITableViewCell {
     
@@ -53,7 +54,7 @@ class ProfileSettingTableCell: UITableViewCell {
 
         self.backgroundColor = .clear
         
-        
+        isSkeletonable = true
         setSettingNameLabel()
         setIconImageView()
         setArrowImageView()
@@ -78,9 +79,17 @@ class ProfileSettingTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        arrowImageView.isHidden = true
+        setSkeletonableStyle()
+    }
+    
     func setData(type:Setting) {
+        hideSkeleton()
+        arrowImageView.isHidden = false
         iconImageView.image = type.image()
         settingNameLabel.text = type.name()
+        
     }
     
     
@@ -98,7 +107,10 @@ class ProfileSettingTableCell: UITableViewCell {
         settingNameLabel.textAlignment = .left
         settingNameLabel.font = UIFont.Basic.latoNormal(size: 18)
         settingNameLabel.textColor = UIColor.white
-
+        settingNameLabel.isSkeletonable = true
+        settingNameLabel.linesCornerRadius = 4
+        settingNameLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
+//        settingNameLabel.lastLineFillPercent = 20
     }
     
     private func setIconImageView() {
@@ -108,6 +120,8 @@ class ProfileSettingTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.height.width.equalTo(24)
         }
+        iconImageView.isSkeletonable = true
+        iconImageView.skeletonCornerRadius = 12
     }
     
     private func setArrowImageView() {

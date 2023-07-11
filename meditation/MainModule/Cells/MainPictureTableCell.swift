@@ -16,7 +16,6 @@ class MainPictureTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
-        
         setBackImageView()
      
     }
@@ -39,6 +38,10 @@ class MainPictureTableCell: UITableViewCell {
     }
 
     //MARK: - Actions
+    
+    func setSkeleton() {
+        backImageView.image = UIImage()
+    }
     
     func setImage(image: UIImage) {
         backImageView.image = image

@@ -12,9 +12,10 @@ protocol SignUpMainEmailTableCellDelegate: AnyObject {
     func didPressedCreateAccount()
     func didPressedEnter()
     
+    func didEnterName(name: String)
     func didEnterEmail(email: String)
     func didEnterPassword(password: String)
-    func didEnterName(name: String)
+    func didEnterComfirmPassword(password: String)
 }
 
 class SignUpMainEmailTableCell: UITableViewCell {
@@ -26,6 +27,7 @@ class SignUpMainEmailTableCell: UITableViewCell {
     let nameView = DataEnterView(type: .name)
     let emailView = DataEnterView(type: .email)
     let passwordView = DataEnterView(type: .password)
+    let passwordComfirmView = DataEnterView(type: .password)
     let createAccountView = SimpleTextButtonView(type: .unactive, text: CommonString.createAccount)
     let allreadyHaveAccountLabel = UILabel()
     let enterButton = UIButton()
@@ -46,6 +48,7 @@ class SignUpMainEmailTableCell: UITableViewCell {
         setNameView()
         setEmailView()
         setPasswordView()
+        setPasswordComfirmView()
         setСreateAccountView()
         setAllreadyHaveAccountLabel()
         setEnterButton()
@@ -78,7 +81,7 @@ class SignUpMainEmailTableCell: UITableViewCell {
         delegate?.didPressedEnter()
     }
     
-    func setData(email: String, password: String) {
+    func setData(email: String?, password: String?) {
         emailView.setData(text: email)
         passwordView.setData(text: password)
     }
@@ -92,7 +95,19 @@ class SignUpMainEmailTableCell: UITableViewCell {
     }
     
     //MARK: - Private
-
+    
+    private func testPasswordIdentical() {
+        if !(passwordComfirmView.getText()?.isEmpty ?? true) {
+            if passwordView.getText() == passwordComfirmView.getText() {
+                passwordComfirmView.setSuccessState()
+                passwordView.setSuccessState()
+                delegate?.didEnterPassword(password: passwordView.getText() ?? "")
+            } else {
+                passwordComfirmView.setErrorState(errorText: CommonString.passwordsAreDifferent)
+                passwordView.setErrorState(errorText: CommonString.passwordsAreDifferent)
+            }
+        }
+    }
     
     private func setStarsBackImageView() {
         contentView.addSubview(starsBackImageView)
@@ -167,15 +182,41 @@ class SignUpMainEmailTableCell: UITableViewCell {
             make.centerX.equalToSuperview()
         }
         
-        passwordView.dataEndEditing = { data in
-            self.delegate?.didEnterPassword(password: data)
+        passwordView.dataEndEditing = { [weak self] data in
+            guard let `self` = self else { return }
+            self.testPasswordIdentical()
+        }
+        
+        passwordView.dataBeginEditing = { [weak self] data in
+            guard let `self` = self else { return }
+            self.passwordView.setInitialState()
+            self.passwordComfirmView.setInitialState()
+        }
+    }
+    
+    private func setPasswordComfirmView() {
+        contentView.addSubview(passwordComfirmView)
+        passwordComfirmView.snp.makeConstraints { (make) in
+            make.top.equalTo(passwordView.snp.bottom).offset(0)
+            make.centerX.equalToSuperview()
+        }
+        
+        passwordComfirmView.dataEndEditing = { [weak self] data in
+            guard let `self` = self else { return }
+            self.testPasswordIdentical()
+        }
+        
+        passwordComfirmView.dataBeginEditing = { [weak self] data in
+            guard let `self` = self else { return }
+            self.passwordView.setInitialState()
+            self.passwordComfirmView.setInitialState()
         }
     }
     
     private func setСreateAccountView() {
         contentView.addSubview(createAccountView)
         createAccountView.snp.makeConstraints { (make) in
-            make.top.equalTo(passwordView.snp.bottom).offset(8)
+            make.top.equalTo(passwordComfirmView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         

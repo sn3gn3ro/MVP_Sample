@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol FavoriteTableCellDelegate: AnyObject {
     func playButtonPressed()
@@ -30,6 +31,8 @@ class FavoriteTableCell: UITableViewCell {
 
         self.backgroundColor = .clear
         
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 //        contentView.layer.cornerRadius = 14
         
         setBackImageView()
@@ -61,11 +64,25 @@ class FavoriteTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        backImageView.image = UIImage(named: "playedTest")
+        dotView.alpha = 0
+        playButton.alpha = 0
+        playButtonImageView.alpha = 0
+        blackerView.alpha = 0
+        setSkeletonableStyle()
+    }
+    
     func setData(backImage: UIImage, title: String, subTitle: String, time: String) {
+        hideSkeleton()
         backImageView.image = backImage
         titleLabel.text = title
         subTitleLabel.text = subTitle
         timeLabel.text = time
+        dotView.alpha = 1
+        playButton.alpha = 1
+        playButtonImageView.alpha = 1
+        blackerView.alpha = 1
     }
     
     @objc func playButtonPressed() {
@@ -85,16 +102,23 @@ class FavoriteTableCell: UITableViewCell {
         }
         backImageView.clipsToBounds = true
         backImageView.layer.cornerRadius = 14
+        backImageView.contentMode = .scaleAspectFill
+        backImageView.isSkeletonable = true
     }
     
     private func setBlackerView() {
         contentView.addSubview(blackerView)
         blackerView.snp.makeConstraints { (make) in
-            make.edges.equalTo(backImageView)
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-16)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.height.equalTo(88)
         }
         blackerView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         blackerView.clipsToBounds = true
         blackerView.layer.cornerRadius = 14
+//        blackerView.isSkeletonable = true
     }
     
     private func setTitleLabel() {

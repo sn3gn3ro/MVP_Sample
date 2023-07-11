@@ -49,12 +49,13 @@ class LogInEmailViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: -UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0)
         tableView.register(LogInEmailMainTableCell.self, forCellReuseIdentifier: "LogInEmailMainTableCell")
     }
-
-
 }
 
 extension LogInEmailViewController: LogInEmailProtocol {
-    
+    func didLogin() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        ModuleRouter.setRootTabbarModule(window: window)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -88,7 +89,8 @@ extension LogInEmailViewController : LogInEmailMainTableCellDelegate {
     }
     
     func didPressedEnter() {
-        ModuleRouter.showMailingModule(currentViewController: self, email: nil)
+        presenter.login()
+//        ModuleRouter.showMailingModule(currentViewController: self, email: presenter.dataModel.email)
     }
     
     

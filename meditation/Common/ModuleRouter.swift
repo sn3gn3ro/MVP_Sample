@@ -9,10 +9,11 @@ import UIKit
 
 protocol Router {
     static func setRootSignUpModule(window: UIWindow?)
-    static func showSignUpEmailModule(currentViewController: UIViewController, email: String, password: String)
-    static func showSignUpPhoneModule(currentViewController: UIViewController)
+    static func setRootTabbarModule(window: UIWindow?)
+    static func showSignUpEmailModule(currentViewController: UIViewController, signUpDataModel: SignUpDataModel)
+    static func showSignUpPhoneModule(currentViewController: UIViewController, signUpDataModel: SignUpDataModel)
     static func showPrivacyPoliticsModule(currentViewController: UIViewController)
-    static func showCreateEnterCodeModule(currentViewController: UIViewController)
+    static func showEnterCodeModule(currentViewController: UIViewController, signUpDataModel: SignUpDataModel)
     
     static func showLogInEmailModule(currentViewController: UIViewController, email: String?)
     static func showLogInPhoneModule(currentViewController: UIViewController, phone: String?)
@@ -20,9 +21,7 @@ protocol Router {
     
     static func showMailingModule(currentViewController: UIViewController, email: String?)
     static func showOnboardingModule(currentViewController: UIViewController)
-    
-    static func showTabbarModule()
-    
+
     static func showProfileEditModule(currentViewController: UIViewController)
     static func showFavoritesModule(currentViewController: UIViewController)
     static func showNotificationsSettingsModule(currentViewController: UIViewController)
@@ -37,22 +36,40 @@ protocol Router {
 }
 
 class ModuleRouter: Router {
+    
     static func setRootSignUpModule(window: UIWindow?) {
         guard let window = window else { return }
-        let viewController = ModuleBuilder.createTabbarModule()
+//        UserDefaultsManager.clearToken()
+//        lazy var viewController = UIViewController()
+//        if UserDefaultsManager.getToken() == nil {
+            let viewController = ModuleBuilder.createSignUpModule()
+//        } else {
+//            viewController = ModuleBuilder.createTabbarModule()
+//        }
+//        let viewController = ModuleBuilder.createOnboardingModule()
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.isNavigationBarHidden = true
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
     
-    static func showSignUpEmailModule(currentViewController: UIViewController, email: String, password: String) {
-        let viewController = ModuleBuilder.createSignUpEmailModule(email: email, password: password)
+    static func setRootTabbarModule(window: UIWindow?) {
+        guard let window = window else { return }
+        let viewController = ModuleBuilder.createTabbarModule()
+//        let viewController = ModuleBuilder.createOnboardingModule()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = true
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+    }
+    
+    static func showSignUpEmailModule(currentViewController: UIViewController, signUpDataModel: SignUpDataModel) {
+        let viewController = ModuleBuilder.createSignUpEmailModule(signUpDataModel: signUpDataModel)
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    static func showSignUpPhoneModule(currentViewController: UIViewController) {
-        let viewController = ModuleBuilder.createSignUpPhoneModule()
+    static func showSignUpPhoneModule(currentViewController: UIViewController, signUpDataModel: SignUpDataModel) {
+        let viewController = ModuleBuilder.createSignUpPhoneModule(signUpDataModel: signUpDataModel)
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -61,8 +78,8 @@ class ModuleRouter: Router {
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    static func showCreateEnterCodeModule(currentViewController: UIViewController) {
-        let viewController = ModuleBuilder.createEnterCodeModule()
+    static func showEnterCodeModule(currentViewController: UIViewController,signUpDataModel: SignUpDataModel) {
+        let viewController = ModuleBuilder.createEnterCodeModule(signUpDataModel: signUpDataModel)
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -89,15 +106,6 @@ class ModuleRouter: Router {
     static func showOnboardingModule(currentViewController: UIViewController) {
         let viewController = ModuleBuilder.createOnboardingModule()
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    static func showTabbarModule() {
-        guard let window = UIApplication.shared.windows.first else { return }
-        let viewController = ModuleBuilder.createTabbarModule()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.isNavigationBarHidden = true
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
     }
     
     static func showProfileEditModule(currentViewController: UIViewController) {

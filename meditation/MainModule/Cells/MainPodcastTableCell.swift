@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MainPodcastTableCell: UITableViewCell {
     
@@ -21,7 +22,7 @@ class MainPodcastTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
-        
+        isSkeletonable = true
         
         setBackImageView()
         setBlackerView()
@@ -48,10 +49,19 @@ class MainPodcastTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        titleLabel.text = ""
+        subTitleLabel.text = ""
+        blackerView.isHidden = true
+        setSkeletonableStyle()
+    }
+    
     func setData(backImage: UIImage, title: String, subTitle: String) {
+        hideSkeleton()
         backImageView.image = backImage
         titleLabel.text = title
         subTitleLabel.text = subTitle
+        blackerView.isHidden = false
     }
     
     //MARK: - Private
@@ -67,6 +77,7 @@ class MainPodcastTableCell: UITableViewCell {
         }
         backImageView.clipsToBounds = true
         backImageView.layer.cornerRadius = 17
+        backImageView.isSkeletonable = true
     }
     
     private func setBlackerView() {

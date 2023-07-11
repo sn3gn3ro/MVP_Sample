@@ -26,15 +26,15 @@ class SignUpEmailViewController: UIViewController {
     // MARK: - Private
     
     private func isDataValidation() -> Bool {
-        if !presenter.dataModel.email.isValidEmail() {
+        if let email = presenter.dataModel.signUpDataModel.email, !email.isValidEmail() {
             return false
         }
         
-        if presenter.dataModel.password == "" {
+        if presenter.dataModel.signUpDataModel.password == "" {
             return false
         }
         
-        if presenter.dataModel.name == "" || presenter.dataModel.name == nil {
+        if presenter.dataModel.signUpDataModel.name == "" || presenter.dataModel.signUpDataModel.name == nil {
             return false
         }
         
@@ -66,7 +66,7 @@ extension SignUpEmailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SignUpMainEmailTableCell", for: indexPath) as! SignUpMainEmailTableCell
         cell.delegate = self
-        cell.setData(email: presenter.dataModel.email, password: presenter.dataModel.password)
+        cell.setData(email: presenter.dataModel.signUpDataModel.email, password: presenter.dataModel.signUpDataModel.password)
         isDataValidation() ? cell.setCreateAccountActive() : cell.setCreateAccountUnactive()
 
         return cell
@@ -82,7 +82,8 @@ extension SignUpEmailViewController : SignUpMainEmailTableCellDelegate {
     }
     
     func didPressedCreateAccount() {
-        ModuleRouter.showSignUpPhoneModule(currentViewController: self)
+        ModuleRouter.showSignUpPhoneModule(currentViewController: self,
+                                           signUpDataModel: presenter.dataModel.signUpDataModel)
     }
     
     func didPressedEnter() {
@@ -90,18 +91,22 @@ extension SignUpEmailViewController : SignUpMainEmailTableCellDelegate {
     }
     
     func didEnterName(name: String) {
-        presenter.dataModel.name = name
+        presenter.dataModel.signUpDataModel.name = name
         tableView.reloadData()
     }
     
     func didEnterEmail(email: String) {
-        presenter.dataModel.email = email
+        presenter.dataModel.signUpDataModel.email = email
         tableView.reloadData()
     }
     
     func didEnterPassword(password: String) {
-        presenter.dataModel.password = password
+        presenter.dataModel.signUpDataModel.password = password
         tableView.reloadData()
+    }
+    
+    func didEnterComfirmPassword(password: String) {
+        presenter.dataModel.passwordComfirm = password
     }
 }
 

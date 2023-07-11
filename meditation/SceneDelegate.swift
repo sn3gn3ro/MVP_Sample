@@ -22,7 +22,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.overrideUserInterfaceStyle = .light
         UIApplication.shared.statusBarStyle = .lightContent
-        ModuleRouter.setRootSignUpModule(window: window)
+//        UserDefaultsManager.clearToken()
+        if UserDefaultsManager.getToken() == nil {
+            ModuleRouter.setRootSignUpModule(window: window)
+        } else {
+            ModuleRouter.setRootTabbarModule(window: self.window)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

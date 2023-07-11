@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol SubscriptionFullWidthBigImageTableCellDelegate: AnyObject {
     func didChooseBigImageSubscription()
@@ -27,6 +28,9 @@ class SubscriptionFullWidthBigImageTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         self.backgroundColor = .clear
+        
+        isSkeletonable = true
+        contentView.isSkeletonable = true
         
         setBackView()
         setTitleLabel()
@@ -56,7 +60,19 @@ class SubscriptionFullWidthBigImageTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+//        titleLabel.text = ""
+//        subtitleLabel.text = ""
+//        datePeriodLabel.text = ""
+//        priceLabel.text = ""
+//        iconImageView.image = UIImage(named: "subscriptionBigImage")
+        setSkeletonableStyle()
+        backView.setSkeletonableStyle()
+    }
+
+    
     func setData() {
+        hideSkeleton()
         titleLabel.text = "На месяц"
         subtitleLabel.text = "На 10% выгоднее!"
         datePeriodLabel.text = "18.11.21 - 18.12.21"
@@ -78,10 +94,13 @@ class SubscriptionFullWidthBigImageTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(145)
         }
         backView.backgroundColor = UIColor.Main.darkViolet
         backView.layer.cornerRadius = 16
         backView.layer.masksToBounds = true
+        backView.isSkeletonable = true
+        backView.skeletonCornerRadius = 16
     }
    
     private func setTitleLabel() {

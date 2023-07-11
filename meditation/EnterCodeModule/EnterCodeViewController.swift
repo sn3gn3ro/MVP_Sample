@@ -152,8 +152,9 @@ extension EnterCodeViewController: OTPViewDelegate {
     }
     
     func didFinishedEnterOTP(otpNumber: String) {
-        errorTextLabel.isHidden = false
-        codeView.setErrorStyle()
+        presenter.sendCode(code: otpNumber)
+//        errorTextLabel.isHidden = false
+//        codeView.setErrorStyle()
     }
     
     func otpNotValid() {
@@ -165,5 +166,12 @@ extension EnterCodeViewController: OTPViewDelegate {
 // MARK: - EnterCodeProtocol
 
 extension EnterCodeViewController: EnterCodeProtocol {
+    func authComplete() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        ModuleRouter.setRootTabbarModule(window: window)
+    }
     
+    func codeResponced() {
+//        ModuleRouter.setRootSignUpModule(window: <#T##UIWindow?#>)
+    }
 }

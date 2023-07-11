@@ -11,20 +11,15 @@ class OnboardingViewController: UIViewController {
 
     let tableView = UITableView()
     
- 
     var presenter: OnboardingPresenter!
     
-    enum Section {
-        case main
-    }
-    
-    let sections: [Section] = [.main]
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Main.primaryViolet
         self.hideKeyboardWhenTappedAround()
         setTableView()
+        
+        presenter.getData()
     }
     
     // MARK: - Private
@@ -32,7 +27,7 @@ class OnboardingViewController: UIViewController {
     private func setTableView() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()//.offset(UIApplication.shared.statusBarFrame.height)
+            make.top.equalToSuperview()
             make.bottom.left.right.equalToSuperview()
         }
         
@@ -55,6 +50,9 @@ extension OnboardingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OnboardingMainTableCell", for: indexPath) as! OnboardingMainTableCell
         cell.delegate = self
+        if let data = presenter.dataModel.questionsListModel {
+            cell.setData(questionsListModel: data)
+        }
 
         return cell
     }
@@ -63,27 +61,20 @@ extension OnboardingViewController: UITableViewDataSource {
 // MARK: - OnboardingMainTableCellDelegate
 
 extension OnboardingViewController : OnboardingMainTableCellDelegate {
-    func didSelectPanic(isPositive: Bool) {
-        presenter.dataModel.panicAtack = isPositive
+    func didEndSelection(ids: [Int]) {
+        presenter.sendIds(ids: ids)
     }
     
-    func didSelectRelashionshipProblem(isPositive: Bool) {
-        presenter.dataModel.relationshipProblem = isPositive
-    }
-    
-    func didSelectHealthFear(isPositive: Bool) {
-        presenter.dataModel.healthFear = isPositive
-    }
-    
-    func didSelectEmotions(emotions: [EmotionsWorkView.EmotionModel]) {
-        presenter.dataModel.emotions = emotions
-        //next Screen
-        ModuleRouter.showTabbarModule()
+    func idsDidAccepted() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        ModuleRouter.setRootTabbarModule(window: window)
     }
 }
 
 // MARK: - OnboardingProtocol
 
 extension OnboardingViewController : OnboardingProtocol {
-    
+    func dataLoad() {
+        tableView.reloadData()
+    }
 }

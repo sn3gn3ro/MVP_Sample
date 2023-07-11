@@ -7,7 +7,7 @@
 
 
 protocol SignUpProtocol: AnyObject {
- 
+    
 }
 
 protocol SignUpPresenterProtocol: AnyObject {

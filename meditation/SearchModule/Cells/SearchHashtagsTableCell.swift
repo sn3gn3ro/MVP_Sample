@@ -83,9 +83,9 @@ class SearchHashtagsTableCell: UITableViewCell {
     }
     
     private func setCollectionView() {
-        let layout = AlignedCollectionViewFlowLayout()//UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.horizontalAlignment = .left
+//        layout.horizontalAlignment = .left
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 6
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

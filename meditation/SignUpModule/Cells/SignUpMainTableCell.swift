@@ -181,7 +181,7 @@ class SignUpMainTableCell: UITableViewCell {
         }
         
         createAccountView.buttonAction = {
-            if self.emailView.isDataValidate{
+            if self.emailView.isDataValidate && self.passwordView.getText()?.count ?? 0 >= 8 {
                 self.delegate?.didPressedCreateAccount()
             } else {
                 self.emailView.setErrorState(errorText: "")

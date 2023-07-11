@@ -18,6 +18,8 @@ extension UIColor {
         static let grayViolet = UIColor(netHex: 0x8182A4)
         ///2C2E54
         static let darkViolet = UIColor(netHex: 0x2C2E54)
+        ///3E4069
+        static let darkVioletLight = UIColor(netHex: 0x3E4069)
         ///B4B7FF
         static let lightViolet = UIColor(netHex: 0xB4B7FF)
         ///3F71F2

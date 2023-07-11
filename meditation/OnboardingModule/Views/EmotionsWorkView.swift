@@ -10,59 +10,6 @@ import SnapKit
 
 class EmotionsWorkView: UIView {
     
-    enum Emotion {
-        case anxiety
-        case anger
-        case jealousy
-        case gilt
-        case fear
-        case loneliness
-        case shame
-        
-        func name() -> String {
-            switch self {
-                case .anxiety:
-                    return CommonString.anxiety
-                case .anger:
-                    return CommonString.anger
-                case .jealousy:
-                    return CommonString.jealousy
-                case .gilt:
-                    return CommonString.gilt
-                case .fear:
-                    return CommonString.fear
-                case .loneliness:
-                    return CommonString.loneliness
-                case .shame:
-                    return CommonString.shame
-            }
-        }
-        
-        func image() -> UIImage {
-            switch self {
-                case .anxiety:
-                    return UIImage(named: "anxiety") ?? UIImage()
-                case .anger:
-                    return UIImage(named: "anger") ?? UIImage()
-                case .jealousy:
-                    return UIImage(named: "jealousy") ?? UIImage()
-                case .gilt:
-                    return UIImage(named: "gilt") ?? UIImage()
-                case .fear:
-                    return UIImage(named: "fear") ?? UIImage()
-                case .loneliness:
-                    return UIImage(named: "loneliness") ?? UIImage()
-                case .shame:
-                    return UIImage(named: "shame") ?? UIImage()
-            }
-        }
-    }
-    
-    struct EmotionModel {
-        var emotion: Emotion
-        var isSelect: Bool
-    }
-    
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -70,17 +17,14 @@ class EmotionsWorkView: UIView {
     private let furtherButtonView =  SimpleTextButtonView(type: .unactive, text: CommonString.further)
 
 
-    var didSelectEmotions:(([EmotionModel])->())?
-    var didPressedFurther: (([EmotionModel])->())?
+    var didPressedFurther: (([QuestionsListDataImageModel]?,Int, Bool)->())?
     var didPressedBack: (()->())?
+    var selectedVariants = [QuestionsListDataImageModel]()
     
-    var emotions: [EmotionModel] = [EmotionModel(emotion: .anxiety, isSelect: false),
-                                    EmotionModel(emotion: .anger, isSelect: false),
-                                    EmotionModel(emotion: .jealousy, isSelect: false),
-                                    EmotionModel(emotion: .gilt, isSelect: false),
-                                    EmotionModel(emotion: .fear, isSelect: false),
-                                    EmotionModel(emotion: .loneliness, isSelect: false),
-                                    EmotionModel(emotion: .shame, isSelect: false)]
+    var data: QuestionsListDataModel?
+    var isLast = false
+    var index = 0
+    var imagesDict = [String:UIImage]()
     
     init() {
         super.init(frame: CGRect.zero)
@@ -106,6 +50,27 @@ class EmotionsWorkView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+    }
+    
+    func setData(data:QuestionsListDataModel, isLast: Bool, index: Int) {
+        self.data = data
+        self.isLast = isLast
+        self.index = index
+        getImages()
+        titleLabel.text = data.name
+        subtitleLabel.text = data.description
+        collectionView.reloadData()
+    }
+    
+    func getImages() {
+        guard let images = data?.images else { return }
+        for (index,element) in images.enumerated() {
+            guard let imageUrl = element.image else { return }
+            NetworkManager.getImage(imageUrl: imageUrl) { [weak self] image in
+                self?.imagesDict[imageUrl] = image
+                self?.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
+            }
+        }
     }
     
     // MARK: - Private
@@ -151,7 +116,6 @@ class EmotionsWorkView: UIView {
             make.top.equalTo(subtitleLabel.snp.bottom).offset(77)
             make.height.equalTo(220)
         }
-//        collectionView.contentMode = .center
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
@@ -162,7 +126,6 @@ class EmotionsWorkView: UIView {
     private func setBackButton() {
         addSubview(backButtonView)
         backButtonView.snp.remakeConstraints { (make) in
-//            make.top.equalTo(collectionView.snp.bottom).offset(131)
             make.left.equalToSuperview().offset(16)
             make.right.equalTo(snp.centerX).offset(-7)
             make.height.equalTo(50)
@@ -176,14 +139,13 @@ class EmotionsWorkView: UIView {
     private func setFurtherButton() {
         addSubview(furtherButtonView)
         furtherButtonView.snp.remakeConstraints { (make) in
-//            make.top.equalTo(collectionView.snp.bottom).offset(131)
             make.right.equalToSuperview().offset(-16)
             make.left.equalTo(snp.centerX).offset(7)
             make.height.equalTo(50)
             make.bottom.equalToSuperview().offset(-60)
         }
         furtherButtonView.buttonAction = {
-            self.didPressedFurther?(self.emotions.filter({$0.isSelect == true}))
+            self.didPressedFurther?(self.selectedVariants, self.index, self.isLast)
         }
     }
 }
@@ -193,8 +155,18 @@ class EmotionsWorkView: UIView {
 
 extension EmotionsWorkView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        emotions[indexPath.row].isSelect = !emotions[indexPath.row].isSelect
-        emotions.filter({$0.isSelect == true}).isEmpty ? furtherButtonView.setStyle(type: .unactive) : furtherButtonView.setStyle(type: .normal)
+        guard let images = data?.images else { return }
+        if selectedVariants.contains(where: {$0.id == images[indexPath.row].id}) {
+            selectedVariants.removeAll(where: {$0.id == images[indexPath.row].id})
+        } else {
+            selectedVariants.append(images[indexPath.row])
+        }
+        
+        if selectedVariants.isEmpty {
+            furtherButtonView.setStyle(type: .unactive)
+        } else {
+            furtherButtonView.setStyle(type: .normal)
+        }
         collectionView.reloadItems(at: [indexPath])
     }
 }
@@ -203,12 +175,16 @@ extension EmotionsWorkView: UICollectionViewDelegate {
 
 extension EmotionsWorkView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return emotions.count
+        return data?.images?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: EmotionCollectionCell.identifier, for: indexPath) as! EmotionCollectionCell
-        cell.setData(emotionModel: emotions[indexPath.row])
+        guard let image = data?.images?[indexPath.row] else { return cell }
+        let isSelect = selectedVariants.first(where: {$0.id == image.id})
+        cell.setData(title: image.name ?? "",
+                     isSelect: isSelect != nil,
+                     image: imagesDict[image.image ?? ""])
         
         return cell
     }
@@ -232,16 +208,4 @@ extension EmotionsWorkView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-//
-//        let totalCellWidth = 100 * emotions.count
-////        let totalSpacingWidth = CellSpacing * (CellCount - 1)
-//
-//        let leftInset = (CGFloat(totalCellWidth)) / 2
-//        let rightInset = leftInset
-//
-//        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
-//    }
-    
 }

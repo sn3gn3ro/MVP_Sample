@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol SubscriptionFullWidthSmallImageTableCellDelegate: AnyObject {
     func didSelectSubscriptionSmallImage()
@@ -27,6 +28,7 @@ class SubscriptionFullWidthSmallImageTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = UIColor.clear
+        isSkeletonable = true
         
         setBackView()
         setTitleLabel()
@@ -55,11 +57,16 @@ class SubscriptionFullWidthSmallImageTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        backView.setSkeletonableStyle()
+    }
+    
     func setData() {
         titleLabel.text = "Пробный период - 1 день"
         subtitleLabel.text = "Вы можете просмотреть всё приложение и познакомиться со всеми его функциями."
         priceLabel.text = "0 ₽"
         iconImageView.image = UIImage(named: "subscriptionSmallImage")
+        hideSkeleton()
     }
     
     //MARK: - Private
@@ -75,10 +82,12 @@ class SubscriptionFullWidthSmallImageTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(131)
         }
         backView.backgroundColor = UIColor.Main.darkViolet
         backView.layer.cornerRadius = 16
         backView.layer.masksToBounds = true
+        backView.isSkeletonable = true
     }
    
     private func setTitleLabel() {

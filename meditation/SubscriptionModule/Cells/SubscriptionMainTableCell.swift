@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol SubscriptionMainTableCellDelegate: AnyObject {
     func didPressedBackButton()
@@ -25,6 +26,8 @@ class SubscriptionMainTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        isSkeletonable = true
+//        contentView.isSkeletonable = true
         
         setBackButtonView()
         setTitleLabel()
@@ -48,9 +51,17 @@ class SubscriptionMainTableCell: UITableViewCell {
         
     }
 
+
     //MARK: - Actions
     
+    func setSkeleton() {
+        backButtonView.setSkeletonableStyle()
+        titleLabel.setSkeletonableStyle()
+        subtitleLabel.setSkeletonableStyle()
+    }
+    
     func setData() {
+        hideSkeleton()
         subtitleLabel.text = "Подписка на год истекает через 12 месцев"
     }
 
@@ -67,6 +78,8 @@ class SubscriptionMainTableCell: UITableViewCell {
         backButtonView.buttonPressed = {
             self.delegate?.didPressedBackButton()
         }
+        backButtonView.isSkeletonable = true
+        backButtonView.skeletonCornerRadius = 12
     }
     
     private func setTitleLabel() {
@@ -75,12 +88,17 @@ class SubscriptionMainTableCell: UITableViewCell {
             make.top.equalTo(backButtonView.snp.bottom).offset(30)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
+            make.height.equalTo(30)
         }
         titleLabel.textAlignment = .left
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.Basic.latoNormal(size: 28)
         titleLabel.textColor = UIColor.white
         titleLabel.text = CommonString.subscription
+        titleLabel.isSkeletonable = true
+        titleLabel.linesCornerRadius = 4
+        titleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
+        titleLabel.lastLineFillPercent = 50
     }
     
     private func setSubtitleLabel() {
@@ -90,11 +108,16 @@ class SubscriptionMainTableCell: UITableViewCell {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(15)
         }
         subtitleLabel.textAlignment = .left
         subtitleLabel.numberOfLines = 0
         subtitleLabel.font = UIFont.Basic.latoNormal(size: 14)
         subtitleLabel.textColor = UIColor.Main.textGray
+        subtitleLabel.text = "Подписка на год истекает через 12 месцев"
+        subtitleLabel.isSkeletonable = true
+        subtitleLabel.linesCornerRadius = 4
+        subtitleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     

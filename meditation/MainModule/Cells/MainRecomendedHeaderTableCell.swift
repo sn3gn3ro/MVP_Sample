@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MainRecomendedHeaderTableCell: UITableViewCell {
     
@@ -17,7 +18,7 @@ class MainRecomendedHeaderTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
-    
+        isSkeletonable = true
         setTitleLabel()
     }
 
@@ -40,8 +41,12 @@ class MainRecomendedHeaderTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        setSkeletonableStyle()
+    }
     
     func setData(text: String) {
+        hideSkeleton()
         titleLabel.text = text
     }
 
@@ -60,7 +65,11 @@ class MainRecomendedHeaderTableCell: UITableViewCell {
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.Basic.latoNormal(size: 18)
         titleLabel.textColor = UIColor.white.withAlphaComponent(0.9)
+        titleLabel.isSkeletonable = true
         titleLabel.text = CommonString.recomendForYou
+        titleLabel.linesCornerRadius = 4
+        titleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
+//        titleLabel.lastLineFillPercent = 20
     }
 }
 

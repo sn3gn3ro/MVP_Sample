@@ -31,10 +31,16 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = UIColor.Main.primaryViolet
         self.hideKeyboardWhenTappedAround()
         setTableView()
+        
+//        presenter.getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        presenter.dataModel.isDataLoad = false
+        tableView.reloadData()
+        presenter.getData()
         
         NotificationCenter.default.post(name: Notification.Name("showTabbar"), object: nil, userInfo: nil)
     }
@@ -71,8 +77,7 @@ extension ProfileViewController: UITableViewDelegate {
             case .settings(let types):
                 settingsAction(type: types[indexPath.row])
             case .exit:
-                //выход
-                break
+           break
             default:
                 break
         }
@@ -132,7 +137,12 @@ extension ProfileViewController: UITableViewDataSource {
     
     private func profileMainTableCell(indexPath: IndexPath, image: UIImage) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileMainTableCell", for: indexPath) as! ProfileMainTableCell
-        cell.setData(backImage: UIImage(named: "backNightTest") ?? UIImage(), profileImage: UIImage(named: "userPhotoTest") ?? UIImage(), email: "alexandra@mail.ru", name: "Александра")
+        
+        presenter.dataModel.isDataLoad ? cell.setData(backImage: UIImage(named: "backNightTest") ?? UIImage(),
+                                                      profileImage: UIImage(named: "userPhotoTest") ?? UIImage(),
+                                                      email: "alexandra@mail.ru",
+                                                      name: "Александра") : cell.setSkeleton()
+        
         cell.delegate = self
         
         return cell
@@ -140,13 +150,16 @@ extension ProfileViewController: UITableViewDataSource {
     
     private func profileSettingTableCell(indexPath: IndexPath, type: ProfileSettingTableCell.Setting) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileSettingTableCell", for: indexPath) as! ProfileSettingTableCell
-        cell.setData(type: type)
+        
+        presenter.dataModel.isDataLoad ? cell.setData(type: type) :  cell.setSkeleton()
         
         return cell
     }
     
     private func profileExitTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileExitTableCell", for: indexPath) as! ProfileExitTableCell
+        cell.delegate = self
+        presenter.dataModel.isDataLoad ? cell.setData() :  cell.setSkeleton()
         
         return cell
     }  
@@ -169,10 +182,23 @@ extension ProfileViewController : ProfileMainTableCellDelegate {
     }
 }
 
+// MARK: - ProfileExitTableCellDelegate
+
+extension ProfileViewController: ProfileExitTableCellDelegate {
+    func exitButtonPressed() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        UserDefaultsManager.clearToken()
+        ModuleRouter.setRootSignUpModule(window: window)
+    }
+}
 
 
 // MARK: - ProfileProtocol
 
 extension ProfileViewController : ProfileProtocol {
+    func dataLoad() {
+        tableView.reloadData()
+    }
+    
     
 }

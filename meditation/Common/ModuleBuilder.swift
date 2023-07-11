@@ -9,10 +9,10 @@ import UIKit
 
 protocol Builder {
     static func createSignUpModule() -> UIViewController
-    static func createSignUpEmailModule(email: String, password: String) -> UIViewController
-    static func createSignUpPhoneModule() -> UIViewController
+    static func createSignUpEmailModule(signUpDataModel: SignUpDataModel) -> UIViewController
+    static func createSignUpPhoneModule(signUpDataModel: SignUpDataModel)  -> UIViewController 
     static func createPrivacyPoliticsModule() -> UIViewController
-    static func createEnterCodeModule() -> UIViewController
+    static func createEnterCodeModule(signUpDataModel: SignUpDataModel) -> UIViewController
     
     static func createLogInEmailModule(email: String?) -> UIViewController
     static func createLogInPhoneModule(phone: String?) -> UIViewController
@@ -51,18 +51,18 @@ class ModuleBuilder: Builder {
         return view
     }
     
-    static func createSignUpEmailModule(email: String, password: String) -> UIViewController {
+    static func createSignUpEmailModule(signUpDataModel: SignUpDataModel) -> UIViewController {
         let view = SignUpEmailViewController()
-        let dataModel = SignUpEmailDataModel(email: email, password: password)
+        let dataModel = SignUpEmailDataModel(signUpDataModel: signUpDataModel)
         let presenter = SignUpEmailPresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 
         return view
     }
     
-    static func createSignUpPhoneModule() -> UIViewController {
+    static func createSignUpPhoneModule(signUpDataModel: SignUpDataModel) -> UIViewController {
         let view = SignUpPhoneViewController()
-        let dataModel = SignUpPhoneDataModel()
+        let dataModel = SignUpPhoneDataModel(signUpDataModel: signUpDataModel)
         let presenter = SignUpPhonePresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 
@@ -78,9 +78,9 @@ class ModuleBuilder: Builder {
         return view
     }
     
-    static func createEnterCodeModule() -> UIViewController {
+    static func createEnterCodeModule(signUpDataModel: SignUpDataModel) -> UIViewController {
         let view = EnterCodeViewController()
-        let dataModel = EnterCodeDataModel()
+        let dataModel = EnterCodeDataModel(signUpDataModel: signUpDataModel)
         let presenter = EnterCodePresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 

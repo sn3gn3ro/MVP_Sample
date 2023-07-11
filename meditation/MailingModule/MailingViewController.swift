@@ -55,6 +55,7 @@ extension MailingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailingMainTableCell", for: indexPath) as! MailingMainTableCell
         cell.delegate = self
+        cell.setData(email: presenter.dataModel.email)
 
         return cell
     }

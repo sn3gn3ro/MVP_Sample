@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol ProfileMainTableCellDelegate: AnyObject {
     func favoritesPressed()
@@ -30,6 +31,8 @@ class ProfileMainTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        
+        isSkeletonable = true
         
         setBackImageView()
         setProfileImageView()
@@ -59,7 +62,13 @@ class ProfileMainTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        backImageView.image = UIImage()
+        setSkeletonableStyle()
+    }
+    
     func setData(backImage: UIImage, profileImage: UIImage, email: String, name: String) {
+        hideSkeleton()
         backImageView.image = backImage
         profileImageView.image = profileImage
         emailLabel.text = email
@@ -90,6 +99,8 @@ class ProfileMainTableCell: UITableViewCell {
             make.centerX.equalToSuperview()
             make.height.width.equalTo(100)
         }
+        profileImageView.isSkeletonable = true
+        profileImageView.skeletonCornerRadius = 50
     }
     
     private func setProfileImageButton() {
@@ -113,6 +124,8 @@ class ProfileMainTableCell: UITableViewCell {
         favoritesButton.buttonPressed = {
             self.delegate?.favoritesPressed()
         }
+        favoritesButton.isSkeletonable = true
+        favoritesButton.skeletonCornerRadius = 12
     }
     
     private func setEmailLabel() {
@@ -126,7 +139,10 @@ class ProfileMainTableCell: UITableViewCell {
         emailLabel.textAlignment = .left
         emailLabel.font = UIFont.Basic.latoNormal(size: 16)
         emailLabel.textColor = UIColor.white.withAlphaComponent(0.6)
-       
+        emailLabel.isSkeletonable = true
+        emailLabel.linesCornerRadius = 4
+        emailLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
+        emailLabel.lastLineFillPercent = 20
     }
     
     private func setNameLabel() {
@@ -140,6 +156,9 @@ class ProfileMainTableCell: UITableViewCell {
         nameLabel.textAlignment = .left
         nameLabel.font = UIFont.Basic.latoBold(size: 38)
         nameLabel.textColor = UIColor.white.withAlphaComponent(0.9)
+        nameLabel.isSkeletonable = true
+        nameLabel.linesCornerRadius = 4
+        nameLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     private func setEditButon() {
@@ -154,6 +173,8 @@ class ProfileMainTableCell: UITableViewCell {
         editButon.buttonPressed = {
             self.delegate?.editPressed()
         }
+        editButon.isSkeletonable = true
+        editButon.skeletonCornerRadius = 12
     }
     
 }

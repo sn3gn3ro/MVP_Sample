@@ -6,16 +6,24 @@
 //
 
 import UIKit
+import SkeletonView
+
+protocol ProfileExitTableCellDelegate: AnyObject {
+    func exitButtonPressed()
+}
 
 class ProfileExitTableCell: UITableViewCell {
     
     let exitButtonView = SimpleTextButtonView(type: .bordered, text: CommonString.exit)
+    
+    weak var delegate: ProfileExitTableCellDelegate?
          
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        isSkeletonable = true
         
         setExitButtonView()
     }
@@ -39,6 +47,16 @@ class ProfileExitTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        exitButtonView.setStyle(type: .normal)
+        setSkeletonableStyle()
+    }
+    
+    func setData() {
+        hideSkeleton()
+        exitButtonView.setStyle(type: .bordered)
+    }
+    
 
     
     //MARK: - Private
@@ -49,5 +67,11 @@ class ProfileExitTableCell: UITableViewCell {
             make.top.equalToSuperview().offset(20)
             make.bottom.equalToSuperview()
         }
+        exitButtonView.buttonAction = { [weak self] in
+            self?.delegate?.exitButtonPressed()
+        }
+//        exitButtonView.isUserInteractionEnabled = false
+        exitButtonView.isSkeletonable = true
+        exitButtonView.skeletonCornerRadius = 20
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol SubscriptionTwoOptionTableCellDelegate: AnyObject {
   func didSelectSubscriptionTwoOption()
@@ -17,10 +18,13 @@ class SubscriptionTwoOptionTableCell: UITableViewCell {
     
     weak var delegate: SubscriptionTwoOptionTableCellDelegate?
     
+    var isDataLoad = false
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
 
+        isSkeletonable = true
         self.backgroundColor = .clear
 //        self.layer.cornerRadius = 16
         
@@ -46,11 +50,17 @@ class SubscriptionTwoOptionTableCell: UITableViewCell {
 
     //MARK: - Actions
     
-    func setData() {
-        
+    func setSkeleton() {
+        isDataLoad = false
+        collectionView.setSkeletonableStyle()
     }
 
-    
+    func setData() {
+        hideSkeleton()
+        isDataLoad = true
+        collectionView.reloadData()
+    }
+
     //MARK: - Private
     
     private func setCollectionView() {
@@ -69,6 +79,7 @@ class SubscriptionTwoOptionTableCell: UITableViewCell {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isSkeletonable = true
         collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         collectionView.register(SubscriptionOptionCollectionCell.self, forCellWithReuseIdentifier: SubscriptionOptionCollectionCell.identifier)
@@ -93,7 +104,8 @@ extension SubscriptionTwoOptionTableCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: SubscriptionOptionCollectionCell.identifier, for: indexPath) as! SubscriptionOptionCollectionCell
-        cell.setData()
+        isDataLoad ? cell.setData() : cell.setSkeletone()
+        
         
         return cell
     }

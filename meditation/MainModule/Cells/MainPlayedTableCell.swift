@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MainPlayedTableCellDelegate: AnyObject {
     func playButtonPressed()
@@ -31,6 +32,9 @@ class MainPlayedTableCell: UITableViewCell {
         self.backgroundColor = .clear
         
 //        contentView.layer.cornerRadius = 14
+        self.isSkeletonable = true
+//        self.skeletonCornerRadius = 10
+
         
         setBackImageView()
         setBlackerView()
@@ -61,11 +65,28 @@ class MainPlayedTableCell: UITableViewCell {
 
     //MARK: - Actions
     
+    func setSkeleton() {
+        backImageView.image = UIImage()
+        titleLabel.text = ""
+        subTitleLabel.text = ""
+        timeLabel.text = ""
+        dotView.isHidden = true
+        playButton.isHidden = true
+        playButtonImageView.isHidden = true
+        blackerView.isHidden = true
+        setSkeletonableStyle()
+    }
+    
     func setData(backImage: UIImage, title: String, subTitle: String, time: String) {
+        hideSkeleton()
         backImageView.image = backImage
         titleLabel.text = title
         subTitleLabel.text = subTitle
         timeLabel.text = time
+        dotView.isHidden = false
+        playButton.isHidden = false
+        playButtonImageView.isHidden = false
+        blackerView.isHidden = false
     }
     
     @objc func playButtonPressed() {
@@ -85,6 +106,7 @@ class MainPlayedTableCell: UITableViewCell {
         }
         backImageView.clipsToBounds = true
         backImageView.layer.cornerRadius = 14
+        backImageView.isSkeletonable = true
     }
     
     private func setBlackerView() {
@@ -139,7 +161,6 @@ class MainPlayedTableCell: UITableViewCell {
         timeLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(dotView.snp.centerY)
             make.left.equalTo(dotView.snp.right).offset(8)
-//            make.right.greaterThanOrEqualToSuperview().offset(-60)
             make.height.equalTo(19)
         }
         timeLabel.numberOfLines = 1

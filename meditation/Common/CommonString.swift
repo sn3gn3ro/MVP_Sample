@@ -23,6 +23,7 @@ enum CommonString {
     static let privacyPoliticsSecontHalf = "Политикой конфиденциальности"
     
     static let or = "или"
+    static let ok = "Ok"
     static let allreadyHaveAccount = "Уже есть аккаунт?"
     static let enter = "Войти"
     
@@ -36,6 +37,17 @@ enum CommonString {
     
     
     //MARK: - Errors
+    static let error = "Ошибка"
+    static let wrongModel = "Неверная модель данных"
+    static let unknownError = "Неизвестная ошибка"
+    static let emptyToken = "Пришел пустой token"
+    static let accessError = "Ошибка доступа"
+    static let accessErrorDiscription = "Чтобы просматривать материалы, вам нужно авторизоваться."
+    static let register = "Зарегистрироваться"
+    static let connectionError = " Кажется, соединение прервано.\n\n\nУбедитесь, что ваш телефон подключен к сети интернет и попробуйте перезагрузить страницу."
+    static let ups = "Упс!"
+    static let linkSendedToYourEmail = "Ссылка на воостановление пароля отправлена на ваш e-mail"
+    static let passwordsAreDifferent = "Текст пароля отличается"
     
     static let thisNumberDoesntExist = "Такого номера не существует"
     static let wrongEmailOrPassword = "Неправильный email или пароль"
@@ -121,4 +133,6 @@ enum CommonString {
     static let searchPlaceholder = "Введите ключевые слова для поиска"
     
     static let popular = "Популярное"
+    
+    
 }

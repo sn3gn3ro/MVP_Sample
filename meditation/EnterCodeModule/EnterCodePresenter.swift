@@ -8,12 +8,15 @@
 import Foundation
 
 protocol EnterCodeProtocol: AnyObject {
- 
+    func codeResponced()
+    func authComplete()
 }
 
 protocol EnterCodePresenterProtocol: AnyObject {
     init(view: EnterCodeProtocol, dataModel: EnterCodeDataModel)
     
+    func sendCode(code: String)
+    func auth()
 }
 
 class EnterCodePresenter: EnterCodePresenterProtocol {
@@ -25,4 +28,15 @@ class EnterCodePresenter: EnterCodePresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func sendCode(code: String) {
+//       sendCode{}
+        auth()
+//        view.codeResponced()
+    }
+    
+    func auth() {
+        NetworkManager.auth(email: dataModel.signUpDataModel.email, password: dataModel.signUpDataModel.password) { [weak self] in
+            self?.view.authComplete()
+        }
+    }
 }

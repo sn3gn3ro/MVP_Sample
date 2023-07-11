@@ -66,7 +66,7 @@ extension LogInPhoneViewController: LogInPhoneMainTableCellDelegate {
     }
     
     func didPressedSendCode() {
-        ModuleRouter.showCreateEnterCodeModule(currentViewController: self)
+        ModuleRouter.showEnterCodeModule(currentViewController: self, signUpDataModel: SignUpDataModel(phone: presenter.dataModel.phone))
     }
     
     func didPressedEnter() {

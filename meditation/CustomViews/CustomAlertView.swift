@@ -168,10 +168,4 @@ class CustomAlertView: UIView {
         actionButton.backgroundColor = UIColor.Main.borderViolet
         actionButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
     }
-
-    
-    
 }
-
-
-

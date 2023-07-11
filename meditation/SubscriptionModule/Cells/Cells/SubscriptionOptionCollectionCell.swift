@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class SubscriptionOptionCollectionCell: UICollectionViewCell {
     
@@ -22,7 +23,8 @@ class SubscriptionOptionCollectionCell: UICollectionViewCell {
         
         backgroundColor = UIColor.Main.darkViolet
         layer.cornerRadius = 16
-        
+        isSkeletonable = true
+        skeletonCornerRadius = 16
         
         setTitleLabel()
         setDiscountLabel()
@@ -32,6 +34,10 @@ class SubscriptionOptionCollectionCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setSkeletone() {
+        setSkeletonableStyle()
     }
     
     

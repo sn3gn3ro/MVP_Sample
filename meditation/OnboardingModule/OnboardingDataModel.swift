@@ -8,8 +8,5 @@
 import Foundation
 
 struct OnboardingDataModel {
-    var panicAtack: Bool?
-    var relationshipProblem: Bool?
-    var healthFear: Bool?
-    var emotions: [EmotionsWorkView.EmotionModel]?
+    var questionsListModel: QuestionsListModel?
 }

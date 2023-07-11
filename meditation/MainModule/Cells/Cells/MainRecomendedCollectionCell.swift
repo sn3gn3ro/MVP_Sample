@@ -17,6 +17,8 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        isSkeletonable = true
+        
         setBackImageView()
         setLessonsCountLabel()
         setTitleLabel()
@@ -33,11 +35,20 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
     
     //MARK: - Actions
     
+    func setSkeleton() {
+        lessonsCountLabel.text = ""
+        lessonsCountLabel.text = ""
+        titleLabel.text = ""
+        subTitleLabel.text = ""
+        setSkeletonableStyle()
+    }
+    
     func setData(image: UIImage, lessonCount: Int, title: String, subtitle: String) {
         backImageView.image = image
         lessonsCountLabel.text = "\(lessonCount) \(CommonString.audiolessons)"
         titleLabel.text = title
         subTitleLabel.text = subtitle
+        hideSkeleton()
     }
     
     //MARK: - Private
@@ -52,6 +63,7 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
         }
         backImageView.clipsToBounds = true
         backImageView.layer.cornerRadius = 17
+        backImageView.isSkeletonable = true
     }
     
     private func setLessonsCountLabel() {

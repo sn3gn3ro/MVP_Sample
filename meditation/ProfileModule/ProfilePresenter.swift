@@ -8,12 +8,12 @@
 import Foundation
 
 protocol ProfileProtocol: AnyObject {
- 
+    func dataLoad()
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
     init(view: ProfileProtocol, dataModel: ProfileDataModel)
-    
+    func getData()
 }
 
 class ProfilePresenter: ProfilePresenterProtocol {
@@ -25,4 +25,10 @@ class ProfilePresenter: ProfilePresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func getData() {
+        let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+            self.dataModel.isDataLoad = true
+            self.view.dataLoad()
+        }
+    }
 }

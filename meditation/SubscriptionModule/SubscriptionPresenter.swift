@@ -8,12 +8,12 @@
 import Foundation
 
 protocol SubscriptionProtocol: AnyObject {
- 
+    func dataLoad()
 }
 
 protocol SubscriptionPresenterProtocol: AnyObject {
     init(view: SubscriptionProtocol, dataModel: SubscriptionDataModel)
-    
+    func getData()
 }
 
 class SubscriptionPresenter: SubscriptionPresenterProtocol {
@@ -25,4 +25,10 @@ class SubscriptionPresenter: SubscriptionPresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func getData() {
+        let _ = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
+            self.dataModel.isDataLoad = true
+            self.view.dataLoad()
+        }
+    }
 }

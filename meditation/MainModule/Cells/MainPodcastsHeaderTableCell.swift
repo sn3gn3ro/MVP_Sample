@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MainPodcastsHeaderTableCellDelegate: AnyObject {
     func moreButtonPressed()
@@ -24,6 +25,7 @@ class MainPodcastsHeaderTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
+        isSkeletonable = true
     
         setTitleLabel()
         setMoreLabel()
@@ -48,6 +50,14 @@ class MainPodcastsHeaderTableCell: UITableViewCell {
     }
 
     //MARK: - Actions
+    
+    func setSkeleton() {
+        setSkeletonableStyle()
+    }
+    
+    func setData() {
+        hideSkeleton()
+    }
 
     @objc func moreButtonAction() {
         delegate?.moreButtonPressed()
@@ -68,6 +78,9 @@ class MainPodcastsHeaderTableCell: UITableViewCell {
         titleLabel.font = UIFont.Basic.latoNormal(size: 18)
         titleLabel.textColor = UIColor.white.withAlphaComponent(0.9)
         titleLabel.text = CommonString.podcastTheme
+        titleLabel.isSkeletonable = true
+        titleLabel.linesCornerRadius = 4
+        titleLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     private func setMoreLabel() {
@@ -81,6 +94,9 @@ class MainPodcastsHeaderTableCell: UITableViewCell {
         moreLabel.font = UIFont.Basic.latoNormal(size: 14)
         moreLabel.textColor = UIColor.white.withAlphaComponent(0.6)
         moreLabel.text = CommonString.more
+        moreLabel.isSkeletonable = true
+        moreLabel.linesCornerRadius = 4
+        moreLabel.skeletonTextLineHeight = SkeletonTextLineHeight.relativeToFont
     }
     
     private func setMoreButton() {

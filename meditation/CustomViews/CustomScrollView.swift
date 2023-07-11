@@ -10,6 +10,7 @@ import UIKit
 protocol CustomScrollViewDelegate: AnyObject {
     func didScrollToNextPage(page: CGFloat)
     func didScrollToPreviousPage(page: CGFloat)
+    func didEndScrolling()
 }
 
 class CustomScrollView: UIView {
@@ -45,6 +46,7 @@ class CustomScrollView: UIView {
     
     func setViews(views: [UIView]) {
         self.views = views
+        configurateScrollView()
     }
     
     // MARK: - Actions
@@ -75,6 +77,7 @@ class CustomScrollView: UIView {
     // MARK: - Private
     
     private func configurateScrollView() {
+        scrollView.removeFromSuperview()
         addSubview(scrollView)
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -100,5 +103,9 @@ class CustomScrollView: UIView {
 extension CustomScrollView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        delegate?.didEndScrolling()
     }
 }

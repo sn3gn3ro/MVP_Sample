@@ -12,16 +12,11 @@ class EmotionCollectionCell: UICollectionViewCell {
     let blurView = UIImageView()
     let typeImageView = UIImageView()
     let typeLabel = UILabel()
-
-    
+        
     static var identifier: String = "EmotionCollectionCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
-//        backgroundColor = UIColor.clear
-        
         
         setBlurView()
         setTypeImageView()
@@ -32,14 +27,13 @@ class EmotionCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    func setData(emotionModel: EmotionsWorkView.EmotionModel) {
-        typeLabel.text = emotionModel.emotion.name()
-        typeImageView.image = emotionModel.emotion.image()
-        blurView.isHidden = !emotionModel.isSelect
-        typeLabel.textColor =  emotionModel.isSelect ? UIColor.white : UIColor.Main.grayViolet
+    func setData(title: String, isSelect: Bool, image: UIImage?) {
+        typeLabel.text = title
+        blurView.isHidden = !isSelect
+        typeLabel.textColor =  isSelect ? UIColor.white : UIColor.Main.grayViolet
+        typeImageView.image = image
     }
-    
+
     //MARK: - Private
     
     private func setBlurView() {
@@ -59,7 +53,7 @@ class EmotionCollectionCell: UICollectionViewCell {
             make.centerX.equalTo(blurView.snp.centerX)
             make.height.equalTo(64)
         }
-        typeImageView.image = UIImage(named: "anger")
+        typeImageView.contentMode = .scaleAspectFit
     }
 
     private func setTypeLabel() {

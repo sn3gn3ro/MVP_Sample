@@ -47,7 +47,11 @@ class MainViewController: UIViewController {
         view.backgroundColor = UIColor.Main.primaryViolet
         self.hideKeyboardWhenTappedAround()
         setTableView()
+        
+        presenter.getData()
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -115,7 +119,7 @@ extension MainViewController: UITableViewDataSource {
             case .picture:
                 return PictureTableCell(indexPath: indexPath, image: UIImage(named: "backTest") ?? UIImage())
             case .search:
-                return SearchTableCell(indexPath: indexPath, backgroundColor: UIColor.Main.tabbarBackground, name: "Александра")
+            return SearchTableCell(indexPath: indexPath, backgroundColor: UIColor.Main.tabbarBackground, name: presenter.dataModel.userInfoModel?.name ?? "")
             case .played:
                 return PlayedTableCell(indexPath: indexPath, backImage: UIImage(named: "playedTest") ?? UIImage(), title: "Искусство диалога", subTitle: "Как найти подход?", time: "18 мин.")
             case .recomendedHeader:
@@ -133,22 +137,22 @@ extension MainViewController: UITableViewDataSource {
     
     private func PictureTableCell(indexPath: IndexPath, image: UIImage) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPictureTableCell", for: indexPath) as! MainPictureTableCell
-        cell.setImage(image: image)
+        presenter.dataModel.isDataLoad ? cell.setImage(image: image) : cell.setSkeleton()
         
         return cell
     }
     
     private func SearchTableCell(indexPath: IndexPath, backgroundColor: UIColor, name: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainSearchTableCell", for: indexPath) as! MainSearchTableCell
-        cell.setData(backgroundColor: backgroundColor, name: name)
         cell.delegate = self
+        presenter.dataModel.isDataLoad ? cell.setData(backgroundColor: backgroundColor, name: name) : cell.setSkeleton()
         
         return cell
     }
     
     private func PlayedTableCell(indexPath: IndexPath, backImage: UIImage, title: String, subTitle: String, time: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPlayedTableCell", for: indexPath) as! MainPlayedTableCell
-        cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
+        presenter.dataModel.isDataLoad ? cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time) : cell.setSkeleton()
         cell.delegate = self
         
         return cell
@@ -156,13 +160,15 @@ extension MainViewController: UITableViewDataSource {
     
     private func RecomendedHeaderTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainRecomendedHeaderTableCell", for: indexPath) as! MainRecomendedHeaderTableCell
+        presenter.dataModel.isDataLoad ?  cell.setData(text: CommonString.recomendForYou) : cell.setSkeleton()
         
         return cell
     }
     
     private func RecomendedTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainRecomendedTableCell", for: indexPath) as! MainRecomendedTableCell
-        cell.setData()
+        presenter.dataModel.isDataLoad ?  cell.setData(): cell.setSkeleton()
+       
         cell.delegate = self
         
         return cell
@@ -170,6 +176,8 @@ extension MainViewController: UITableViewDataSource {
     
     private func PodcastsHeaderTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPodcastsHeaderTableCell", for: indexPath) as! MainPodcastsHeaderTableCell
+        
+        presenter.dataModel.isDataLoad ?  cell.setData(): cell.setSkeleton()
         cell.delegate = self
         
         return cell
@@ -177,7 +185,8 @@ extension MainViewController: UITableViewDataSource {
     
     private func podcastTableCell(indexPath: IndexPath,backImage: UIImage, title: String, subTitle: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPodcastTableCell", for: indexPath) as! MainPodcastTableCell
-        cell.setData(backImage: backImage, title: title, subTitle: subTitle)
+        presenter.dataModel.isDataLoad ?  cell.setData(backImage: backImage, title: title, subTitle: subTitle) : cell.setSkeleton()
+       
         
         return cell
     }
@@ -246,5 +255,7 @@ extension MainViewController : UITableViewDelegate {
 // MARK: - MainProtocol
 
 extension MainViewController : MainProtocol {
-    
+    func dataLoad() {
+        tableView.reloadData()
+    }
 }

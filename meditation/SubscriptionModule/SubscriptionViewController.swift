@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class SubscriptionViewController: UIViewController {
 
@@ -33,6 +34,14 @@ class SubscriptionViewController: UIViewController {
         view.backgroundColor = UIColor.Main.primaryViolet
         self.hideKeyboardWhenTappedAround()
         setTableView()
+        
+//        view.setSkeletonableStyle()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+//            self.tableView.stopSkeletonAnimation()
+//            self.tableView.hideSkeleton()
+//        })
+        tableView.setSkeletonableStyle()
+        presenter.getData()
     }
 
     // MARK: - Private
@@ -48,6 +57,11 @@ class SubscriptionViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.isSkeletonable = true
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.sectionFooterHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120.0
         tableView.contentInset = UIEdgeInsets(top: -(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0), left: 0, bottom: 0, right: 0)
     
         tableView.register(SubscriptionMainTableCell.self, forCellReuseIdentifier: "SubscriptionMainTableCell")
@@ -63,6 +77,22 @@ class SubscriptionViewController: UIViewController {
 
 extension SubscriptionViewController: UITableViewDataSource {
     
+//    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+//        let section = sections[indexPath.section]
+//        switch section {
+//            case .main:
+//                return "SubscriptionMainTableCell"
+//            case .fullWidthBigImage:
+//                return "SubscriptionFullWidthBigImageTableCell"
+//            case .twoOption:
+//                return "SubscriptionTwoOptionTableCell"
+//            case .fullWidthSmallImage:
+//                return "SubscriptionFullWidthSmallImageTableCell"
+//            case .button:
+//                return "SubscriptionSimpleButtonTableCell"
+//        }
+//    }
+//
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -102,13 +132,16 @@ extension SubscriptionViewController: UITableViewDataSource {
     private func subscriptionMainTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionMainTableCell", for: indexPath) as! SubscriptionMainTableCell
         cell.delegate = self
-        cell.setData()
+        presenter.dataModel.isDataLoad ? cell.setData() : cell.setSkeleton()
+//        cell.setData()
         return cell
     }
     
     private func subscriptionFullWidthBigImageTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionFullWidthBigImageTableCell", for: indexPath) as! SubscriptionFullWidthBigImageTableCell
-        cell.setData()
+//        cell.setData()
+        presenter.dataModel.isDataLoad ? cell.setData() : cell.setSkeleton()
+       
         cell.delegate = self
 
         return cell
@@ -116,7 +149,8 @@ extension SubscriptionViewController: UITableViewDataSource {
     
     private func subscriptionTwoOptionTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionTwoOptionTableCell", for: indexPath) as! SubscriptionTwoOptionTableCell
-        cell.setData()
+        presenter.dataModel.isDataLoad ? cell.setData() : cell.setSkeleton()
+//        cell.setData()
         cell.delegate = self
 
         return cell
@@ -124,7 +158,8 @@ extension SubscriptionViewController: UITableViewDataSource {
     
     private func subscriptionFullWidthSmallImageTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionFullWidthSmallImageTableCell", for: indexPath) as! SubscriptionFullWidthSmallImageTableCell
-        cell.setData()
+        presenter.dataModel.isDataLoad ? cell.setData() : cell.setSkeleton()
+//        cell.setData()
         cell.delegate = self
         
         return cell
@@ -132,6 +167,8 @@ extension SubscriptionViewController: UITableViewDataSource {
     
     private func subscriptionSimpleButtonTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionSimpleButtonTableCell", for: indexPath) as! SubscriptionSimpleButtonTableCell
+        presenter.dataModel.isDataLoad ? cell.setData() : cell.setSkeleton()
+//        cell.setData()
         cell.delegate = self
 
         return cell
@@ -190,5 +227,8 @@ extension SubscriptionViewController: SubscriptionSimpleButtonTableCellDelegate 
 // MARK: - SubscriptionProtocol
 
 extension SubscriptionViewController : SubscriptionProtocol {
-    
+    func dataLoad() {
+        tableView.reloadData()
+        tableView.hideSkeleton()
+    }
 }

@@ -103,8 +103,13 @@ class DataEnterView: UIView {
     
     // MARK: - States
     
-    func setData(text: String) {
+    func getText() -> String? {
+        return dataTextField.text
+    }
+    
+    func setData(text: String?) {
         if currentType == .phone {
+            guard let text = text else { return }
             dataTextField.text! = formattedNumber(number: text)
         } else {
             dataTextField.text = text
@@ -210,7 +215,7 @@ class DataEnterView: UIView {
     
     private func phoneEndEditing() {
         if enteredPhone.count == 11 {
-            enteredPhone.removeLast()
+//            enteredPhone.removeLast()
             setSuccessState()
             isDataValidate = true
         } else {

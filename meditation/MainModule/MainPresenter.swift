@@ -8,12 +8,13 @@
 import Foundation
 
 protocol MainProtocol: AnyObject {
- 
+    func dataLoad()
 }
 
 protocol MainPresenterProtocol: AnyObject {
     init(view: MainProtocol, dataModel: MainDataModel)
     
+    func getData()
 }
 
 class MainPresenter: MainPresenterProtocol {
@@ -25,4 +26,19 @@ class MainPresenter: MainPresenterProtocol {
         self.dataModel = dataModel
     }
     
+    func getData() {
+        //        let _ = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: false) { timer in
+        //            self.dataModel.isDataLoad = true
+        //            self.view.dataLoad()
+        //        }
+        //        NetworkManager.getListOfLessons { lesson in
+        //            self.dataModel.isDataLoad = true
+        //            self.view.dataLoad()
+        //        }
+        NetworkManager.getUserMe { userInfo in
+            self.dataModel.userInfoModel = userInfo
+            self.dataModel.isDataLoad = true
+            self.view.dataLoad()
+        }
+    }
 }
