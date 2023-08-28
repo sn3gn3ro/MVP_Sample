@@ -12,7 +12,7 @@ class FavoritesViewController: UIViewController {
 
     let tableView = UITableView(frame: .zero, style: .plain)
     
-    var presenter: FavoritesPresenter!
+    var presenter: FavoritesPresenter?
 
     enum Section {
         case main
@@ -28,7 +28,19 @@ class FavoritesViewController: UIViewController {
         view.isSkeletonable = true
         self.hideKeyboardWhenTappedAround()
         setTableView()
-        presenter.getData()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    
+        presenter?.dataModel.clear()
+        presenter?.getData()
+        tableView.reloadData()
+    }
+    
+    deinit {
+        print()
     }
 
     // MARK: - Private
@@ -69,7 +81,7 @@ extension FavoritesViewController: UITableViewDataSource {
             case .main:
                 return 1
             case .favorites:
-                return 4
+                return presenter?.dataModel.favoriteModel?.count ?? 3
         }
     }
 
@@ -79,112 +91,66 @@ extension FavoritesViewController: UITableViewDataSource {
             case .main:
                 return favoritesMainTableCell(indexPath: indexPath)
             case .favorites:
-                return favoriteTableCell(indexPath: indexPath, backImage: UIImage(named: "playedTest") ?? UIImage(), title: "Искусство диалога", subTitle: "Как найти подход?", time: "18 мин.")
+                return favoriteTableCell(indexPath: indexPath)
         }
     }
 
     private func favoritesMainTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoritesMainTableCell", for: indexPath) as! FavoritesMainTableCell
-        //TODO: - проверять количество favorites
-
-        presenter.dataModel.isDataLoad ?  cell.setData(isEmpty: false) : cell.setSkeleton()
-
         cell.delegate = self
-
+        if let _ = presenter?.dataModel.favoriteModel {
+            cell.setData(isEmpty: false)
+        } else {
+            cell.setSkeleton()
+        }
+        
         return cell
     }
 
-    private func favoriteTableCell(indexPath: IndexPath, backImage: UIImage, title: String, subTitle: String, time: String) -> UITableViewCell {
+    private func favoriteTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteTableCell", for: indexPath) as! FavoriteTableCell
-
-        presenter.dataModel.isDataLoad ? cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time) : cell.setSkeleton()
-//        cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
+        if let favorites = presenter?.dataModel.favoriteModel {
+            let favorite = favorites[indexPath.row]
+            let bufferedLink = presenter?.dataModel.bufferedVideos[indexPath.row]
+            let title = favorite.lesson?.name ?? ""
+            let subTitle = favorite.sections?.first?.name ?? ""
+            let time = "\(favorite.sections?.first?.lessonsTime ?? 0) мин"
+            cell.setData(bufferedLink: bufferedLink,
+                         title: title,
+                         subTitle: subTitle,
+                         time: time)
+        } else {
+            cell.setSkeleton()
+        }
 
         return cell
     }
 }
 
-//extension FavoritesViewController: SkeletonTableViewDataSource {
-//
-//    func numSections(in collectionSkeletonView: UITableView) -> Int {
-//        return sections.count
-//    }
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return sections.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let section = sections[section]
-//        switch section {
-//            case .main:
-//                return 1
-//            case .favorites:
-//                return 4
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let section = sections[indexPath.section]
-//        switch section {
-//            case .main:
-//                return favoritesMainTableCell(indexPath: indexPath)
-//            case .favorites:
-//                return favoriteTableCell(indexPath: indexPath, backImage: UIImage(named: "playedTest") ?? UIImage(), title: "Искусство диалога", subTitle: "Как найти подход?", time: "18 мин.")
-//        }
-//    }
-//
-//    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-//        let section = sections[indexPath.section]
-//        switch section {
-//            case .main:
-//                return "FavoritesMainTableCell"
-//            case .favorites:
-//                return "FavoriteTableCell"
-//        }
-//    }
-//
-//    func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
-//        let section = sections[indexPath.section]
-//        switch section {
-//            case .main:
-//                return favoritesMainTableCell(indexPath: indexPath)
-//            case .favorites:
-//                return favoriteTableCell(indexPath: indexPath, backImage: UIImage(named: "playedTest") ?? UIImage(), title: "Искусство диалога", subTitle: "Как найти подход?", time: "18 мин.")
-//        }
-//    }
-//
-////    func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {
-////        <#code#>
-////    }
-//
-//    private func favoritesMainTableCell(indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoritesMainTableCell", for: indexPath) as! FavoritesMainTableCell
-//        //TODO: - проверять количество favorites
-//
-////        presenter.dataModel.isDataLoad ?  cell.setData(isEmpty: false) : cell.setSkeleton()
-//        cell.setData(isEmpty: false)
-//
-//        cell.delegate = self
-//
-//        return cell
-//    }
-//
-//    private func favoriteTableCell(indexPath: IndexPath, backImage: UIImage, title: String, subTitle: String, time: String) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteTableCell", for: indexPath) as! FavoriteTableCell
-//
-////        presenter.dataModel.isDataLoad ? cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time) : cell.setSkeleton()
-//        cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
-//
-//        return cell
-//    }
-//}
-
 // MARK: - UITableViewDelegate
 
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let favoriteModel = presenter?.dataModel.favoriteModel else { return }
+        let lessonId = favoriteModel[indexPath.row].lessonId
+        let lessons = favoriteModel.map { $0.lessonId ?? -1 }
+        let lessonBufferedVideo = presenter?.dataModel.bufferedVideos
+        let sectionName = favoriteModel[indexPath.row].sections?.first?.name ?? ""
+        
+        ModuleRouter.showPlayerModule(currentViewController: self,
+                                      lessonId: lessonId ?? -1,
+                                      lessons: lessons,
+                                      lessonBufferedVideo: lessonBufferedVideo,
+                                      sectionName: sectionName,
+                                      idUnfinishedLessons: nil)
+    }
+}
 
+// MARK: - FavoritesMainTableCellDelegate
+
+extension FavoritesViewController : PlayerViewControllerDelegate {
+    func didRemoveFromFavorites(index: Int) {
+        presenter?.dataModel.favoriteModel?.remove(at: index)
     }
 }
 
@@ -208,8 +174,12 @@ extension FavoritesViewController : FavoriteTableCellDelegate {
 // MARK: - FavoritesProtocol
 
 extension FavoritesViewController : FavoritesProtocol {
-    func dataLoad() {
+    func didLoadData() {
         tableView.reloadData()
-//        tableView.hideSkeleton(reloadDataAfter: true)
+    }
+    
+    func didLoadVideo(index: Int) {
+//        tableView.reloadData()
+        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .automatic)
     }
 }

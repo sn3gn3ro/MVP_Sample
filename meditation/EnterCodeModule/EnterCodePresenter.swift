@@ -20,7 +20,7 @@ protocol EnterCodePresenterProtocol: AnyObject {
 }
 
 class EnterCodePresenter: EnterCodePresenterProtocol {
-    let view: EnterCodeProtocol
+    weak private var view: EnterCodeProtocol?
     var dataModel: EnterCodeDataModel
     
     required init(view: EnterCodeProtocol, dataModel: EnterCodeDataModel) {
@@ -36,7 +36,7 @@ class EnterCodePresenter: EnterCodePresenterProtocol {
     
     func auth() {
         NetworkManager.auth(email: dataModel.signUpDataModel.email, password: dataModel.signUpDataModel.password) { [weak self] in
-            self?.view.authComplete()
+            self?.view?.authComplete()
         }
     }
 }

@@ -8,16 +8,19 @@
 import Foundation
 
 protocol FavoritesProtocol: AnyObject {
-    func dataLoad()
+    func didLoadData()
+    func didLoadVideo(index: Int)
 }
 
 protocol FavoritesPresenterProtocol: AnyObject {
     init(view: FavoritesProtocol, dataModel: FavoritesDataModel)
     func getData()
+    
+    func getVideoForLesson(index: Int)
 }
 
 class FavoritesPresenter: FavoritesPresenterProtocol {
-    let view: FavoritesProtocol
+    weak private var view: FavoritesProtocol?
     var dataModel: FavoritesDataModel
     
     required init(view: FavoritesProtocol, dataModel: FavoritesDataModel) {
@@ -26,10 +29,22 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
     }
     
     func getData() {
-        self.view.dataLoad()
-        let _ = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
-            self.dataModel.isDataLoad = true
-            self.view.dataLoad()
+        NetworkManager.getFavoriteList { [weak self] favoriteModel in
+            self?.dataModel.favoriteModel = favoriteModel
+            self?.view?.didLoadData()
+            
+            for (index,_) in favoriteModel.enumerated() {
+                self?.getVideoForLesson(index: index)
+            }
+        }
+    }
+    
+    func getVideoForLesson(index: Int) {
+        guard let favorites = dataModel.favoriteModel else { return }
+        let videoUrl = favorites[index].lesson?.getCurrentDayLink() ?? ""
+        NetworkManager.getVideo(videoUrl: videoUrl) { [weak self] url in
+            self?.dataModel.bufferedVideos[index] = url
+            self?.view?.didLoadVideo(index: index)
         }
     }
 }

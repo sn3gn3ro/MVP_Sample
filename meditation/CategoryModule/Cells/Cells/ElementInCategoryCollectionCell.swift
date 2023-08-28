@@ -6,15 +6,14 @@
 //
 
 import UIKit
-import Hero
 
 class ElementInCategoryCollectionCell: UICollectionViewCell {
     
-    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
     var blurEffectView =  UIVisualEffectView()
     let lessonNameLabel = UILabel()
     let statusImageView  = UIImageView()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -34,27 +33,30 @@ class ElementInCategoryCollectionCell: UICollectionViewCell {
     
     //MARK: - Actions
     
-    func setData(image: UIImage, lessonName: String) {
-        backImageView.image = image
+    func setData(videoUrl: String, bufferedLink: URL?, lessonName: String, isLissend: Bool) {
         lessonNameLabel.text = lessonName
-        statusImageView.image = UIImage(named: "playPurple")
+        statusImageView.image = isLissend ? UIImage(named: "checkPurple") :  UIImage(named: "playPurple")
+        if let bufferedLink = bufferedLink {
+            videoView.layoutIfNeeded()
+            videoView.didLoadVideo(url: bufferedLink)
+        }
     }
+
     
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
 //            make.height.equalTo(146)
             make.bottom.equalToSuperview()
         }
-        backImageView.clipsToBounds = true
-        backImageView.layer.cornerRadius = 16
-        backImageView.contentMode = .scaleAspectFill
-       
+        videoView.clipsToBounds = true
+        videoView.layer.cornerRadius = 16
+        videoView.contentMode = .scaleAspectFill
     }
     
     private func setBlurEffectView() {
@@ -72,7 +74,7 @@ class ElementInCategoryCollectionCell: UICollectionViewCell {
     private func setLessonNameLabel() {
         contentView.addSubview(lessonNameLabel)
         lessonNameLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(backImageView.snp.bottom).offset(-10)
+            make.bottom.equalTo(videoView.snp.bottom).offset(-10)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
 //            make.height.equalTo(16)

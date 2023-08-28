@@ -17,7 +17,7 @@ protocol SubscriptionPresenterProtocol: AnyObject {
 }
 
 class SubscriptionPresenter: SubscriptionPresenterProtocol {
-    let view: SubscriptionProtocol
+    weak private var view: SubscriptionProtocol?
     var dataModel: SubscriptionDataModel
     
     required init(view: SubscriptionProtocol, dataModel: SubscriptionDataModel) {
@@ -28,7 +28,7 @@ class SubscriptionPresenter: SubscriptionPresenterProtocol {
     func getData() {
         let _ = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
             self.dataModel.isDataLoad = true
-            self.view.dataLoad()
+            self.view?.dataLoad()
         }
     }
 }

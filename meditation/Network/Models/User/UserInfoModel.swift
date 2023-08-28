@@ -8,9 +8,9 @@
 import Foundation
 
 struct UserInfoModel: Codable {
-    let id: Int?
-    let name, email, phone, subscribe_type: String?
-    let subscribe_date: String?
-    let email_verified_at: String?
-    let created_at, updated_at: String?
+    var id: Int?
+    var name, email, phone, subscribe_type: String?
+    var subscribe_date: String?
+    var email_verified_at: String?
+    var created_at, updated_at: String?
 }

@@ -17,7 +17,7 @@ protocol SearchPresenterProtocol: AnyObject {
 }
 
 class SearchPresenter: SearchPresenterProtocol {
-    let view: SearchProtocol
+    weak private var view: SearchProtocol?
     var dataModel: SearchDataModel
     
     required init(view: SearchProtocol, dataModel: SearchDataModel) {

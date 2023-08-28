@@ -14,27 +14,6 @@ class CategoryViewController: UIViewController {
  
     var presenter: CategoryPresenter!
     
-    enum Section {
-        case main
-        case elements
-    }
-    
-    let sections: [Section] = [.main,
-                               .elements]
-    
-    struct ElementModel {
-        var image: UIImage
-        var name: String
-    }
-    
-    let elements: [ElementModel] = [ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично"),
-                                    ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично"),
-                                    ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично"),
-                                    ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично"),
-                                    ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично"),
-                                    ElementModel(image: UIImage(named: "backNightTest") ?? UIImage(), name: "Страх выступать публично")]
-    
-    var cellBackImageView = UIImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +24,9 @@ class CategoryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cellBackImageView.hero.id = ""
+        
+        presenter.getSectionHeadVideo()
+        presenter.getSection()
     }
     
     // MARK: - Private
@@ -73,11 +54,11 @@ class CategoryViewController: UIViewController {
 extension CategoryViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return presenter.dataModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = sections[section]
+        let section = presenter.dataModel.sections[section]
         switch section {
             case .main:
                 return 1
@@ -87,7 +68,7 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = sections[indexPath.section]
+        let section = presenter.dataModel.sections[indexPath.section]
         switch section {
             case .main:
                 return categoryMainTableCell(indexPath: indexPath)
@@ -100,15 +81,23 @@ extension CategoryViewController: UITableViewDataSource {
     private func categoryMainTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryMainTableCell", for: indexPath) as! CategoryMainTableCell
         cell.delegate = self
+        cell.setData(stringURL: presenter.dataModel.sectonVideoURL.link,
+                     title: presenter.dataModel.dataModel?.name ?? "")
+        cell.setProgress(progress: Float(presenter.dataModel.dataModel?.listenedPercent ?? 0)/100)
         
         return cell
     }
     
     private func categoryCollectionElementsTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCollectionElementsTableCell", for: indexPath) as! CategoryCollectionElementsTableCell
-        cell.setData(elements: elements)
         cell.delegate = self
-        
+        if let lessons = presenter.dataModel.section?.lessons {
+            cell.setData(lessons: lessons)
+        }
+//        if let lessons = presenter.dataModel.dataModel?.sectionLessons {
+//            cell.setData(lessons: lessons)
+//        }
+    
         return cell
     }
 }
@@ -129,22 +118,25 @@ extension CategoryViewController : CategoryMainTableCellDelegate {
 // MARK: - CategoryCollectionElementsTableCellDelegate
 
 extension CategoryViewController : CategoryCollectionElementsTableCellDelegate {
-    func didSelectElement(indexPath: IndexPath, backImageView: UIImageView) {
-        let element = elements[indexPath.row]
-        backImageView.isHeroEnabled = true
-        cellBackImageView = backImageView
-        backImageView.hero.id = "playerBackground"
-        let playerVC =  ModuleBuilder.createPlayerModule() as! PlayerViewController
-        playerVC.hero.isEnabled = true
-        playerVC.backImageView.hero.id = "playerBackground"
-        playerVC.modalPresentationStyle = .fullScreen
-//        self.present(playerVC, animated: true, completion: nil)
-        self.present(playerVC, animated: true) {
-//            Hero.shared.cancel()
-//            backImageView.isHeroEnabled = false
+    func didLoadVideo(bufferedVideo: [Int : URL]) {
+        presenter.dataModel.bufferedLessonVideos = bufferedVideo
+    }
+    
+    func didSelectElement(indexPath: IndexPath) {
+        guard let lessonId = presenter.dataModel.dataModel?.sectionLessons?[indexPath.row].lessonId else { return }
+        let lessons = presenter.dataModel.dataModel?.sectionLessons ?? []
+        let ids = lessons.compactMap{$0.lessonId}
+        let idUnfinishedMap = lessons.filter({$0.listened == false}).map({$0.lessonId ?? -1 })
+        var idUnfinishedLessons = [Int: Bool]()
+        for id in idUnfinishedMap {
+            idUnfinishedLessons[id] = false
         }
-//        backImageView.isHeroEnabled = false
-//        self.navigationController?.pushViewController(playerVC, animated: true)
+        ModuleRouter.showPlayerModule(currentViewController: self,
+                                      lessonId: lessonId,
+                                      lessons: ids,
+                                      lessonBufferedVideo: presenter.dataModel.bufferedLessonVideos,
+                                      sectionName: presenter.dataModel.dataModel?.name,
+                                      idUnfinishedLessons: idUnfinishedLessons)
     }
 }
 
@@ -152,4 +144,17 @@ extension CategoryViewController : CategoryCollectionElementsTableCellDelegate {
 
 extension CategoryViewController : CategoryProtocol {
     
+    func didLoadHeadVideo() {
+        tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .none)
+    }
+    
+    func didloadSection() {
+        tableView.reloadSections(IndexSet(arrayLiteral: 1), with: .none)
+    }
+    
+    func didLoadSectionsVideo(index: Int) {
+        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? CategoryCollectionElementsTableCell else { return }
+        guard let video = presenter.dataModel.bufferedLessonVideos[index] else { return }
+        cell.updateData(index: index, url: video)
+    }
 }

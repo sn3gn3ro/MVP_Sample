@@ -128,14 +128,14 @@ extension SearchViewController: UITableViewDataSource {
     
     private func mainRecomendedTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainRecomendedTableCell", for: indexPath) as! MainRecomendedTableCell
-        cell.setData()
+        cell.setData(urls: [""], bufferedLinks: nil)
         
         return cell
     }
     
     private func mainPodcastTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainPodcastTableCell", for: indexPath) as! MainPodcastTableCell
-        cell.setData(backImage: UIImage(named: "podcastTest") ?? UIImage(), title: "Отношения", subTitle: "10 тем, 24 аудиоурока")
+        cell.setData(videoUrl: "", bufferedLink: nil, title: "Отношения", subTitle: "10 тем, 24 аудиоурока")
         
         return cell
     }

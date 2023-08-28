@@ -7,44 +7,142 @@
 
 import Foundation
 
-struct LessonsListModel: Decodable {
-    var currentPage: Int?
-    var data: [LessonsListDataModel]?
+struct LessonsListModel: Codable {
+    
+    var currentPage  : Int?     = nil
+    var data         : [LessonsListDataModel]?  = []
+    var firstPageUrl : String?  = nil
+    var from         : Int?     = nil
+    var lastPage     : Int?     = nil
+    var lastPageUrl  : String?  = nil
+    var links        : [Links]? = []
+    var nextPageUrl  : String?  = nil
+    var path         : String?  = nil
+    var perPage      : Int?     = nil
+    var prevPageUrl  : String?  = nil
+    var to           : Int?     = nil
+    var total        : Int?     = nil
     
     enum CodingKeys: String, CodingKey {
-        case current_page
-        case data
+        
+        case currentPage  = "current_page"
+        case data         = "data"
+        case firstPageUrl = "first_page_url"
+        case from         = "from"
+        case lastPage     = "last_page"
+        case lastPageUrl  = "last_page_url"
+        case links        = "links"
+        case nextPageUrl  = "next_page_url"
+        case path         = "path"
+        case perPage      = "per_page"
+        case prevPageUrl  = "prev_page_url"
+        case to           = "to"
+        case total        = "total"
+        
     }
     
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        currentPage = try container.decode(Int?.self, forKey: .current_page)
-        data = try container.decode([LessonsListDataModel]?.self, forKey: .data)
-    }
-  
-    struct LessonsListDataModel: Decodable {
-        var id: Int?
-        var name: String?
-        var created_at: String?
-        var updated_at: String?
-        var first_page_url: String?
-        var from: String?
-        var last_page: String?
-        var last_page_url: String?
-        var links: [LessonsListDataLinksModel]?
-        var next_page_url: String?
-        var path: String?
-        var per_page: Int?
-        var prev_page_url: String?
-        var to: String?
-        var total: String?
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        currentPage  = try values.decodeIfPresent(Int.self     , forKey: .currentPage  )
+        data         = try values.decodeIfPresent([LessonsListDataModel].self  , forKey: .data         )
+        firstPageUrl = try values.decodeIfPresent(String.self  , forKey: .firstPageUrl )
+        from         = try values.decodeIfPresent(Int.self     , forKey: .from         )
+        lastPage     = try values.decodeIfPresent(Int.self     , forKey: .lastPage     )
+        lastPageUrl  = try values.decodeIfPresent(String.self  , forKey: .lastPageUrl  )
+        links        = try values.decodeIfPresent([Links].self , forKey: .links        )
+        nextPageUrl  = try values.decodeIfPresent(String.self  , forKey: .nextPageUrl  )
+        path         = try values.decodeIfPresent(String.self  , forKey: .path         )
+        perPage      = try values.decodeIfPresent(Int.self     , forKey: .perPage      )
+        prevPageUrl  = try values.decodeIfPresent(String.self  , forKey: .prevPageUrl  )
+        to           = try values.decodeIfPresent(Int.self     , forKey: .to           )
+        total        = try values.decodeIfPresent(Int.self     , forKey: .total        )
+        
     }
     
-    struct LessonsListDataLinksModel: Decodable {
-        var url: String?
-        var label: String?
-        var active: String?
+    init() {
+        
     }
 }
 
-// {"current_page":1,"data":[{"id":1,"name":"\u041f\u043e \u0431\u0440\u0430\u0442\u0441\u043a\u0438 \u0447\u0435 \u0441\u0442\u0430\u043b\u043e?","created_at":"03-05-2023 18:59:09","updated_at":"03-05-2023 18:59:09"}],"first_page_url":"http:\/\/srv46749.ht-test.ru\/api\/lesson\/list?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/srv46749.ht-test.ru\/api\/lesson\/list?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/srv46749.ht-test.ru\/api\/lesson\/list?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/srv46749.ht-test.ru\/api\/lesson\/list","per_page":10,"prev_page_url":null,"to":1,"total":1}
+struct LessonsListDataModel: Codable {
+    
+    var id        : Int?    = nil
+    var name      : String? = nil
+    var createdAt : String? = nil
+    var updatedAt : String? = nil
+    var paths     : Paths? = Paths()//LessonsListPathModel?  = LessonsListPathModel()
+    var tags      : [Int]?  = []
+    var favorite  : Bool?   = nil
+    var durationSeconds: Int? = nil
+    var listened: Bool? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case id        = "id"
+        case name      = "name"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case paths     = "paths"
+        case tags      = "tags"
+        case favorite  = "favorite"
+        case durationSeconds = "duration_seconds"
+        case listened  = "listened"
+        
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id        = try values.decodeIfPresent(Int.self    , forKey: .id        )
+        name      = try values.decodeIfPresent(String.self , forKey: .name      )
+        createdAt = try values.decodeIfPresent(String.self , forKey: .createdAt )
+        updatedAt = try values.decodeIfPresent(String.self , forKey: .updatedAt )
+        paths     = try values.decodeIfPresent(Paths.self, forKey: .paths)//(LessonsListPathModel.self  , forKey: .paths)
+        tags      = try values.decodeIfPresent([Int].self  , forKey: .tags      )
+        favorite  = try values.decodeIfPresent(Bool.self   , forKey: .favorite  )
+        durationSeconds  = try values.decodeIfPresent(Int.self   , forKey: .durationSeconds  )
+        listened  = try values.decodeIfPresent(Bool.self   , forKey: .listened  )
+        
+    }
+    
+    init() {
+        
+    }
+}
+
+//struct LessonsListPathModel: Codable {
+//    
+//    var fileAnimationMorning : FileAnimation? = FileAnimation()
+//    var fileAnimationDay     : FileAnimation? = FileAnimation()
+//    var fileAnimationEvening : FileAnimation? = FileAnimation()
+//    var fileAnimationNight   : FileAnimation? = FileAnimation()
+//    var fileAudio            : FileAnimation? = FileAnimation()
+//    
+//    enum CodingKeys: String, CodingKey {
+//        
+//        case fileAnimationMorning = "file_animation_morning"
+//        case fileAnimationDay     = "file_animation_day"
+//        case fileAnimationEvening = "file_animation_evening"
+//        case fileAnimationNight   = "file_animation_night"
+//        case fileAudio            = "file_audio"
+//        
+//    }
+//    
+//    init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//        
+//        fileAnimationMorning = try values.decodeIfPresent(FileAnimation.self , forKey: .fileAnimationMorning )
+//        fileAnimationDay     = try values.decodeIfPresent(FileAnimation.self     , forKey: .fileAnimationDay     )
+//        fileAnimationEvening = try values.decodeIfPresent(FileAnimation.self , forKey: .fileAnimationEvening )
+//        fileAnimationNight   = try values.decodeIfPresent(FileAnimation.self   , forKey: .fileAnimationNight   )
+//        fileAudio            = try values.decodeIfPresent(FileAnimation.self            , forKey: .fileAudio            )
+//        
+//    }
+//    
+//    
+//    
+//    init() {
+//        
+//    }
+//}

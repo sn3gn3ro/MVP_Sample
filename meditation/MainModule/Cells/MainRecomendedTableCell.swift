@@ -10,6 +10,7 @@ import SkeletonView
 
 protocol MainRecomendedTableCellDelegate: AnyObject {
     func didSelectPodcast(index: Int)
+//    func didLoadVideo(cell: UITableViewCell, bufferedLinks: [Int:URL])
 }
 
 class MainRecomendedTableCell: UITableViewCell {
@@ -33,6 +34,9 @@ class MainRecomendedTableCell: UITableViewCell {
                                      TestData(image: UIImage(named: "recomendedTest3"), title: "Цели", subTitle: "Мотивация", lessonsCount: 5)]
     var isSkeleton = false
     
+    var urls = [String]()
+    var bufferedLinks = [Int:URL]()
+    
     weak var delegate: MainRecomendedTableCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -40,7 +44,7 @@ class MainRecomendedTableCell: UITableViewCell {
         self.selectionStyle = .none
 
         self.backgroundColor = .clear
-        
+        self.isSkeletonable = true
         
         configureCollectionView()
     }
@@ -64,14 +68,16 @@ class MainRecomendedTableCell: UITableViewCell {
 
     //MARK: - Actions
     
-    func setData() {
-//        hideSkeleton()
+    func setData(urls: [String], bufferedLinks: [Int:URL]?) {
+        hideSkeleton()
+        self.urls = urls
+        self.bufferedLinks = bufferedLinks ?? [:]
         isSkeleton = false
         collectionView.reloadData()
     }
     
     func setSkeleton() {
-//        setSkeletonableStyle()
+        setSkeletonableStyle()
         isSkeleton = true
         collectionView.reloadData()
     }
@@ -80,7 +86,6 @@ class MainRecomendedTableCell: UITableViewCell {
     
     private func configureCollectionView() {
         contentView.addSubview(collectionView)
-        
         collectionView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview().offset(-40)
@@ -117,14 +122,17 @@ extension MainRecomendedTableCell: UICollectionViewDelegate {
 
 extension MainRecomendedTableCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testDataArray.count
+        return bufferedLinks.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainRecomendedCollectionCell", for: indexPath) as! MainRecomendedCollectionCell
-        let data = testDataArray[indexPath.row]
-        isSkeleton ?  cell.setSkeleton() : cell.setData(image: data.image ?? UIImage(), lessonCount: data.lessonsCount, title: data.title, subtitle: data.subTitle)
-        
+        let bufferedLink = bufferedLinks[indexPath.row]
+        isSkeleton ?  cell.setSkeleton() : cell.setData(videoUrl: "",
+                                                        bufferedLink: bufferedLink,
+                                                        lessonCount: 3,
+                                                        title: "Как найти подход?",
+                                                        subtitle: "Социальные проблемы")
         
         return cell
     }
@@ -137,17 +145,13 @@ extension MainRecomendedTableCell: SkeletonCollectionViewDataSource {
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> SkeletonView.ReusableCellIdentifier {
         return "MainRecomendedCollectionCell"
     }
-    
-    
 }
-
 
 //MARK: - UICollectionViewDelegateFlowLayout
 
 extension MainRecomendedTableCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         return CGSize(width: Const.itemWidth, height: Const.itemHeight)
     }
     

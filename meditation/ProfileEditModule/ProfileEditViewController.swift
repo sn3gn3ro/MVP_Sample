@@ -53,7 +53,6 @@ class ProfileEditViewController: UIViewController {
     
         tableView.register(ProfileEditMainTableCell.self, forCellReuseIdentifier: "ProfileEditMainTableCell")
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -83,7 +82,9 @@ extension ProfileEditViewController: UITableViewDataSource {
     
     private func profileEditMainTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileEditMainTableCell", for: indexPath) as! ProfileEditMainTableCell
-        cell.setData(name: "Александра", email: "alexandra@mail.ru", phone: "79088089389")
+        cell.setData(name: presenter.dataModel.userInfo?.name ?? "",
+                     email: presenter.dataModel.userInfo?.email ?? "",
+                     phone: presenter.dataModel.userInfo?.phone ?? "")
         cell.delegate = self
         
         return cell
@@ -98,24 +99,26 @@ extension ProfileEditViewController : ProfileEditMainTableCellDelegate {
     }
     
     func didEnterName(name: String) {
-        
+        presenter.dataModel.editableName = name
     }
     
     func didEnterEmail(email: String) {
-        
+        presenter.dataModel.editableEmail = email
     }
     
     func didEnterPhone(phone: String) {
-        
+        presenter.dataModel.editablePhone = phone
     }
     
     func didPressedSaveChanges() {
-        
+        presenter.editUserInfo()
     }
     
     func didPressedDeleteAccount() {
-        let alertView = CustomAlertView(title: CommonString.deletingAccount, subtitle: CommonString.deletingAccountSubtitile, button: CustomAlertView.Button(title: CommonString.delete, action: {
-            //delete
+        let alertView = CustomAlertView(title: CommonString.deletingAccount,
+                                        subtitle: CommonString.deletingAccountSubtitile,
+                                        button: CustomAlertView.Button(title: CommonString.delete, action: { [weak self] in
+            self?.presenter.deleteProfile()
         }))
         
         alertView.show(view: self.view)

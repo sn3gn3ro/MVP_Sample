@@ -33,6 +33,23 @@ class SquareRoundButtonView: UIView {
                     return UIImage(named: "shareWhiteRoundButton") ?? UIImage()
             }
         }
+        
+        func selectImage() -> UIImage {
+            switch self {
+                case .backArrow:
+                    return UIImage(named: "leftWhiteNormalArrow") ?? UIImage()
+                case .search:
+                    return UIImage(named: "searchWhiteRoundButton") ?? UIImage()
+                case .headphones:
+                    return UIImage(named: "headphonesWhiteRoundButton") ?? UIImage()
+                case .edit:
+                    return UIImage(named: "editWhiteRoundButton") ?? UIImage()
+                case .heart:
+                    return UIImage(named: "heartWhiteFillRoundButton") ?? UIImage()
+                case .share:
+                    return UIImage(named: "shareWhiteRoundButton") ?? UIImage()
+            }
+        }
     }
     
     private let dataImageView = UIImageView()
@@ -71,6 +88,14 @@ class SquareRoundButtonView: UIView {
 
     func setBackColor(color: UIColor) {
         self.backgroundColor = color
+    }
+    
+    func setSelectedState() {
+        dataImageView.image = currentType.selectImage()
+    }
+    
+    func setNormalState() {
+        dataImageView.image = currentType.image()
     }
     
     // MARK: - Private

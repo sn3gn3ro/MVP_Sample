@@ -101,6 +101,9 @@ class ProfileMainTableCell: UITableViewCell {
         }
         profileImageView.isSkeletonable = true
         profileImageView.skeletonCornerRadius = 50
+        profileImageView.layer.cornerRadius = 50
+        profileImageView.clipsToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
     }
     
     private func setProfileImageButton() {

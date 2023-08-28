@@ -6,75 +6,138 @@
 //
 
 import UIKit
+import AVFoundation
+
+protocol PlayerViewControllerDelegate: AnyObject {
+    func didRemoveFromFavorites(index: Int)
+}
 
 class PlayerViewController: UIViewController {
     
-    let backImageView = UIImageView()
-    let backButton = SquareRoundButtonView(type: .backArrow)
-    let heartButton = SquareRoundButtonView(type: .heart)
+    private let videoContainerView = UIView()
+    private var player: AVPlayer?
+    private var audioPlayer: AVAudioPlayer?
+    private var playerLayer: AVPlayerLayer?
     
-    let titleLabel = UILabel()
-    let subtitleLabel = UILabel()
+    private let backButton = SquareRoundButtonView(type: .backArrow)
+    private let heartButton = SquareRoundButtonView(type: .heart)
     
-    let playPausePlayerButtonImageView = UIImageView()
-    let backPlayerButtonImageView = UIImageView()
-    let forwardPlayerButtonImageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     
-    
-    let playPausePlayerButton = UIButton()
-    let backPlayerButton = UIButton()
-    let forwardPlayerButton = UIButton()
+    private let playPausePlayerButtonImageView = UIImageView()
+    private let backPlayerButtonImageView = UIImageView()
+    private let forwardPlayerButtonImageView = UIImageView()
     
     
-    let playerTrackView = PlayerTrackView()
+    private let playPausePlayerButton = UIButton()
+    private let backPlayerButton = UIButton()
+    private let forwardPlayerButton = UIButton()
     
-    var presenter: PlayerPresenter!
+    private let playerTrackView = PlayerTrackView()
+    private let activityView = UIActivityIndicatorView()
+    private var updater: CADisplayLink?
+    
+    var presenter: PlayerPresenter?
+
+    weak var delegate: PlayerViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setBackImageView()
-        setBackButton()
-        setHeartButton()
-        
-        setPlayerTrackView()
-        
-        setPlayPausePlayerButtonImageView()
-        setBackPlayerButtonImageView()
-        setForwardPlayerButtonImageView()
-        
-        setPlayPausePlayerButton()
-        setBackPlayerButton()
-        setForwardPlayerButton()
-        
-        setSubtitleLabel()
-        setTitleLabel()
+        configure()
+        presenter?.getLessonInfo()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        presenter?.setListenedLesson(durationSeconds: Int(audioPlayer?.currentTime ?? 0), isFinishLesson: 0)
+        audioPlayer?.stop()
+        updater?.invalidate()
+    }
+    
+    deinit {
+        audioPlayer?.stop()
+        print()
     }
     
 
     // MARK: - Private
     
-    @objc func playPausePlayerButtonAction() {
+    @objc private func playPausePlayerButtonAction() {
+        guard let audioPlayer = audioPlayer else { return }
+        if audioPlayer.isPlaying {
+            audioPlayer.pause()
+            playPausePlayerButtonImageView.image = UIImage(named: "playerPlay")
+        } else {
+            audioPlayer.play()
+            playPausePlayerButtonImageView.image = UIImage(named: "playerPause")
+        }
+      
+    }
+    
+    @objc private func playerBackButtonAction() {
+        presenter?.dataModel.changeCurrentLesson(changeDirection: .back)
+        preparePlayer()
+        presenter?.getLessonInfo()
+    }
+    
+    @objc private func forwardPlayerButtonAction() {
+        presenter?.dataModel.changeCurrentLesson(changeDirection: .forvard)
+        preparePlayer()
+        presenter?.getLessonInfo()
+    }
+    
+    private func configure() {
+        setVideoContainerView()
+        setBackButton()
+        setHeartButton()
+
+        setPlayerTrackView()
+        setActivityView()
+        setPlayPausePlayerButtonImageView()
+        setBackPlayerButtonImageView()
+        setForwardPlayerButtonImageView()
+
+        setPlayPausePlayerButton()
+        setBackPlayerButton()
+        setForwardPlayerButton()
+
+        setSubtitleLabel()
+        setTitleLabel()
         
+        preparePlayer()
     }
     
-    @objc func playerBackButtonAction() {
-       
-    }
-    
-    @objc func forwardPlayerButtonAction() {
+    private func preparePlayer() {
+        audioPlayer?.stop()
+        playerTrackView.isHidden = true
+        activityView.startAnimating()
+        guard let presenter = presenter else { return }
+        if presenter.dataModel.isNextLessonExist() {
+            forwardPlayerButtonImageView.image = UIImage(named: "playerForwardActive")
+            forwardPlayerButton.isUserInteractionEnabled = true
+        } else {
+            forwardPlayerButtonImageView.image = UIImage(named: "playerForwardUnactive")
+            forwardPlayerButton.isUserInteractionEnabled = false
+        }
         
+        if presenter.dataModel.isPreviousLessonExist(){
+            backPlayerButtonImageView.image = UIImage(named: "playerBackActive")
+            backPlayerButton.isUserInteractionEnabled = true
+        } else {
+            backPlayerButtonImageView.image = UIImage(named: "playerBackUnactive")
+            backPlayerButton.isUserInteractionEnabled = false
+        }
     }
     
-    private func setBackImageView() {
-        view.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+    private func setVideoContainerView() {
+        view.addSubview(videoContainerView)
+        videoContainerView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        backImageView.image = UIImage(named: "backNightTest")
-        backImageView.clipsToBounds = true
-        backImageView.contentMode = .scaleAspectFill
-        backImageView.hero.modifiers = [.translate(y: 500), .useGlobalCoordinateSpace]
+        videoContainerView.backgroundColor = UIColor.Main.darkViolet
     }
 
     private func setBackButton() {
@@ -84,9 +147,9 @@ class PlayerViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
         }
         backButton.setBackColor(color: UIColor.Main.primaryViolet.withAlphaComponent(0.2))
-        backButton.buttonPressed = {
-            self.navigationController?.popViewController(animated: true)
-//            self.dismiss(animated: true, completion: nil)
+        backButton.buttonPressed = { [weak self] in
+            self?.dismiss(animated: true)
+            self?.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -96,9 +159,10 @@ class PlayerViewController: UIViewController {
             make.top.equalToSuperview().offset(60)
             make.right.equalToSuperview().offset(-16)
         }
+        heartButton.isHidden = true
         heartButton.setBackColor(color: UIColor.Main.primaryViolet.withAlphaComponent(0.2))
-        heartButton.buttonPressed = {
-            ModuleRouter.showCongratulationModule(currentViewController: self)
+        heartButton.buttonPressed = { [weak presenter] in
+            presenter?.changeFavoriteState()
         }
     }
     
@@ -109,8 +173,19 @@ class PlayerViewController: UIViewController {
             make.right.equalToSuperview().offset(-16)
             make.left.equalToSuperview().offset(16)
         }
+        playerTrackView.delegate = self
+        playerTrackView.isHidden = true
     }
     
+    private func setActivityView() {
+        view.addSubview(activityView)
+        activityView.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalTo(playerTrackView)
+            make.height.width.equalTo(22)
+        }
+        activityView.hidesWhenStopped = true
+        activityView.color = .white
+    }
     
     private func setPlayPausePlayerButtonImageView() {
         view.addSubview(playPausePlayerButtonImageView)
@@ -129,7 +204,7 @@ class PlayerViewController: UIViewController {
             make.right.equalTo(playPausePlayerButtonImageView.snp.left).offset(-40)
             make.height.width.equalTo(24)
         }
-        backPlayerButtonImageView.image = UIImage(named: "playerBackActive")
+       
     }
     
     private func setForwardPlayerButtonImageView() {
@@ -139,7 +214,8 @@ class PlayerViewController: UIViewController {
             make.left.equalTo(playPausePlayerButtonImageView.snp.right).offset(40)
             make.height.width.equalTo(24)
         }
-        forwardPlayerButtonImageView.image = UIImage(named: "playerForwardActive")
+
+       
     }
     
     private func setPlayPausePlayerButton() {
@@ -183,7 +259,6 @@ class PlayerViewController: UIViewController {
         subtitleLabel.textAlignment = .center
         subtitleLabel.font = UIFont.Basic.latoBold(size: 18)
         subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.8)
-        subtitleLabel.text = "Социальные проблемы"
     }
     
     private func setTitleLabel() {
@@ -196,14 +271,96 @@ class PlayerViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.Basic.latoNormal(size: 24)
         titleLabel.textColor = UIColor.white
-        titleLabel.text = "Страх выступать публично"
+        
     }
-    
-    
+}
+
+// MARK: - PlayerTrackViewDelegate
+
+extension PlayerViewController: PlayerTrackViewDelegate {
+    func didChangeValue(progress: Float) {
+        guard let audioPlayer = audioPlayer else { return }
+        let isPlaying = audioPlayer.isPlaying
+        audioPlayer.stop()
+        audioPlayer.currentTime = TimeInterval(progress)
+        audioPlayer.prepareToPlay()
+        if isPlaying {
+            audioPlayer.play()
+        }
+    }
+}
+
+// MARK: - AVAudioPlayerDelegate
+
+extension PlayerViewController: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        presenter?.setListenedLesson(durationSeconds: 0, isFinishLesson: 1)
+        if presenter?.dataModel.isNextLessonExist() ?? false {
+            forwardPlayerButtonAction()
+        }
+    }
 }
 
 // MARK: - PlayerProtocol
 
 extension PlayerViewController: PlayerProtocol {
+    func didListedAllLessons() {
+        ModuleRouter.showCongratulationModule(currentViewController: self)
+    }
     
+    func didGetLesson() {
+        heartButton.isHidden = false
+        titleLabel.text = presenter?.dataModel.lesson?.name//"Страх выступать публично"
+        subtitleLabel.text = presenter?.dataModel.sectionName ?? ""//"Социальные проблемы"
+        guard let isFavorite = presenter?.dataModel.lesson?.favorite else { return }
+        if isFavorite {
+            heartButton.setSelectedState()
+        } else {
+            heartButton.setNormalState()
+        }
+    }
+    
+    func didLoadVideo(url: URL) {
+        player = AVPlayer(url: url)
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame =  videoContainerView.bounds
+        playerLayer.videoGravity = .resizeAspectFill
+        videoContainerView.layer.addSublayer(playerLayer)
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main) { [weak player] _ in
+            player?.seek(to: CMTime.zero)
+            player?.play()
+        }
+        player?.isMuted = true
+        player?.play()
+    }
+    
+    func didLoadAudio(data: Data) {
+        playerTrackView.isHidden = false
+        activityView.stopAnimating()
+        audioPlayer = try? AVAudioPlayer(data: data)
+        audioPlayer?.prepareToPlay()
+        audioPlayer?.delegate = self
+        playerTrackView.setData(duration: Float(audioPlayer?.duration ?? 0))
+        updater = CADisplayLink(target: self, selector: #selector(trackAudio))
+        updater?.preferredFramesPerSecond = 1
+        updater?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
+        playPausePlayerButtonImageView.image = UIImage(named: "playerPause")
+        let startDelay: TimeInterval = TimeInterval(presenter?.dataModel.lesson?.durationSeconds ?? 0)
+        audioPlayer?.currentTime = startDelay
+        audioPlayer?.play()
+//        audioPlayer?.play()
+    }
+    
+    @objc func trackAudio() {
+        guard let audioPlayer = audioPlayer else { return }
+        playerTrackView.updateProgress(progress: Float(audioPlayer.currentTime))
+    }
+    
+    func didChangeIsFavoriteState(isFavorite: Bool) {
+        if isFavorite {
+            heartButton.setSelectedState()
+        } else {
+            heartButton.setNormalState()
+        }
+    }
 }

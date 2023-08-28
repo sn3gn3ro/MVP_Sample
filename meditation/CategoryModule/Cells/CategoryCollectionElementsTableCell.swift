@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CategoryCollectionElementsTableCellDelegate: AnyObject {
-    func didSelectElement(indexPath: IndexPath, backImageView: UIImageView)
+    func didSelectElement(indexPath: IndexPath)
 }
 
 class CategoryCollectionElementsTableCell: UITableViewCell {
@@ -17,7 +17,8 @@ class CategoryCollectionElementsTableCell: UITableViewCell {
     
     weak var delegate: CategoryCollectionElementsTableCellDelegate?
     
-    var elements = [CategoryViewController.ElementModel]()
+    var lessons: [SectionModel.Lessons] = []
+    var bufferedLessonVideos = [Int: URL]()
     
     enum Const {
         static let offset: CGFloat = 16
@@ -48,31 +49,36 @@ class CategoryCollectionElementsTableCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
     }
 
     //MARK: - Actions
     
-    func setData(elements: [CategoryViewController.ElementModel]) {
-        self.elements = elements
+    func setData(lessons: [SectionModel.Lessons]) {
+        self.lessons = lessons
+        collectionView.snp.updateConstraints { (make) in
+            let columnCount =  lessons.count > 1 ?  (CGFloat(lessons.count)/2).rounded() : 1
+            let topOffsetHeight = CGFloat(columnCount) * Const.offset
+            make.height.equalTo(CGFloat(columnCount) * Const.elementHeight + topOffsetHeight)//(163))
+        }
         collectionView.reloadData()
+    }
+    
+    func updateData(index: Int, url: URL) {
+        bufferedLessonVideos[index] = url
+        collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
     }
     
     //MARK: - Private
 
-    
     private func configureCollectionView() {
         contentView.addSubview(collectionView)
-        
         collectionView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(31)
             make.bottom.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            let topOffsetHeight = (10/2 - 1) * Const.offset
-            make.height.equalTo(10/2 * Const.elementHeight + topOffsetHeight)//(163))
+            make.height.equalTo(146)
         }
-        
         collectionView.backgroundColor = .clear
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -93,8 +99,7 @@ class CategoryCollectionElementsTableCell: UITableViewCell {
 
 extension CategoryCollectionElementsTableCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! ElementInCategoryCollectionCell
-        delegate?.didSelectElement(indexPath: indexPath, backImageView: cell.backImageView)
+        delegate?.didSelectElement(indexPath: indexPath)
     }
 }
 
@@ -102,19 +107,25 @@ extension CategoryCollectionElementsTableCell: UICollectionViewDelegate {
 
 extension CategoryCollectionElementsTableCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return elements.count
+        return lessons.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ElementInCategoryCollectionCell", for: indexPath) as! ElementInCategoryCollectionCell
-        
-        let element = elements[indexPath.row]
-        cell.setData(image:element.image, lessonName: element.name)
+        let lesson = lessons[indexPath.row]
+        let url = lesson.getCurrentDayLink()
+        let bufferedLink = bufferedLessonVideos[indexPath.row]
+        let isLissend = lesson.listened ?? false
+        cell.setData(videoUrl: url,
+                     bufferedLink: bufferedLink,
+                     lessonName: lesson.name ?? "",
+                     isLissend: isLissend)
         
         return cell
     }
-
 }
+
+
 
 //MARK: - UICollectionViewDelegateFlowLayout
 

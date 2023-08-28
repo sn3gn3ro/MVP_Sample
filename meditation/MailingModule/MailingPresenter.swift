@@ -17,7 +17,7 @@ protocol MailingPresenterProtocol: AnyObject {
 }
 
 class MailingPresenter: MailingPresenterProtocol {
-    let view: MailingProtocol
+    weak private var view: MailingProtocol?
     var dataModel: MailingDataModel
     
     required init(view: MailingProtocol, dataModel: MailingDataModel) {

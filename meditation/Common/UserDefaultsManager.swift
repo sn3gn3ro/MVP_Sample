@@ -11,21 +11,25 @@ protocol UserDefaultsProtocol: AnyObject {
     static func setToken(token: String)
     static func getToken() -> String?
     static func clearToken()
+    
+    static func setUserInfo(info: Data)
+    static func getUserInfo() -> UserInfoModel?
+    static func clearUserInfo()
 }
 
 class UserDefaultsManager: UserDefaultsProtocol {
     
-    enum Helper {
-        static let defaults = UserDefaults.standard
-    }
-    
+//    enum Helper {
+//        static let defaults = UserDefaults.standard
+//    }
+//
     static func setToken(token: String) {
-        Helper.defaults.set(token, forKey: "token")
+        UserDefaults.standard.set(token, forKey: "token")
         print("TOKEN SET  \(token)")
     }
     
     static func getToken() -> String? {
-        let token = Helper.defaults.string(forKey: "token")
+        let token = UserDefaults.standard.string(forKey: "token")
         if token == nil {
             print("NO TOKEN")
         }
@@ -33,73 +37,29 @@ class UserDefaultsManager: UserDefaultsProtocol {
     }
     
     static func clearToken() {
-        Helper.defaults.removeObject(forKey: "token")
+        UserDefaults.standard.removeObject(forKey: "token")
     }
-//
-//    static func setLongTapOpen(enabled :Bool) {
-//        let defaults = UserDefaults.standard
-//        defaults.set(enabled, forKey: "longTapOpen")
-//    }
-//
-//    static func isLongTapOpenActive() -> Bool {
-//        let defaults = UserDefaults.standard
-//        return defaults.bool(forKey: "longTapOpen")
-//    }
-//
-//    static func setIsCameraImageHide(enabled :Bool) {
-//        let defaults = UserDefaults.standard
-//        defaults.set(enabled, forKey: "isCameraImageHide")
-//    }
-//
-//    static func isCameraImageHide() -> Bool {
-//        let defaults = UserDefaults.standard
-//        return defaults.bool(forKey: "isCameraImageHide")
-//    }
-//
-//    static func setGatesSorting(gatesIds: [String]) {
-//        UserDefaults.standard.setValue(gatesIds, forKey: "gatesSort")
-//    }
-//
-//    static func getGatesSorting() -> [String]? {
-//        return UserDefaults.standard.stringArray(forKey: "gatesSort")
-//    }
-//
-//    static func setAuth(phone: String, loginHash: String) {
-//        let defaults = UserDefaults.standard
-//        defaults.set(phone, forKey: "phone")
-//        defaults.set(loginHash, forKey: "hash")
-//    }
-//
-//    static func getUserPhone() -> String {
-//        let defaults = UserDefaults.standard
-//        let phone = defaults.string(forKey: "phone") ?? ""
-//        let clearPhone = phone.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-//        return  clearPhone
-//    }
-//
-//    static func getUserHash() -> String {
-//        let defaults = UserDefaults.standard
-//        return  defaults.string(forKey: "hash") ?? ""
-//    }
-//
-//    static func clearAuth(succes: @escaping ()->()) {
-//        let defaults = UserDefaults.standard
-//        defaults.removeObject(forKey: "phone")
-//        defaults.removeObject(forKey: "pid")
-//        defaults.removeObject(forKey: "hash")
-//        defaults.removeObject(forKey: "gatesSort")
-//        succes()
-//    }
-//
-//    static func setUnreadNificationsCount(count: Int) {
-//        let defaults = UserDefaults.standard
-//        defaults.set(count, forKey: "unreadNificationsCount")
-//    }
-//
-//    static func getUnreadNificationsCount() -> Int {
-//        let defaults = UserDefaults.standard
-//        return  defaults.integer(forKey: "unreadNificationsCount")
-//    }
+    
+    static func setUserInfo(info: Data) {
+        UserDefaults.standard.set(info, forKey: "userInfo")
+        print("UserInfo SET")
+    }
+    
+    static func getUserInfo() -> UserInfoModel? {
+        guard let data = UserDefaults.standard.data(forKey: "userInfo") else {
+            print("no UserInfo data")
+            return nil
+        }
+        guard let userInfoModel = try? JSONDecoder().decode(UserInfoModel.self, from: data) else {
+            print("no UserInfo")
+            return nil
+        }
+        return userInfoModel
+    }
+    
+    static func clearUserInfo() {
+        UserDefaults.standard.removeObject(forKey: "userInfo")
+    }
 }
 
 

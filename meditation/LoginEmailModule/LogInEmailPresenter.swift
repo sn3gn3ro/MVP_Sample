@@ -18,7 +18,7 @@ protocol LogInEmailPresenterProtocol: AnyObject {
 }
 
 class LogInEmailPresenter: LogInEmailPresenterProtocol {
-    let view: LogInEmailProtocol
+    weak private var view: LogInEmailProtocol?
     var dataModel: LogInEmailDataModel
     
     required init(view: LogInEmailProtocol, dataModel: LogInEmailDataModel) {
@@ -28,7 +28,7 @@ class LogInEmailPresenter: LogInEmailPresenterProtocol {
     
     func login() {
         NetworkManager.auth(email: dataModel.email, password: dataModel.password) { [weak self] in
-            self?.view.didLogin()
+            self?.view?.didLogin()
         }
     }
 }

@@ -17,7 +17,7 @@ protocol LogInPhonePresenterProtocol: AnyObject {
 }
 
 class LogInPhonePresenter: LogInPhonePresenterProtocol {
-    let view: LogInPhoneProtocol
+    weak private var view: LogInPhoneProtocol?
     var dataModel: LogInPhoneDataModel
     
     required init(view: LogInPhoneProtocol, dataModel: LogInPhoneDataModel) {

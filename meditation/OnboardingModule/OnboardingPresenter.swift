@@ -19,7 +19,7 @@ protocol OnboardingPresenterProtocol: AnyObject {
 }
 
 class OnboardingPresenter: OnboardingPresenterProtocol {
-    let view: OnboardingProtocol
+    weak private var view: OnboardingProtocol?
     var dataModel: OnboardingDataModel
     
     required init(view: OnboardingProtocol, dataModel: OnboardingDataModel) {
@@ -31,13 +31,13 @@ class OnboardingPresenter: OnboardingPresenterProtocol {
         NetworkManager.getQuestionList { [weak self] questionsListModel in
             guard let `self` = self else { return }
             self.dataModel.questionsListModel = questionsListModel
-            self.view.dataLoad()
+            self.view?.dataLoad()
         }
     }
 
     func sendIds(ids: [Int]) {
         NetworkManager.createUserTags(tagId: ids) { [weak self] in
-            self?.view.idsDidAccepted()
+            self?.view?.idsDidAccepted()
         }
     }
 }

@@ -17,7 +17,7 @@ protocol PrivacyPoliticsPresenterProtocol: AnyObject {
 }
 
 class PrivacyPoliticsPresenter: PrivacyPoliticsPresenterProtocol {
-    let view: PrivacyPoliticsProtocol
+    weak private var view: PrivacyPoliticsProtocol?
     var dataModel: PrivacyPoliticsDataModel
     
     required init(view: PrivacyPoliticsProtocol, dataModel: PrivacyPoliticsDataModel) {

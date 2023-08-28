@@ -77,12 +77,12 @@ class OnboardViewSelectionBetweenTwo: UIView {
         subtitleLabel.text = data.description//CommonString.panicSubtitle
         if  let images = data.images {
             if images.count > 0 {
-                NetworkManager.getImage(imageUrl: images[0].image ?? "") { [weak self] image in
+                NetworkManager.getImage(imageUrl: images[0].image) { [weak self] image in
                     self?.leftDataImageView.image = image //UIImage(named: "panicTrueOff")
                 }
             }
             if images.count > 1 {
-                NetworkManager.getImage(imageUrl: images[1].image ?? "") { [weak self] image in
+                NetworkManager.getImage(imageUrl: images[1].image) { [weak self] image in
                     self?.rightDataImageView.image = image //UIImage(named: "panicFalseOff")
                 }
             }

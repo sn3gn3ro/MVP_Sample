@@ -8,5 +8,11 @@
 import Foundation
 
 struct FavoritesDataModel {
-    var isDataLoad = false
+    var favoriteModel:[FavoriteModel]?
+    var bufferedVideos: [Int:URL] = [:]
+    
+    mutating func clear() {
+        favoriteModel = nil
+        bufferedVideos.removeAll()
+    }
 }

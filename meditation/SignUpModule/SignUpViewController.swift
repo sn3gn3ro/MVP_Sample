@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import AuthenticationServices
 
 class SignUpViewController: UIViewController {
     
@@ -84,7 +85,12 @@ extension SignUpViewController : SignUpMainTableCellDelegate {
     }
     
     func didPressedApple() {
-        
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
     }
     
     func didPressedPhone() {
@@ -121,8 +127,34 @@ extension SignUpViewController : SignUpMainTableCellDelegate {
     }
 }
 
+// MARK: - ASAuthorizationControllerDelegate
+
+extension SignUpViewController : ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        view.window!
+    }
+}
+
+// MARK: - ASAuthorizationControllerDelegate
+
+extension SignUpViewController : ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+            print("User id is \(userIdentifier) \n Full Name is \(String(describing: fullName)) \n Email id is \(String(describing: email))")
+        }
+    }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+    }
+}
+
 // MARK: - SignUpProtocol
 
 extension SignUpViewController : SignUpProtocol {
     
 }
+
+

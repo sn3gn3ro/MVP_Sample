@@ -103,7 +103,7 @@ enum CommonString {
     static let exit = "Выйти"
     
     static let editData = "Редактировать данные"
-    static let saveChanges = "Созранить изменения"
+    static let saveChanges = "Сохранить изменения"
     static let deleteAccount = "Удалить аккаунт"
     
     static let favorites = "Избранное"

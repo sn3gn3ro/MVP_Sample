@@ -18,7 +18,7 @@ protocol SignUpPhonePresenterProtocol: AnyObject {
 }
 
 class SignUpPhonePresenter: SignUpPhonePresenterProtocol {
-    let view: SignUpPhoneProtocol
+    weak private var view: SignUpPhoneProtocol?
     var dataModel: SignUpPhoneDataModel
     
     required init(view: SignUpPhoneProtocol, dataModel: SignUpPhoneDataModel) {
@@ -29,7 +29,7 @@ class SignUpPhonePresenter: SignUpPhonePresenterProtocol {
     
     func registerUser() {
         NetworkManager.register(signUpDataModel: dataModel.signUpDataModel) { [weak self] in
-            self?.view.registerComplete()
+            self?.view?.registerComplete()
         }
     }
 }

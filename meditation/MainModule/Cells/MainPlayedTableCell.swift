@@ -14,7 +14,8 @@ protocol MainPlayedTableCellDelegate: AnyObject {
 
 class MainPlayedTableCell: UITableViewCell {
     
-    let backImageView = UIImageView()
+//    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
     let blackerView = UIView()
     let titleLabel = UILabel()
     let subTitleLabel = UILabel()
@@ -66,7 +67,7 @@ class MainPlayedTableCell: UITableViewCell {
     //MARK: - Actions
     
     func setSkeleton() {
-        backImageView.image = UIImage()
+//        backImageView.image = UIImage()
         titleLabel.text = ""
         subTitleLabel.text = ""
         timeLabel.text = ""
@@ -77,9 +78,9 @@ class MainPlayedTableCell: UITableViewCell {
         setSkeletonableStyle()
     }
     
-    func setData(backImage: UIImage, title: String, subTitle: String, time: String) {
+    func setData(videoUrl: String, bufferedLink: URL?, title: String, subTitle: String, time: String) {
         hideSkeleton()
-        backImageView.image = backImage
+        
         titleLabel.text = title
         subTitleLabel.text = subTitle
         timeLabel.text = time
@@ -87,6 +88,9 @@ class MainPlayedTableCell: UITableViewCell {
         playButton.isHidden = false
         playButtonImageView.isHidden = false
         blackerView.isHidden = false
+        if let bufferedLink = bufferedLink {
+            videoView.didLoadVideo(url: bufferedLink)
+        }
     }
     
     @objc func playButtonPressed() {
@@ -96,23 +100,23 @@ class MainPlayedTableCell: UITableViewCell {
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview().offset(-40)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(88)
         }
-        backImageView.clipsToBounds = true
-        backImageView.layer.cornerRadius = 14
-        backImageView.isSkeletonable = true
+        videoView.clipsToBounds = true
+        videoView.layer.cornerRadius = 14
+        videoView.isSkeletonable = true
     }
     
     private func setBlackerView() {
         contentView.addSubview(blackerView)
         blackerView.snp.makeConstraints { (make) in
-            make.edges.equalTo(backImageView)
+            make.edges.equalTo(videoView)
         }
         blackerView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         blackerView.clipsToBounds = true

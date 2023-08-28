@@ -48,16 +48,12 @@ class ProfileExitTableCell: UITableViewCell {
     //MARK: - Actions
     
     func setSkeleton() {
-        exitButtonView.setStyle(type: .normal)
         setSkeletonableStyle()
     }
     
     func setData() {
         hideSkeleton()
-        exitButtonView.setStyle(type: .bordered)
     }
-    
-
     
     //MARK: - Private
     
@@ -70,8 +66,9 @@ class ProfileExitTableCell: UITableViewCell {
         exitButtonView.buttonAction = { [weak self] in
             self?.delegate?.exitButtonPressed()
         }
+//        exitButtonView.setStyle(type: .bordered)
 //        exitButtonView.isUserInteractionEnabled = false
         exitButtonView.isSkeletonable = true
-        exitButtonView.skeletonCornerRadius = 20
+//        exitButtonView.skeletonCornerRadius = 20
     }
 }

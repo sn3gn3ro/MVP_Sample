@@ -17,7 +17,7 @@ protocol RestoreEmailPasswordPresenterProtocol: AnyObject {
 }
 
 class RestoreEmailPasswordPresenter: RestoreEmailPasswordPresenterProtocol {
-    let view: RestoreEmailPasswordProtocol
+    weak private var view: RestoreEmailPasswordProtocol?
     var dataModel: RestoreEmailPasswordDataModel
     
     required init(view: RestoreEmailPasswordProtocol, dataModel: RestoreEmailPasswordDataModel) {

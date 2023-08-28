@@ -10,12 +10,12 @@ import SkeletonView
 
 class MainPodcastTableCell: UITableViewCell {
     
-    let backImageView = UIImageView()
+//    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
     let blackerView = UIView()
     let titleLabel = UILabel()
     let subTitleLabel = UILabel()
     
-//    weak var delegate: MainPlayedTableCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,34 +56,38 @@ class MainPodcastTableCell: UITableViewCell {
         setSkeletonableStyle()
     }
     
-    func setData(backImage: UIImage, title: String, subTitle: String) {
+    func setData(videoUrl: String, bufferedLink: URL?, title: String, subTitle: String) {
         hideSkeleton()
-        backImageView.image = backImage
         titleLabel.text = title
         subTitleLabel.text = subTitle
         blackerView.isHidden = false
+        if let bufferedLink = bufferedLink {
+            videoView.didLoadVideo(url: bufferedLink)
+        }
+       
     }
     
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview().offset(-25)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(184)
         }
-        backImageView.clipsToBounds = true
-        backImageView.layer.cornerRadius = 17
-        backImageView.isSkeletonable = true
+        videoView.clipsToBounds = true
+        videoView.layer.cornerRadius = 17
+        videoView.isSkeletonable = true
+        videoView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - (16*2), height: 184)
     }
     
     private func setBlackerView() {
         contentView.addSubview(blackerView)
         blackerView.snp.makeConstraints { (make) in
-            make.edges.equalTo(backImageView)
+            make.edges.equalTo(videoView)
         }
         blackerView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         blackerView.clipsToBounds = true

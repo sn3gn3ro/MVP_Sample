@@ -14,7 +14,7 @@ protocol FavoriteTableCellDelegate: AnyObject {
 
 class FavoriteTableCell: UITableViewCell {
     
-    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
     let blackerView = UIView()
     let titleLabel = UILabel()
     let subTitleLabel = UILabel()
@@ -65,17 +65,18 @@ class FavoriteTableCell: UITableViewCell {
     //MARK: - Actions
     
     func setSkeleton() {
-        backImageView.image = UIImage(named: "playedTest")
         dotView.alpha = 0
         playButton.alpha = 0
         playButtonImageView.alpha = 0
         blackerView.alpha = 0
+        titleLabel.text = ""
+        subTitleLabel.text = ""
+        timeLabel.text = ""
         setSkeletonableStyle()
     }
     
-    func setData(backImage: UIImage, title: String, subTitle: String, time: String) {
+    func setData(bufferedLink: URL?, title: String, subTitle: String, time: String) {
         hideSkeleton()
-        backImageView.image = backImage
         titleLabel.text = title
         subTitleLabel.text = subTitle
         timeLabel.text = time
@@ -83,6 +84,9 @@ class FavoriteTableCell: UITableViewCell {
         playButton.alpha = 1
         playButtonImageView.alpha = 1
         blackerView.alpha = 1
+        if let bufferedLink  = bufferedLink {
+            videoView.didLoadVideo(url: bufferedLink)
+        }
     }
     
     @objc func playButtonPressed() {
@@ -92,18 +96,19 @@ class FavoriteTableCell: UITableViewCell {
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview().offset(-16)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(88)
         }
-        backImageView.clipsToBounds = true
-        backImageView.layer.cornerRadius = 14
-        backImageView.contentMode = .scaleAspectFill
-        backImageView.isSkeletonable = true
+        videoView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - (16*2), height: 88)
+        videoView.clipsToBounds = true
+        videoView.layer.cornerRadius = 14
+        videoView.contentMode = .scaleAspectFill
+        videoView.isSkeletonable = true
     }
     
     private func setBlackerView() {

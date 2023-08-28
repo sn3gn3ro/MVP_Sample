@@ -139,8 +139,8 @@ class LogInEmailMainTableCell: UITableViewCell {
             make.centerX.equalToSuperview()
         }
         
-        emailView.dataEndEditing = { data in
-            self.delegate?.didEnterEmail(email: data)
+        emailView.dataEndEditing = { [weak self] data in
+            self?.delegate?.didEnterEmail(email: data)
         }
     }
     
@@ -151,8 +151,8 @@ class LogInEmailMainTableCell: UITableViewCell {
             make.centerX.equalToSuperview()
         }
         
-        passwordView.dataEndEditing = { data in
-            self.delegate?.didEnterPassword(password: data)
+        passwordView.dataEndEditing = { [weak self] data in
+            self?.delegate?.didEnterPassword(password: data)
         }
     }
     
@@ -188,8 +188,8 @@ class LogInEmailMainTableCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-44)
         }
         
-        enterButtonView.buttonAction = {
-            self.delegate?.didPressedEnter()
+        enterButtonView.buttonAction = { [weak self] in
+            self?.delegate?.didPressedEnter()
         }
     }
 

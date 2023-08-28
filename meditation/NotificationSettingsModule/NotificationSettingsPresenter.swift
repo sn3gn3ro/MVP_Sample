@@ -17,7 +17,7 @@ protocol NotificationSettingsPresenterProtocol: AnyObject {
 }
 
 class NotificationSettingsPresenter: NotificationSettingsPresenterProtocol {
-    let view: NotificationSettingsProtocol
+    weak private var view: NotificationSettingsProtocol?
     var dataModel: NotificationSettingsDataModel
     
     required init(view: NotificationSettingsProtocol, dataModel: NotificationSettingsDataModel) {

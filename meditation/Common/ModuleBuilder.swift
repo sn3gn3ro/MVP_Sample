@@ -24,14 +24,18 @@ protocol Builder {
     static func createTabbarModule() -> UIViewController
     
     static func createMainModule() -> UIViewController
-    static func createCategoryModule() -> UIViewController
+    static func createCategoryModule(dataModel:DataModel,sectonVideoURL: CategoryDataModel.SectonVideoURL) -> UIViewController
     static func createProfileModule() -> UIViewController
     static func createProfileEditModule() -> UIViewController
     static func createFavoritesModule() -> UIViewController
     
     static func createNotificationSettingsModule() -> UIViewController
     
-    static func createPlayerModule() -> UIViewController
+    static func createPlayerModule(lessonId: Int,
+                                   lessons: [Int],
+                                   lessonBufferedVideo: [Int:URL]?,
+                                   sectionName: String?,
+                                   idUnfinishedLessons: [Int: Bool]?) -> UIViewController
     static func createCongratulationModule() -> UIViewController
     static func createSubscriptionModule() -> UIViewController
     
@@ -146,9 +150,9 @@ class ModuleBuilder: Builder {
         return view
     }
     
-    static func createCategoryModule() -> UIViewController {
+    static func createCategoryModule(dataModel:DataModel, sectonVideoURL: CategoryDataModel.SectonVideoURL) -> UIViewController {
         let view = CategoryViewController()
-        let dataModel = CategoryDataModel()
+        let dataModel = CategoryDataModel(sectonVideoURL: sectonVideoURL, dataModel: dataModel)
         let presenter = CategoryPresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 
@@ -192,9 +196,13 @@ class ModuleBuilder: Builder {
         return view
     }
     
-    static func createPlayerModule() -> UIViewController {
+    static func createPlayerModule(lessonId: Int,
+                                   lessons: [Int],
+                                   lessonBufferedVideo: [Int:URL]?,
+                                   sectionName: String?,
+                                   idUnfinishedLessons: [Int: Bool]?) -> UIViewController {
         let view = PlayerViewController()
-        let dataModel = PlayerDataModel()
+        let dataModel = PlayerDataModel(lessonId: lessonId,lessons: lessons, sectionName: sectionName, lessonBufferedVideo: lessonBufferedVideo ?? [:], idUnfinishedLessons: idUnfinishedLessons ?? [:])
         let presenter = PlayerPresenter(view: view, dataModel: dataModel)
         view.presenter = presenter
 

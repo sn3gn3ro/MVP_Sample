@@ -10,22 +10,10 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     let tableView = UITableView()
-    
+    let imagePicker = UIImagePickerController()
     var presenter: ProfilePresenter!
 
-    enum Section {
-        case main
-        case settings(types:[ProfileSettingTableCell.Setting])
-        case exit
-    }
-    
-    let sections: [Section] = [.main,
-                               .settings(types: [ProfileSettingTableCell.Setting.favoritesLessons,
-                                                 ProfileSettingTableCell.Setting.subscription,
-                                                 ProfileSettingTableCell.Setting.notifications,
-                                                 ProfileSettingTableCell.Setting.review]),
-                               .exit]
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Main.primaryViolet
@@ -38,8 +26,8 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenter.dataModel.isDataLoad = false
-        tableView.reloadData()
+//        presenter.dataModel.isDataLoad = false
+//        tableView.reloadData()
         presenter.getData()
         
         NotificationCenter.default.post(name: Notification.Name("showTabbar"), object: nil, userInfo: nil)
@@ -54,7 +42,6 @@ class ProfileViewController: UIViewController {
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-TabbarSettings.height)
         }
-        
         tableView.backgroundColor = .clear
         tableView.dataSource = self
         tableView.delegate = self
@@ -65,14 +52,47 @@ class ProfileViewController: UIViewController {
         tableView.register(ProfileSettingTableCell.self, forCellReuseIdentifier: "ProfileSettingTableCell")
         tableView.register(ProfileExitTableCell.self, forCellReuseIdentifier: "ProfileExitTableCell")
     }
-
+    
+    private func showImagePickerAlert() {
+        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: .default){
+            [weak self] UIAlertAction in
+            self?.showImagePickerView(type: .camera)
+        }
+        let galleryAction = UIAlertAction(title: "Gallery", style: .default){
+            [weak self] UIAlertAction in
+            self?.showImagePickerView(type: .savedPhotosAlbum)
+        }
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive){
+            [weak self] UIAlertAction in
+            self?.presenter.deleteAvatar()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){
+            UIAlertAction in
+        }
+        alert.addAction(cameraAction)
+        alert.addAction(galleryAction)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+    
+    private func showImagePickerView(type: UIImagePickerController.SourceType) {
+        if UIImagePickerController.isSourceTypeAvailable(type){
+            print("Button capture")
+            imagePicker.delegate = self
+            imagePicker.sourceType = type
+            imagePicker.allowsEditing = false
+            present(imagePicker, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
 
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
+        let section = presenter.dataModel.sections[indexPath.section]
         switch section {
             case .settings(let types):
                 settingsAction(type: types[indexPath.row])
@@ -106,12 +126,11 @@ extension ProfileViewController: UITableViewDelegate {
 extension ProfileViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return presenter.dataModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = sections[section]
-        switch section {
+        switch presenter.dataModel.sections[section] {
             case .main:
                 return 1
             case .settings(let types):
@@ -122,8 +141,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = sections[indexPath.section]
-        switch section {
+        switch presenter.dataModel.sections[indexPath.section] {
             case .main:
                 return profileMainTableCell(indexPath: indexPath, image: UIImage(named: "backTest") ?? UIImage())
             case .settings(let types):
@@ -137,21 +155,25 @@ extension ProfileViewController: UITableViewDataSource {
     
     private func profileMainTableCell(indexPath: IndexPath, image: UIImage) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileMainTableCell", for: indexPath) as! ProfileMainTableCell
-        
-        presenter.dataModel.isDataLoad ? cell.setData(backImage: UIImage(named: "backNightTest") ?? UIImage(),
-                                                      profileImage: UIImage(named: "userPhotoTest") ?? UIImage(),
-                                                      email: "alexandra@mail.ru",
-                                                      name: "Александра") : cell.setSkeleton()
-        
         cell.delegate = self
-        
+        if let userInfo =  presenter.dataModel.userInfo {
+            cell.setData(backImage: UIImage(named: "backNightTest") ?? UIImage(),
+                         profileImage: presenter.dataModel.userAvatar,
+                         email: userInfo.email ?? "",
+                         name: userInfo.name ?? "")
+        } else {
+            cell.setSkeleton()
+        }
         return cell
     }
     
     private func profileSettingTableCell(indexPath: IndexPath, type: ProfileSettingTableCell.Setting) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileSettingTableCell", for: indexPath) as! ProfileSettingTableCell
-        
-        presenter.dataModel.isDataLoad ? cell.setData(type: type) :  cell.setSkeleton()
+        if let _ =  presenter.dataModel.userInfo {
+            cell.setData(type: type)
+        } else {
+            cell.setSkeleton()
+        }
         
         return cell
     }
@@ -159,7 +181,11 @@ extension ProfileViewController: UITableViewDataSource {
     private func profileExitTableCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileExitTableCell", for: indexPath) as! ProfileExitTableCell
         cell.delegate = self
-        presenter.dataModel.isDataLoad ? cell.setData() :  cell.setSkeleton()
+        if let _ =  presenter.dataModel.userInfo {
+            cell.setData()
+        } else {
+            cell.setSkeleton()
+        }
         
         return cell
     }  
@@ -173,7 +199,7 @@ extension ProfileViewController : ProfileMainTableCellDelegate {
     }
     
     func profileImagePressed() {
-        
+        showImagePickerAlert()
     }
     
     func editPressed() {
@@ -188,16 +214,32 @@ extension ProfileViewController: ProfileExitTableCellDelegate {
     func exitButtonPressed() {
         guard let window = UIApplication.shared.windows.first else { return }
         UserDefaultsManager.clearToken()
+        UserDefaultsManager.clearUserInfo()
         ModuleRouter.setRootSignUpModule(window: window)
     }
 }
 
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension ProfileViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        if let image = info[.originalImage] as? UIImage {
+            presenter.dataModel.userAvatar = image
+            presenter.uploadAvatarImage()
+            tableView.reloadData()
+        }
+        picker.dismiss(animated: true)
+    }
+}
 
 // MARK: - ProfileProtocol
 
 extension ProfileViewController : ProfileProtocol {
     func dataLoad() {
         tableView.reloadData()
+//        tableView.reloadSections(IndexSet(arrayLiteral: 0), with: .none)
     }
     
     

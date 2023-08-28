@@ -17,7 +17,7 @@ protocol SignUpEmailPresenterProtocol: AnyObject {
 }
 
 class SignUpEmailPresenter: SignUpEmailPresenterProtocol {
-    let view: SignUpEmailProtocol
+    weak private var view: SignUpEmailProtocol?
     var dataModel: SignUpEmailDataModel
     
     required init(view: SignUpEmailProtocol, dataModel: SignUpEmailDataModel) {

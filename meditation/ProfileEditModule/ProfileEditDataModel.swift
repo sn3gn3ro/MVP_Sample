@@ -8,5 +8,9 @@
 import Foundation
 
 struct ProfileEditDataModel {
+    var userInfo = UserDefaultsManager.getUserInfo()
     
+    var editableName: String?
+    var editableEmail: String?
+    var editablePhone: String?
 }

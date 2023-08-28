@@ -100,7 +100,7 @@ extension CongratulationViewController: UITableViewDataSource {
     
     private func favoriteTableCell(indexPath: IndexPath, backImage: UIImage, title: String, subTitle: String, time: String) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteTableCell", for: indexPath) as! FavoriteTableCell
-        cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
+//        cell.setData(backImage: backImage, title: title, subTitle: subTitle, time: time)
         
         return cell
     }

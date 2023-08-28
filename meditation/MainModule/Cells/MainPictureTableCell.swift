@@ -9,7 +9,10 @@ import UIKit
 
 class MainPictureTableCell: UITableViewCell {
     
-    let backImageView = UIImageView()
+//    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
+    
+//    weak var delegate: MainPictureTableCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -39,19 +42,17 @@ class MainPictureTableCell: UITableViewCell {
 
     //MARK: - Actions
     
-    func setSkeleton() {
-        backImageView.image = UIImage()
-    }
-    
-    func setImage(image: UIImage) {
-        backImageView.image = image
+    func setData(videoUrl: String, bufferedLink: URL?) {
+        if let bufferedLink = bufferedLink {
+            videoView.didLoadVideo(url: bufferedLink)
+        }
     }
     
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()

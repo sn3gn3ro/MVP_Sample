@@ -22,7 +22,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.overrideUserInterfaceStyle = .light
         UIApplication.shared.statusBarStyle = .lightContent
-//        UserDefaultsManager.clearToken()
+//        if UserDefaultsManager.getToken() == nil {
+//            ModuleRouter.setRootSignUpModule(window: window)
+//        } else {
+//            ModuleRouter.setRootTabbarModule(window: self.window)
+//        }
         if UserDefaultsManager.getToken() == nil {
             ModuleRouter.setRootSignUpModule(window: window)
         } else {

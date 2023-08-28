@@ -7,12 +7,17 @@
 
 import UIKit
 
+protocol PlayerTrackViewDelegate: AnyObject {
+    func didChangeValue(progress: Float)
+}
+
 class PlayerTrackView: UIView {
     
     private let slider = UISlider()
     private let startTime = UILabel()
     private let endTime = UILabel()
     
+    weak var delegate: PlayerTrackViewDelegate?
     
     init() {
         super.init(frame: CGRect.zero)
@@ -39,13 +44,30 @@ class PlayerTrackView: UIView {
     
     // MARK: - States
     
-    func setData() {
-        startTime.text = "2:30"
-        endTime.text = "18:00"
-        slider.setValue(0.4, animated: false)
+    func setData(duration: Float?) {
+        startTime.text = "0:00"
+        slider.maximumValue = duration ?? 0
+        slider.minimumValue = 0
+        guard let duration = duration else { return }
+        endTime.text = timeString(time: TimeInterval(duration))
+    }
+    
+    func updateProgress(progress: Float) {
+        slider.setValue(progress, animated: true)
+        startTime.text = timeString(time: TimeInterval(progress))
     }
     
     // MARK: - Private Actions
+    
+    private func timeString(time: TimeInterval) -> String {
+            let minute = Int(time) / 60 % 60
+            let second = Int(time) % 60
+            return String(format: "%02i:%02i", minute, second)
+    }
+    
+    @objc private func didChangeSliderValue() {
+        delegate?.didChangeValue(progress: slider.value)
+    }
     
     private func setSlider() {
         addSubview(slider)
@@ -57,6 +79,7 @@ class PlayerTrackView: UIView {
         let thumbImage = UIImage(named: "thumb")
         slider.setThumbImage(thumbImage, for: .normal)
         slider.setThumbImage(thumbImage, for: .highlighted)
+        slider.addTarget(self, action: #selector(didChangeSliderValue), for: .valueChanged)
     }
     
     private func setStartTime() {
@@ -70,7 +93,6 @@ class PlayerTrackView: UIView {
         startTime.textAlignment = .left
         startTime.font = UIFont.Basic.latoNormal(size: 12)
         startTime.textColor = UIColor.Main.textGray
-        startTime.text = "2:30"
     }
     
     private func setEndTime() {
@@ -84,7 +106,6 @@ class PlayerTrackView: UIView {
         endTime.textAlignment = .right
         endTime.font = UIFont.Basic.latoNormal(size: 12)
         endTime.textColor = UIColor.Main.textGray
-        endTime.text = "18:00"
     }
   
 }

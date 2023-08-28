@@ -17,7 +17,7 @@ protocol CongratulationPresenterProtocol: AnyObject {
 }
 
 class CongratulationPresenter: CongratulationPresenterProtocol {
-    let view: CongratulationProtocol
+    weak private var view: CongratulationProtocol?
     var dataModel: CongratulationDataModel
     
     required init(view: CongratulationProtocol, dataModel: CongratulationDataModel) {

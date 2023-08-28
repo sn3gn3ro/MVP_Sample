@@ -26,9 +26,16 @@ protocol Router {
     static func showFavoritesModule(currentViewController: UIViewController)
     static func showNotificationsSettingsModule(currentViewController: UIViewController)
 
-    static func showCategoryModule(currentViewController: UIViewController)
+    static func  showCategoryModule(currentViewController: UIViewController,
+                                    dataModel: DataModel,
+                                    sectonVideoURL: CategoryDataModel.SectonVideoURL)
     
-    static func showPlayerModule(currentViewController: UIViewController)
+    static func showPlayerModule(currentViewController: UIViewController,
+                                 lessonId:Int,
+                                 lessons: [Int],
+                                 lessonBufferedVideo: [Int:URL]?,
+                                 sectionName: String?,
+                                 idUnfinishedLessons: [Int: Bool]?)
     
     static func showCongratulationModule(currentViewController: UIViewController)
     static func showSubscriptionModule(currentViewController: UIViewController)
@@ -123,21 +130,36 @@ class ModuleRouter: Router {
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    static func showCategoryModule(currentViewController: UIViewController) {
-        let viewController = ModuleBuilder.createCategoryModule()
+    static func showCategoryModule(currentViewController: UIViewController,
+                                   dataModel: DataModel,
+                                   sectonVideoURL: CategoryDataModel.SectonVideoURL) {
+        let viewController = ModuleBuilder.createCategoryModule(dataModel: dataModel, sectonVideoURL: sectonVideoURL)
         currentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    static func showPlayerModule(currentViewController: UIViewController) {
-        let viewController = ModuleBuilder.createPlayerModule()
-        currentViewController.navigationController?.pushViewController(viewController, animated: true)
+    static func showPlayerModule(currentViewController: UIViewController,
+                                 lessonId: Int,
+                                 lessons: [Int],
+                                 lessonBufferedVideo: [Int:URL]?,
+                                 sectionName: String?,
+                                 idUnfinishedLessons: [Int: Bool]?) {
+        let viewController = ModuleBuilder.createPlayerModule(lessonId: lessonId,
+                                                              lessons: lessons,
+                                                              lessonBufferedVideo: lessonBufferedVideo,
+                                                              sectionName: sectionName,
+                                                              idUnfinishedLessons: idUnfinishedLessons) as! PlayerViewController
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.delegate = currentViewController as? PlayerViewControllerDelegate
+//        currentViewController.navigationController?.pushViewController(viewController, animated: true)
+        currentViewController.present(viewController, animated: true)
     }
     
     static func showCongratulationModule(currentViewController: UIViewController) {
         let viewController = ModuleBuilder.createCongratulationModule()
         viewController.modalPresentationStyle = .fullScreen
 //        currentViewController.navigationController?.pushViewController(viewController, animated: true)
-        currentViewController.navigationController?.present(viewController, animated: true, completion: nil)
+//        currentViewController.navigationController?.present(viewController, animated: true, completion: nil)
+        currentViewController.present(viewController, animated: true)
     }
     
     static func showSubscriptionModule(currentViewController: UIViewController) {

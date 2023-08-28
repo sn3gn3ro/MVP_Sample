@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MainRecomendedCollectionCell: UICollectionViewCell {
     
-    let backImageView = UIImageView()
+    let videoView = VideoPlayerView()
     let lessonsCountLabel = UILabel()
     let titleLabel = UILabel()
     let subTitleLabel = UILabel()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,33 +44,36 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
         setSkeletonableStyle()
     }
     
-    func setData(image: UIImage, lessonCount: Int, title: String, subtitle: String) {
-        backImageView.image = image
+    func setData(videoUrl: String, bufferedLink: URL?, lessonCount: Int, title: String, subtitle: String) {
         lessonsCountLabel.text = "\(lessonCount) \(CommonString.audiolessons)"
         titleLabel.text = title
         subTitleLabel.text = subtitle
+        if let bufferedLink = bufferedLink {
+            videoView.layoutIfNeeded()
+            videoView.didLoadVideo(url: bufferedLink)
+        }
         hideSkeleton()
     }
     
     //MARK: - Private
     
     private func setBackImageView() {
-        contentView.addSubview(backImageView)
-        backImageView.snp.makeConstraints { (make) in
+        contentView.addSubview(videoView)
+        videoView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-40)
         }
-        backImageView.clipsToBounds = true
-        backImageView.layer.cornerRadius = 17
-        backImageView.isSkeletonable = true
+        videoView.clipsToBounds = true
+        videoView.layer.cornerRadius = 17
+        videoView.isSkeletonable = true
     }
     
     private func setLessonsCountLabel() {
         contentView.addSubview(lessonsCountLabel)
         lessonsCountLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(backImageView.snp.bottom).offset(-13)
+            make.bottom.equalTo(videoView.snp.bottom).offset(-13)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.height.equalTo(16)
@@ -82,7 +86,7 @@ class MainRecomendedCollectionCell: UICollectionViewCell {
     private func setTitleLabel() {
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(backImageView.snp.bottom).offset(5)
+            make.top.equalTo(videoView.snp.bottom).offset(5)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.height.equalTo(17)
